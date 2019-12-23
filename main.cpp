@@ -19,7 +19,9 @@ void checkReg(string line, vector<string> &lexArr) {
     regex equalRegA("([_[:alnum:]]+\\s?=\\s?([0-9]+[.])?[[:alnum:]]+)");
     regex equalRegB("([_[:alnum:]]+\\s+[_[:alnum:]]+\\s?=\\s?([0-9]+[.])?[[:alnum:]]+)");
     regex varReg("([[:alpha:]]+\\s+[_[:alnum:]]+\\s?[->|<-]+\\s?sim[(]+.+[)]+)");
-    regex whileReg("(while\\s+[_[:alnum:]]+\\s?[<|<=|>|>=|==]?\\s?[_[:alnum:]])"); //[<|<=|>|>=|==]?[_[:alnum:]]?{?");
+//    regex whileReg("(while\\s+[_[:alnum:]]+\\s?)"); //[<|<=|>|>=|==]?\\s?[_[:alnum:]]+\\s*[{]*)");
+    regex whileReg("([[:alpha:]]+\\s+[_[:alnum:]]+\\s?[<|<=|>|>=|==]?\\s*[{]+)");
+    regex funcRegB("([_[:alnum:]]+[(]+.+[)]+\\s?[{]{1,1})");
     //todo handle while
     //split the funcReg match by the delimiter '('
     if (regex_match(line, funcReg)) {
@@ -100,7 +102,16 @@ void checkReg(string line, vector<string> &lexArr) {
         lexArr.push_back(str);
     } else if (regex_match(line, whileReg)) {
         //TODO avichai to complete
+        cout <<"hi";
+        cout <<"hi";
+        cout <<"hi";
+    } else if (regex_match(line, funcRegB)) {
+        //TODO avichai to complete
+        cout <<"hi";
+        cout <<"hi";
+        cout <<"hi";
     }
+
 }
 
 //function that checks if what's inside the () is a regular string ("") or expression (no "")
@@ -176,8 +187,14 @@ vector<string> lexer(string filename){
 //    string test = "var roll -> sim(Stam)";
 //    string test = "var roll <- sim(Stam)";
 //    checkReg(test, lexArr);
-    string test = "while x < 0";
+    string test = "while x < 0 {";
+    string test = "takeof(var){";
     checkReg(test, lexArr);*/
+
+//    string test = "while rpm <= 750 {";
+    string test = "while x < 0 {";
+//    string test = "while rpm < 7";
+    checkReg(test, lexArr);
 // todo - in the real program use the argv[1] input, which means the file we get from the cmd execute.
     ifstream myfile(filename);
 //    myfile.open("fly_with_func.txt", ifstream::in);
@@ -202,6 +219,11 @@ void parser(vector<string> comArr) {
 }
 
 int main(int argc, char *argv[]) {
+    regex whileReg("([[:alpha:]]+\\s+[_[:alnum:]]+\\s?[<|<=|>|>=|==]?\\s*[{]+)");
+    string test = "while rpm < 7";
+    if (regex_match(test, whileReg)){
+        return 0;
+    }
     vector<string> vector = lexer("fly_with_func.txt");
     return 0;
 }
