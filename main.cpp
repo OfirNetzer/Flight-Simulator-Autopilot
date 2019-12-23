@@ -4,20 +4,22 @@
 #include <fstream>
 #include "Expression.h"
 #include "ex1.h"
+#include "Command.h"
 
 using namespace std;
-
-void checkReg(string line, vector<string> lexArr);
-void pushStr(string str, vector<string> lexArr);
+vector<string> lexer(string myfile);
+void checkReg(string line, vector<string> &lexArr);
+void pushStr(string str, vector<string> &lexArr);
 string expToStr(string str);
 
-void checkReg(string line, vector<string> lexArr) {
+void checkReg(string line, vector<string> &lexArr) {
     int i = 0;
     string str = "";
     regex funcReg("([_[:alnum:]]+[(]+.+[)]+)");
     regex equalRegA("([_[:alnum:]]+\\s?=\\s?([0-9]+[.])?[[:alnum:]]+)");
     regex equalRegB("([_[:alnum:]]+\\s+[_[:alnum:]]+\\s?=\\s?([0-9]+[.])?[[:alnum:]]+)");
     regex varReg("([[:alpha:]]+\\s+[_[:alnum:]]+\\s?[->|<-]+\\s?sim[(]+.+[)]+)");
+    regex whileReg("(while\\s+[_[:alnum:]]+\\s?[<|<=|>|>=|==]?\\s?[_[:alnum:]])"); //[<|<=|>|>=|==]?[_[:alnum:]]?{?");
     //todo handle while
     //split the funcReg match by the delimiter '('
     if (regex_match(line, funcReg)) {
@@ -96,11 +98,13 @@ void checkReg(string line, vector<string> lexArr) {
             i++;
         }
         lexArr.push_back(str);
+    } else if (regex_match(line, whileReg)) {
+        //TODO avichai to complete
     }
 }
 
 //function that checks if what's inside the () is a regular string ("") or expression (no "")
-void pushStr(string str, vector<string> lexArr) {
+void pushStr(string str, vector<string> &lexArr) {
     int i = 0;
     string string1;
     if (!str.find(',')) {
@@ -150,8 +154,8 @@ string expToStr(string str) {
     }
 }
 
-int main(int argc, char *argv[]) {
-
+//func that returns the lexer we built to the main function
+vector<string> lexer(string filename){
     // we need to check how to reach to the file
     FILE *fp;
     string line;
@@ -171,24 +175,34 @@ int main(int argc, char *argv[]) {
     //varReg
 //    string test = "var roll -> sim(Stam)";
 //    string test = "var roll <- sim(Stam)";
-//    checkReg(test, lexArr);*/
-// todo - in the real program use the argv[1] input.
-    ifstream myfile("fly_with_func.txt");
+//    checkReg(test, lexArr);
+    string test = "while x < 0";
+    checkReg(test, lexArr);*/
+// todo - in the real program use the argv[1] input, which means the file we get from the cmd execute.
+    ifstream myfile(filename);
 //    myfile.open("fly_with_func.txt", ifstream::in);
     if (!myfile.is_open()) {
         throw "Error with the file";
     }
-
     // create lines of input array
     while (getline(myfile, line)){
         //add the lines to the array, with nullptr in the end of every line
         lineArr.push_back(line);
         i++;
     }
-
     //check regex and then push into lexer array
     for (int j=0; j < i; j++) {
         checkReg(lineArr.at(j), lexArr);
     }
+    return lexArr;
+}
+
+void parser(vector<string> comArr) {
+//    while ()
+}
+
+int main(int argc, char *argv[]) {
+    vector<string> vector = lexer("fly_with_func.txt");
     return 0;
 }
+
