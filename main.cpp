@@ -162,7 +162,7 @@ vector<string> lexer(char* argv[]) {
     int i = 0;
 
 // todo - in the real program use the argv[1] input.
-    ifstream myfile("fly_with_func.txt");
+    ifstream myfile(argv[1]);
     if (!myfile) {
         throw "Error with the file";
     }
