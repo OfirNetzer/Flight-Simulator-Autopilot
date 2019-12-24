@@ -10,8 +10,7 @@ using namespace std;
 void createLexer(string line, vector<string> &lexArr);
 void pushStr(string str, vector<string> &lexArr);
 string substring(char, string, int*);
-bool checkWhile(string line);
-string expToStr(string str);
+vector<string> lexer(char* argv[]);
 
 void createLexer(string line, vector<string> &lexArr) {
     int i = 0;
@@ -22,7 +21,6 @@ void createLexer(string line, vector<string> &lexArr) {
     regex varReg("(\\s*[[:alpha:]]+\\s+[_[:alnum:]]+\\s?[->|<-]+\\s?sim[(]+.+[)]+\\s*)");
     regex whileReg("(\\s*while\\s+[_[:alnum:]]+\\s?[<|<=|>|>=|==]?\\s?[_[:alnum:]]\\s*[{])"); //[<|<=|>|>=|==]?[_[:alnum:]]?{?");
     regex funcRegB("(\\s*[_[:alnum:]]+[(]+.+[)]+\\s?[{]{1,1}\\s*)");
-    //todo handle while regex
     //split the funcRegA match by the delimiter '('
     if (regex_match(line, funcRegA)) {
         str = substring('(', line, &i);
@@ -71,8 +69,6 @@ void createLexer(string line, vector<string> &lexArr) {
     } else if (regex_match(line, varReg)) {
         //first add all of the words up to "sim", delimited by whitespace
         size_t sim = line.find("sim(");
-        size_t a = line.find("<-");
-        size_t b = line.find("->");
         while (i < sim) {
             str = substring(' ', line, &i);
             pushStr(str, lexArr);
@@ -160,8 +156,7 @@ void pushStr(string str, vector<string> &lexArr) {
     }
 }
 
-int main(int argc, char *argv[]) {
-
+vector<string> lexer(char* argv[]) {
     string line;
     vector<string> lineArr, lexArr;
     int i = 0;
@@ -184,5 +179,10 @@ int main(int argc, char *argv[]) {
         createLexer(lineArr.at(j), lexArr);
     }
 
+    return lexArr;
+}
+
+int main(int argc, char *argv[]) {
+    vector<string> lexArr = lexer(argv);
     return 0;
 }
