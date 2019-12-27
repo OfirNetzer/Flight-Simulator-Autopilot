@@ -7,10 +7,8 @@
 
 #include "Command.h"
 
-//todo Avichai
 class OpenServerCommand: public Command {
-
+    int execute(vector<string> arr, int ind);
 };
-
 
 #endif //EX3_OPENSERVERCOMMAND_H
