@@ -9,23 +9,22 @@ using namespace std;
 
 void createLexer(string line, vector<string> &lexArr);
 void pushStr(string str, vector<string> &lexArr);
+bool ifOrWhile(string str);
 string substring(char, string, int*);
-string expToStr(string str);
+vector<string> lexer(char* argv[]);
 
 void createLexer(string line, vector<string> &lexArr) {
     int i = 0;
-    string str = "";
-    regex funcRegA("(\\s*[_[:alnum:]]+[(]+.+[)]+)");
-    regex equalRegA("(\\s*[_[:alnum:]]+\\s?=\\s?([0-9]+[.])?[[:alnum:]]+)");
-    regex equalRegB("(\\s*[_[:alnum:]]+\\s+[_[:alnum:]]+\\s?=\\s?([0-9]+[.])?[[:alnum:]]+)");
-    regex varReg("(\\s*[[:alpha:]]+\\s+[_[:alnum:]]+\\s?[->|<-]+\\s?sim[(]+.+[)]+)");
-    regex whileReg("(\\s*while\\s+[_[:alnum:]]+\\s?[<|<=|>|>=|==]?\\s?[_[:alnum:]])"); //[<|<=|>|>=|==]?[_[:alnum:]]?{?");
-    regex funcRegB("(\\s*[_[:alnum:]]+[(]+.+[)]+\\s?[{]{1,1})");
-    //todo handle while regex
+    string str = "", sub = "";
+    regex funcRegA("(\\s*[_[:alnum:]]+[(]+.+[)]+\\s*)");
+    regex equalRegA("(\\s*[_[:alnum:]]+\\s?=(.*))");
+    regex equalRegB("(\\s*[_[:alnum:]]+\\s+[_[:alnum:]]+\\s?=\\s?([0-9]+[.])?[[:alnum:]]+\\s*)");
+    regex varReg("(\\s*[[:alpha:]]+\\s+[_[:alnum:]]+\\s?[->|<-]+\\s?sim[(]+.+[)]+\\s*)");
+    regex funcRegB("(\\s*[_[:alnum:]]+[(]+.+[)]+\\s?[{]{1,1}\\s*)");
     //split the funcRegA match by the delimiter '('
     if (regex_match(line, funcRegA)) {
         str = substring('(', line, &i);
-        lexArr.push_back(str);
+        pushStr(str, lexArr);
         i++;
         str = "";
         str = substring(')', line, &i);
@@ -70,8 +69,6 @@ void createLexer(string line, vector<string> &lexArr) {
     } else if (regex_match(line, varReg)) {
         //first add all of the words up to "sim", delimited by whitespace
         size_t sim = line.find("sim(");
-        size_t a = line.find("<-");
-        size_t b = line.find("->");
         while (i < sim) {
             str = substring(' ', line, &i);
             pushStr(str, lexArr);
@@ -86,49 +83,79 @@ void createLexer(string line, vector<string> &lexArr) {
             i++;
         }
         pushStr(str, lexArr);
-    } else if (regex_match(line, whileReg)) {
-        while (i < line.length()) {
+    } else if (ifOrWhile(line)) {
+        while (i < (line.length()-1)) {
+            //trim leading spaces and tabs if there are any
+            line = std::regex_replace(line, std::regex("^ +"), "");
+            line.erase(std::remove(line.begin(), line.end(), '\t'), line.end());
             str = substring(' ', line, &i);
             pushStr(str, lexArr);
             str = "";
             i++;
         }
+        str = line[i];
+        lexArr.push_back(str);
     } else if (regex_match(line, funcRegB)) {
+        int j=0;
         str = substring('(', line, &i);
         pushStr(str, lexArr);
         i++;
         str = "";
         str = substring(')', line, &i);
-        pushStr(str, lexArr);
-        str = line[++i];
-        pushStr(str, lexArr);
-    } else { //it's '{'
+        //check for spaces
+        size_t space = str.find(' ');
+        if (space != string::npos) {
+            for (j=0;str[j] != ' ';j++) {
+                sub += str[j];
+            }
+            pushStr(sub, lexArr);
+            sub = str[++j];
+            pushStr(sub, lexArr);
+        } else { //if there aren't any spaces
+            pushStr(str, lexArr);
+            str = line[++i];
+            pushStr(str, lexArr);
+        }
+    } else { //it's '}'
         pushStr(line, lexArr);
     }
 }
 
+bool ifOrWhile(string str) {
+    string temp;
+    //trim leading spaces and tabs if there are any
+    str = std::regex_replace(str, std::regex("^ +"), "");
+    str.erase(std::remove(str.begin(), str.end(), '\t'), str.end());
+    for (int i=0; str[i] != ' '; i++) {
+        temp += str[i];
+    }
+    return temp == "while" || temp == "if";
+}
+
 string substring(char delim, string line, int* i) {
-    string str;
+    string stri = "";
     while (line[*i] != delim) {
-        str += line[*i];
+        stri += line[*i];
         (*i)++;
     }
-    return str;
+    return stri;
 }
 
 //function that checks if what's inside the () is a regular string ("") or expression (no "")
 void pushStr(string str, vector<string> &lexArr) {
     int i = 0, len = str.length();
     string string1;
-    size_t found = str.find(',');
-    //trim leading spaces if there are any because of indentation
-    str = regex_replace(str, std::regex("^ +"), "");
+    char delim = ',';
+    size_t comma = str.find(',');
+    //trim leading spaces and tabs if there are any
+    str = std::regex_replace(str, std::regex("^ +"), "");
+    str.erase(std::remove(str.begin(), str.end(), '\t'), str.end());
     //if no ',' was found in the string (meaning it's only one word)
-    if (found == string::npos) {
+    if (comma == string::npos) {
         lexArr.push_back(str);
     } else { // if there's more than one word, check each one like above
         while (i < len) {
-            while ((str[i] != ',') && (i<str.length())) {
+            while ((str[i] != delim) && (i < str.length())) {
                 string1 += str[i];
                 i++;
             }
@@ -140,51 +167,13 @@ void pushStr(string str, vector<string> &lexArr) {
     }
 }
 
-/*string expToStr(string str) {
-    Interpreter* inter = new Interpreter();
-    Expression* exp = nullptr;
-    try {
-        exp = inter->interpret(str);
-        string strExp = to_string(exp->calculate());
-        delete inter;
-        delete exp;
-        return strExp;
-    } catch (const char* e) {
-        if (exp != nullptr) {
-            delete exp;
-        }
-        if (inter != nullptr) {
-            delete inter;
-        }
-        std::cout << e << std::endl;
-        return "error in function expToStr";
-    }
-}*/
-
-int main(int argc, char *argv[]) {
-
-    // we need to check how to reach to the file
-    FILE *fp;
+vector<string> lexer(char* argv[]) {
     string line;
     vector<string> lineArr, lexArr;
     int i = 0;
-    //Regex Debug://    myfile.open("fly_with_func.txt", ifstream::in);
-/*    DEBUG!!!
-    funcReg
-    string test = "ofir(\"stam\" , chief)";
-    equalRegA
-    string test = "ofir = 9.2";
-    string test = "ofir = cool";
-    string test = "ofir = 1";
-    equalRegB
-    string test = "ofir var0 = Stam";
-    string test = "ofir var0 = Stam";
-    varReg
-    string test = "var roll -> sim(Stam)";
-    string test = "var roll <- sim(Stam)";
-    createLexer(test, lexArr);*/
+
 // todo - in the real program use the argv[1] input.
-    ifstream myfile("fly_with_func.txt");
+    ifstream myfile(argv[1]);
     if (!myfile) {
         throw "Error with the file";
     }
@@ -201,8 +190,15 @@ int main(int argc, char *argv[]) {
         createLexer(lineArr.at(j), lexArr);
     }
 
+    ///test
     for (string s : lexArr) {
         cout << s << endl;
     }
+
+    return lexArr;
+}
+
+int main(int argc, char *argv[]) {
+    vector<string> lexArr = lexer(argv);
     return 0;
 }
