@@ -5,12 +5,8 @@
 #include <iostream>
 #include <regex>
 #include <string>
-#include <fstream>
 #include "ex1.h"
-#include "Command.h"
-#include "OpenServerCommand.h"
-#include "connectCommand.h"
-
+#include "Substring.h"
 #include "Lexer.h"
 
 Lexer::Lexer() = default;
@@ -22,6 +18,7 @@ Lexer::Lexer() = default;
 void Lexer::createLexer(string line, vector<string> &lexArr) {
     int i = 0;
     string str, sub;
+    auto substr = new Substring();
     regex funcRegA("(\\s*[_[:alnum:]]+[(]+.+[)]+\\s*)");
     regex equalRegA("(\\s*[_[:alnum:]]+\\s?=(.*))");
     regex equalRegB("(\\s*[_[:alnum:]]+\\s+[_[:alnum:]]+\\s?=\\s?([0-9]+[.])?[[:alnum:]]+\\s*)");
@@ -29,16 +26,16 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
     regex funcRegB("(\\s*[_[:alnum:]]+[(]+.+[)]+\\s?[{]{1,1}\\s*)");
 
     if (regex_match(line, funcRegA)) { //e.g print(rpm)
-        str = substring('(', line, &i);
+        str = substr->create('(', line, &i);
         pushStr(str, lexArr);
         i++;
         str = "";
-        str = substring(')', line, &i);
+        str = substr->create(')', line, &i);
         //we can't just add str now to lexArr because we don't know:
         // a. how many words it contains. b. if it's an expression or a string. That's why we use pushStr
         pushStr(str, lexArr);
     } else if (regex_match(line, equalRegA)) { //e.g. primer = 3
-        str = substring('=', line, &i);
+        str = substr->create('=', line, &i);
         //remove spaces from str
         str.erase(remove(str.begin(), str.end(), ' '), str.end());
         pushStr(str, lexArr);
@@ -52,11 +49,11 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
         str.erase(remove(str.begin(), str.end(), ' '), str.end());
         pushStr(str, lexArr);
     } else if (regex_match(line, equalRegB)) { // e.g. var h0 = heading
-        str = substring(' ', line, &i);
+        str = substr->create(' ', line, &i);
         pushStr(str, lexArr);
         i++;
         str = "";
-        str = substring('=', line, &i);
+        str = substr->create('=', line, &i);
         //remove spaces from str
         str.erase(remove(str.begin(), str.end(), ' '), str.end());
         pushStr(str, lexArr);
@@ -73,7 +70,7 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
         //first add all of the words up to "sim", delimited by whitespace
         size_t sim = line.find("sim(");
         while (i < sim) {
-            str = substring(' ', line, &i);
+            str = substr->create(' ', line, &i);
             pushStr(str, lexArr);
             str = "";
             if (line[i] == ' ') {
@@ -81,18 +78,18 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
             }
         }
         //then add "sim(....)"
-        str = substring('(', line, &i);
+        str = substr->create('(', line, &i);
         pushStr(str, lexArr);
         str = "";
         i++;
-        str = substring(')', line, &i);
+        str = substr->create(')', line, &i);
         pushStr(str, lexArr);
     } else if (ifOrWhile(line)) { //line is if or while
         while (i < (line.length()-1)) {
             //trim leading spaces and tabs if there are any
             line = std::regex_replace(line, std::regex("^ +"), "");
             line.erase(std::remove(line.begin(), line.end(), '\t'), line.end());
-            str = substring(' ', line, &i);
+            str = substr->create(' ', line, &i);
             pushStr(str, lexArr);
             str = "";
             i++;
@@ -101,11 +98,11 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
         lexArr.push_back(str);
     } else if (regex_match(line, funcRegB)) { // e.g. print(...) {
         int j=0;
-        str = substring('(', line, &i);
+        str = substr->create('(', line, &i);
         pushStr(str, lexArr);
         i++;
         str = "";
-        str = substring(')', line, &i);
+        str = substr->create(')', line, &i);
 
         //check for spaces
         size_t space = str.find(' ');
@@ -135,15 +132,6 @@ bool Lexer::ifOrWhile(string str) {
         temp += str[i];
     }
     return temp == "while" || temp == "if";
-}
-
-string Lexer::substring(char delim, string line, int* i) {
-    string stri;
-    while (line[*i] != delim) {
-        stri += line[*i];
-        (*i)++;
-    }
-    return stri;
 }
 
 //function that checks if what's inside the () is a regular string ("") or expression (no "")

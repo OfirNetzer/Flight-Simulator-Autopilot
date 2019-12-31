@@ -72,8 +72,8 @@ int connectCommand::execute(vector<string> arr) {
 
     close(client_socketfd);
 
-    thread thread1(sendToSim, buffer);
-    thread1.detach();
+//    thread thread1(sendToSim, buffer);
+//    thread1.detach();
 
     return 0;
 }

@@ -22,7 +22,6 @@ public:
     void createLexer(string line, vector<string> &lexArr);
     void pushStr(string str, vector<string> &lexArr);
     bool ifOrWhile(string str);
-    string substring(char, string, int*);
     vector<string> mainLex(char **file);
 };
 

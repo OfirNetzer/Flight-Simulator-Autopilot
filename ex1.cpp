@@ -124,7 +124,7 @@ void Interpreter::inf2post(string s) {
     unsigned int i = 0;
     string tmp = "";
     int flag = 0 ;
-    // tells me if part of the string was the substring we accept. if it doesn't, we throw error.
+    // tells me if part of the string was the create we accept. if it doesn't, we throw error.
     bool been = false;
     while (i < s.length()){
         // number

@@ -105,6 +105,9 @@
 		<Unit filename="/home/avichai/CLionProjects/ex3a/OpenServerCommand.h">
 			<Option target="ex3"/>
 		</Unit>
+		<Unit filename="/home/avichai/CLionProjects/ex3a/Substring.h">
+			<Option target="ex3"/>
+		</Unit>
 		<Unit filename="/home/avichai/CLionProjects/ex3a/connectCommand.cpp">
 			<Option target="ex3"/>
 		</Unit>
