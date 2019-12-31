@@ -3,6 +3,7 @@
 //
 
 #include "connectCommand.h"
+#include "Queue.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -13,18 +14,47 @@
 #include <vector>
 #include <thread>
 
-#define PORT 8081
+#define PORT 5402
 
 using namespace std;
 
 connectCommand::connectCommand() = default;
 
-void sendToSim(char buffer[]) {
+char* strToChar(string s) {
+    int n = s.length();
+
+    // declaring character array
+    char char_array[n + 1];
+
+    // copying the contents of the
+    // string to char array
+    strcpy(char_array, s.c_str());
+}
+
+void sendToSim(int client_socketfd) {
+    queue<string> q = Queue::getInstance()->getQueue();
+    while () { //todo instead of while true do while flag is true. loop is ended when flag=false, which happens in the end of main
+        //todo the flag is singleton
+        char buffer[1024] = {0};
+        int valread = read(client_socketfd, buffer, 1024);
+        if (valread < 1){
+            cerr << "Cannot read values from the computer";
+        }
+
+        string str = q.front();
+        int is_sent = send(client_socketfd, hello, strlen(hello), 0);
+        if (is_sent == -1) {
+            std::cout << "Error sending message" << std::endl;
+        } else {
+            std::cout << "Hello message sent to server" << std::endl;
+        }
+    }
+    close(client_socketfd);
 
     //cout << "set " + c.sim + c.value << endl;
 }
 
-int connectCommand::execute(vector<string> arr, int i) {
+int connectCommand::execute(vector<string> arr, int ind) {
     //create socket
     int client_socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socketfd == -1) {
@@ -38,8 +68,8 @@ int connectCommand::execute(vector<string> arr, int i) {
     //todo handle warning in the next row, might fix the problem
     sockaddr_in address{}; //in means IP4
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr("127.0.0.1"); //give me any IP allocated for my machine
-    address.sin_port = htons(PORT);
+    address.sin_addr.s_addr = inet_addr("127.0.0.1"); //give me any IP allocated for my machine //todo get whatever ip is given
+    address.sin_port = htons(PORT); //todo if port is given as an expression such as 5408-6 we should be able to intrepret it to 5402
     //we need to convert our number to a number that the network understands.
 
     int is_connect = connect(client_socketfd, (struct sockaddr *)&address, sizeof(address));
@@ -60,20 +90,8 @@ int connectCommand::execute(vector<string> arr, int i) {
         std::cout << "Hello message sent to server" << std::endl;
     }*/
 
-    char buffer[1024] = {0};
-    int valread = read(client_socketfd, buffer, 1024);
-    if (valread < 1){
-        cerr << "Cannot read values from the computer";
-        return -3;
-    }
+    thread thread2(sendToSim, client_socketfd);
+    thread2.detach();
 
-/*    ///test
-    std::cout << buffer << std::endl;*/
-
-    close(client_socketfd);
-
-//    thread thread1(sendToSim, buffer);
-//    thread1.detach();
-
-    return 0;
+    return 3;
 }

@@ -3,7 +3,7 @@
 //
 
 #ifndef EX3_COMMAND_H
-#define EX3_COMMAND_H
+#define EX3_COMMAND_
 #pragma once
 
 /*#include <string>
@@ -15,6 +15,5 @@
 class Command {
 public:
     virtual int execute(vector<string> arr, int ind) = 0;
-    virtual ~Command(){}
 };
 #endif //EX3_COMMAND_H
