@@ -24,7 +24,7 @@ void sendToSim(char buffer[]) {
     //cout << "set " + c.sim + c.value << endl;
 }
 
-int connectCommand::execute(vector<string> arr) {
+int connectCommand::execute(vector<string> arr, int i) {
     //create socket
     int client_socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socketfd == -1) {

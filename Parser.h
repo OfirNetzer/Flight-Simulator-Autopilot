@@ -5,6 +5,7 @@
 #ifndef EX3_PARSER_H
 #define EX3_PARSER_H
 
+using namespace std;
 #include "symTable.h"
 #include <vector>
 #include <unordered_map>
@@ -13,7 +14,6 @@
 #include "OpenServerCommand.h"
 #include "DefineVarCommand.h"
 #include "connectCommand.h"
-CommandDB* CommandDB:: instance = nullptr;
 
 class Parser {
 //    unordered_map<string, Command*> key2Command;

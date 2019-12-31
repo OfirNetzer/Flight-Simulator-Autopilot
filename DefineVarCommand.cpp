@@ -13,11 +13,7 @@ using namespace std;
  * in this func i'll decide what kind of var is it (var -> || var = )
  * this way i'll treat the vars i have the right way
  * */
-int DefineVarCommand::execute(vector<string> myLex) {
-//    for (vector<string>::iterator it = myLex.begin()  ; it != myLex.end() ; ++it) {
-//
-//    }
-    unsigned int i = 0;
+int DefineVarCommand::execute(vector<string> myLex, int i) {
     // if the vector starts with var, it's var -> type
     if (!(myLex.at(i).compare("var"))) {
         string name = myLex.at(i+1);

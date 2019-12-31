@@ -35,7 +35,7 @@ void receiveFromSim(char buffer[]) {
     }
 }
 
-int OpenServerCommand::execute(vector<string> arr) {
+int OpenServerCommand::execute(vector<string> arr, int i) {
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {

@@ -5,7 +5,7 @@
 #ifndef EX3_COMMANDDB_H
 #define EX3_COMMANDDB_H
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 #include "Command.h"
@@ -28,7 +28,6 @@ public:
         }
         return instance;
     }
-
     void addCommand(string varName, Command* command);
 
     Command* getCommand(string CommandName);

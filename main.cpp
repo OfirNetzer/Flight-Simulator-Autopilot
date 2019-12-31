@@ -2,7 +2,10 @@
 #include "ex1.h"
 #include "Lexer.h"
 #include "Parser.h"
+#include "CommandDB.h"
 
+CommandDB* CommandDB:: instance = nullptr;
+symTable* symTable:: instance = nullptr;
 
 using namespace std;
 
@@ -22,6 +25,7 @@ int main(int argc, char *argv[]) {
     Lexer* lexer = new Lexer();
     vector<string> lexArr = lexer->mainLex(argv);
     Parser* parser = new Parser();
+    parser->run(lexArr);
 //    connectCommand* co = new connectCommand();
 //    co->execute(lexArr);
 //    OpenServerCommand* op = new OpenServerCommand();
