@@ -2,8 +2,8 @@
 // Created by avichai on 27/12/2019.
 //
 
-#ifndef EX3A_OPENSERVERCOMMAND_H
-#define EX3A_OPENSERVERCOMMAND_H
+#ifndef EX3A_CONNECTCOMMAND_H
+#define EX3A_CONNECTCOMMAND_H
 
 #include <vector>
 #include <string>
@@ -12,11 +12,11 @@
 
 using namespace std;
 
-class OpenServerCommand : public Command {
+class connectCommand : public Command {
 public:
-    OpenServerCommand();
+    connectCommand();
     int execute(vector<string> arr) override;
 };
 
 
-#endif //EX3A_OPENSERVERCOMMAND_H
+#endif //EX3A_CONNECTCOMMAND_H

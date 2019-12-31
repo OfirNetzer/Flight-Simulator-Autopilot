@@ -3,11 +3,6 @@
 //
 
 #include "ex1.h"
-//
-// Created by ofirn93 on 18/11/2019.
-//
-
-#include "ex1.h"
 #include <iostream>
 #include <string>
 #include <stack>
@@ -16,7 +11,7 @@
 #include <regex>
 #include <map>
 #include <cstring>
-#include "Expression.h"
+//#include "Expression.h"
 
 using namespace std;
 
