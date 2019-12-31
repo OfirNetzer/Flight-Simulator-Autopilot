@@ -5,7 +5,7 @@
 #ifndef EX3_COMMANDDB_H
 #define EX3_COMMANDDB_H
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 #include "Command.h"
@@ -18,16 +18,19 @@ using namespace std;
  */
 class CommandDB {
     // db of the commands and their names.
-    map<string, Command*> commandTable;
+    static CommandDB* instance;
+    unordered_map<string, Command*> commandTable;
 
 public:
-    // getCommand
-    const map<string, Command*> &getCommandTable() const;
-
+    static CommandDB* getInstance() {
+        if (instance == nullptr) {
+            instance = new CommandDB();
+        }
+        return instance;
+    }
     void addCommand(string varName, Command* command);
 
-    Command* getCommand(const string &CommandName);
-
+    Command* getCommand(string CommandName);
 
 };
 
