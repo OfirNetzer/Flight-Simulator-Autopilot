@@ -15,5 +15,6 @@
 class Command {
 public:
     virtual int execute(vector<string> arr, int ind) = 0;
+    virtual ~Command() = default;
 };
 #endif //EX3_COMMAND_H

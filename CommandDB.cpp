@@ -2,10 +2,6 @@
 // Created by ofirn93 on 31/12/2019.
 //
 
-//
-// Created by ofirn93 on 31/12/2019.
-//
-
 #include "CommandDB.h"
 
 void CommandDB::addCommand(string varName, Command *command) {
