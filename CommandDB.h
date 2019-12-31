@@ -18,7 +18,14 @@ using namespace std;
  */
 class CommandDB {
     // db of the commands and their names.
-    map<string, Command*> commandTable;
+    static CommandDB* instance;
+    static symTable* getInstance() {
+        if (instance == nullptr) {
+            instance = new CommandDB();
+        }
+        return instance;
+    }
+    unordered_map<string, Command*> commandTable;
 
 public:
     // getCommand
