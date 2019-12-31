@@ -13,7 +13,7 @@ using namespace std;
  * in this func i'll decide what kind of var is it (var -> || var = )
  * this way i'll treat the vars i have the right way
  * */
-int DefineVarCommand::execute(vector<string> myLex) {
+int DefineVarCommand::execute(vector<string> myLex, int ind) {
 //    for (vector<string>::iterator it = myLex.begin()  ; it != myLex.end() ; ++it) {
 //
 //    }
@@ -27,7 +27,7 @@ int DefineVarCommand::execute(vector<string> myLex) {
         return 5;
     }
     // if it's not starting with "var" it should be already exist
-    if (((myLex.at(i).compare("var") != 0 ) && (myLex.at(i+1).compare("=") == 0) {
+    if ((myLex.at(i).compare("var") != 0 ) && (myLex.at(i+1).compare("=") == 0)) {
         string name = myLex.at(i);
         string strVal = myLex.at(i+2);
         double val = stod(strVal);

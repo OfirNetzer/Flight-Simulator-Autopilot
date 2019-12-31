@@ -15,7 +15,7 @@ using namespace std;
 class OpenServerCommand : public Command {
 public:
     OpenServerCommand();
-    int execute(vector<string> arr) override;
+    int execute(vector<string> arr, int ind) override;
 };
 
 

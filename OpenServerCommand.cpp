@@ -13,13 +13,13 @@
 #include <vector>
 #include <thread>
 
-#define PORT 8081
+#define PORT 5400
 
 using namespace std;
 
 OpenServerCommand::OpenServerCommand() = default;
 
-void receiveFromSim(char buffer[]) {
+void receiveFromSim(int client_socket) {
     auto substr = new Substring();
 
     //now buffer holds the values sent from the simulator
@@ -30,12 +30,14 @@ void receiveFromSim(char buffer[]) {
 
     for (int i=0; i<36; i++) {
         //todo check that sending buffer as a string (while it's a char[]) doesn't cause any bugs
-        string str = substr->create(',', buffer, &i);
+        //string str = substr->create(',', buffer, &i);
         //symTable::getInstance()->smap.at(loc[i])->getVar(name, val).val = str;
     }
+    delete substr;
+    close(client_socket);
 }
 
-int OpenServerCommand::execute(vector<string> arr) {
+int OpenServerCommand::execute(vector<string> arr, int ind) {
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -46,10 +48,10 @@ int OpenServerCommand::execute(vector<string> arr) {
 
     //bind socket to IP address
     // we first need to create the sockaddr obj.
-    sockaddr_in address{}; //in means IP4
+    sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY; //give me any IP allocated for my machine
-    address.sin_port = htons(PORT);
+    address.sin_port = htons(PORT/*stoi(arr.at(ind+1))*/);
     //we need to convert our number to a number that the network understands.
 
     //the actual bind command
@@ -62,40 +64,23 @@ int OpenServerCommand::execute(vector<string> arr) {
     if (listen(socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
         cerr<<"Error during listening command"<<endl;
         return -3;
-    } else{
+    } /*else{
         cout<<"Server is now listening ..."<<endl;
-    }
+    }*/
 
     // accepting a client
-    int client_socket = accept(socketfd, (struct sockaddr*)&address, (socklen_t*)&address);
+    socklen_t addrlen = sizeof(sockaddr_in);
+    int client_socket = accept(socketfd, (struct sockaddr*)&address, &addrlen);
 
     if (client_socket == -1) {
         cerr<<"Error accepting client"<<endl;
         return -4;
     }
 
-    //reading from client
-    char buffer[1024] = {0};
-    int valread = read(client_socket, buffer, 1024);
-    if (valread < 1){
-        cerr << "Cannot read values from simulator";
-        return -5;
-    }
-
-/*    ///test
-    cout<<buffer<<endl;
-
-    //writing back to client
-    char hello[] = "Hello, I can hear you! \n";
-    send(client_socket , hello , strlen(hello) , 0 );
-    cout<<"Hello message sent\n"<<endl;
-
-     ///end test*/
-
     close(socketfd); //closing the listening socket
 
-    //thread thread1(receiveFromSim, buffer);
-    //todo check if join/detach should be written here
+    thread thread2(receiveFromSim, client_socket); //todo maybe thread should be singleton
+    //todo check if join/detach should be written here and if not then where
 
-    return 0;
+    return 2;
 }

@@ -3,6 +3,7 @@
 //
 using namespace std;
 #include "symTable.h"
+symTable* symTable::instance = nullptr;
 
 void symTable::addVar(string n, string s, string d, double v) {
     Var* var = new Var(n,s,d,v);
@@ -11,6 +12,7 @@ void symTable::addVar(string n, string s, string d, double v) {
     if (d.compare("=") != 0) {
         this->siMap.insert({s,var});
     }
+    //todo maybe delet evar
 }
 
 void symTable::getVar(string n, double v) {

@@ -14,6 +14,7 @@ Lexer::Lexer() = default;
 //todo handle a situation in which I get an expression without spaces, such as x<3
 //todo handle a situation in which I get parnthesis inside the () of print/func/sleep etc.
 //todo handle += and -= that can come instead of =
+//todo change in ex1.cpp that -x will be valid (meanning without '(' after the '-' )
 
 void Lexer::createLexer(string line, vector<string> &lexArr) {
     int i = 0;
@@ -160,7 +161,7 @@ void Lexer::pushStr(string str, vector<string> &lexArr) {
     }
 }
 
-vector<string> Lexer::mainLex(char **file) {
+vector<string> Lexer::mainLex(char *file[]) {
     string line;
     vector<string> lineArr, lexArr;
     int i = 0;

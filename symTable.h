@@ -35,8 +35,6 @@ public:
     }
     void addVar(string n, string s, string d, double v);
     void getVar(string n, double v);
-
-
 };
 
 #endif //EX3_SYMTABLE_H

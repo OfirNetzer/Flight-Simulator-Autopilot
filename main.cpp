@@ -1,29 +1,21 @@
 #include <string>
 #include "ex1.h"
 #include "Lexer.h"
+#include "Queue.h"
 
 using namespace std;
-
-/*
-unordered_map<string, Command> createMap(vector<string> lexArr) {
-    unordered_map<string, Command> map;
-    for (string s : lexArr) {
-        if (s == "openDataServer") {
-            map.insert(s, new OpenServerCommand());
-        } else if (s == "connectControlClient") {
-            map.insert(s, )
-        }
-    }
-}*/
 
 int main(int argc, char *argv[]) {
     Lexer* lexer = new Lexer();
     vector<string> lexArr = lexer->mainLex(argv);
-//    connectCommand* co = new connectCommand();
-//    co->execute(lexArr);
-    OpenServerCommand* op = new OpenServerCommand();
-    op->execute(lexArr);
+    int i = 0;
+    ///queue test
+    connectCommand* co = new connectCommand();
+    co->execute(lexArr, 0);
+//    OpenServerCommand* op = new OpenServerCommand();
+//    op->execute(lexArr, 0); //todo change 0 to index
+
     //todo join thread1 (client) and thread2 (server) at the end. Probably inside the parser
-//    unordered_map<string, Command> map = createMap(lexArr);
+    delete lexer;
     return 0;
 }
