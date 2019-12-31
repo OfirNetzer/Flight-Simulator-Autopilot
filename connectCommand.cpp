@@ -4,6 +4,7 @@
 
 #include "connectCommand.h"
 #include "Queue.h"
+#include "Flag.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -20,33 +21,19 @@ using namespace std;
 
 connectCommand::connectCommand() = default;
 
-char* strToChar(string s) {
-    int n = s.length();
-
-    // declaring character array
-    char char_array[n + 1];
-
-    // copying the contents of the
-    // string to char array
-    strcpy(char_array, s.c_str());
-}
-
 void sendToSim(int client_socketfd) {
     queue<string> q = Queue::getInstance()->getQueue();
-    while () { //todo instead of while true do while flag is true. loop is ended when flag=false, which happens in the end of main
-        //todo the flag is singleton
-        char buffer[1024] = {0};
-        int valread = read(client_socketfd, buffer, 1024);
-        if (valread < 1){
-            cerr << "Cannot read values from the computer";
-        }
+    bool flag = Flag::getInstance()->isThreadFlag();
+    while (flag) {
+        while (!q.empty()) {
+            string str = q.front();
+            int is_sent = send(client_socketfd, str.c_str(), str.length(), 0);
+            if (is_sent == -1) {
+                std::cout << "Error sending message" << std::endl;
+            }/* else {
+                std::cout << "Hello message sent to server" << std::endl;
+            }*/
 
-        string str = q.front();
-        int is_sent = send(client_socketfd, hello, strlen(hello), 0);
-        if (is_sent == -1) {
-            std::cout << "Error sending message" << std::endl;
-        } else {
-            std::cout << "Hello message sent to server" << std::endl;
         }
     }
     close(client_socketfd);

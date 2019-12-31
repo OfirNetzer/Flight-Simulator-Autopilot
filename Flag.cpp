@@ -3,3 +3,4 @@
 //
 
 #include "Flag.h"
+Flag* Flag::instance = nullptr;
