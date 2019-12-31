@@ -3,6 +3,7 @@
 //
 
 #include "OpenServerCommand.h"
+#include "Substring.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -19,6 +20,7 @@ using namespace std;
 OpenServerCommand::OpenServerCommand() = default;
 
 void receiveFromSim(char buffer[]) {
+    auto substr = new Substring();
 
     //now buffer holds the values sent from the simulator
     //I need to go over the first 36 values, delimited by ',' , and update the smap accordingly
@@ -26,9 +28,11 @@ void receiveFromSim(char buffer[]) {
     //the i'th value in the buffer will update the loc[i]'th key's value in the map
     //updating the value will actually be updating the "value" member in the key's value which is a Var*
 
-/*    for (int i=0; i<36; i++) {
-        symTable::getInstance()->smap.at(loc[i])->getVar(name, val).val = buffer[i];
-    }*/
+    for (int i=0; i<36; i++) {
+        //todo check that sending buffer as a string (while it's a char[]) doesn't cause any bugs
+        string str = substr->create(',', buffer, &i);
+        //symTable::getInstance()->smap.at(loc[i])->getVar(name, val).val = str;
+    }
 }
 
 int OpenServerCommand::execute(vector<string> arr) {
@@ -90,7 +94,7 @@ int OpenServerCommand::execute(vector<string> arr) {
 
     close(socketfd); //closing the listening socket
 
-    thread thread1(receiveFromSim, buffer);
+    //thread thread1(receiveFromSim, buffer);
     //todo check if join/detach should be written here
 
     return 0;
