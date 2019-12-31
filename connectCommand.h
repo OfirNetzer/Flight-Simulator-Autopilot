@@ -7,11 +7,15 @@
 
 #include <vector>
 #include <string>
+#include "Command.h"
+
 
 using namespace std;
 
-class connectCommand {
-    int execute(vector<string> arr, int ind);
+class connectCommand : public Command {
+public:
+    connectCommand();
+    int execute(vector<string> arr) override;
 };
 
 

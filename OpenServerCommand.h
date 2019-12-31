@@ -1,14 +1,22 @@
 //
-// Created by ofirn93 on 23/12/2019.
+// Created by avichai on 27/12/2019.
 //
 
-#ifndef EX3_OPENSERVERCOMMAND_H
-#define EX3_OPENSERVERCOMMAND_H
+#ifndef EX3A_OPENSERVERCOMMAND_H
+#define EX3A_OPENSERVERCOMMAND_H
 
+#include <vector>
+#include <string>
 #include "Command.h"
 
-class OpenServerCommand: public Command {
-    int execute(vector<string> arr, int ind);
+
+using namespace std;
+
+class OpenServerCommand : public Command {
+public:
+    OpenServerCommand();
+    int execute(vector<string> arr) override;
 };
 
-#endif //EX3_OPENSERVERCOMMAND_H
+
+#endif //EX3A_OPENSERVERCOMMAND_H
