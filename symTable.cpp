@@ -3,7 +3,7 @@
 //
 using namespace std;
 #include "symTable.h"
-symTable* symTable::instance = nullptr;
+
 
 void symTable::addVar(string n, string s, string d, double v) {
     Var* var = new Var(n,s,d,v);

@@ -30,6 +30,8 @@ public:
     }
     void addCommand(string varName, Command* command);
 
+    Command* getCommand(string CommandName);
+
 };
 
 
