@@ -9,6 +9,7 @@
 #include <vector>
 #include <unordered_map>
 #include "Command.h"
+#include "CommandDB.h"
 
 
 class Parser {
