@@ -6,17 +6,14 @@
 #define EX3_COMMAND_H
 #pragma once
 
-#include <string>
-#include <vector>
+/*#include <string>
+#include <vector>*/
 #include "ex1.h"
 
+//using namespace std;
 
-
-using namespace std;
-
-class Command{
+class Command {
 public:
-    virtual int execute(vector<string> arr, int ind = 0);
-
+    virtual int execute(vector<string> arr) = 0;
 };
 #endif //EX3_COMMAND_H
