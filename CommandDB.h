@@ -19,22 +19,19 @@ using namespace std;
 class CommandDB {
     // db of the commands and their names.
     static CommandDB* instance;
-    static symTable* getInstance() {
+    unordered_map<string, Command*> commandTable;
+
+public:
+    static CommandDB* getInstance() {
         if (instance == nullptr) {
             instance = new CommandDB();
         }
         return instance;
     }
-    unordered_map<string, Command*> commandTable;
-
-public:
-    // getCommand
-    const map<string, Command*> &getCommandTable() const;
 
     void addCommand(string varName, Command* command);
 
-    Command* getCommand(const string &CommandName);
-
+    Command* getCommand(string CommandName);
 
 };
 

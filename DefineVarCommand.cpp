@@ -27,7 +27,7 @@ int DefineVarCommand::execute(vector<string> myLex) {
         return 5;
     }
     // if it's not starting with "var" it should be already exist
-    if (((myLex.at(i).compare("var") != 0 ) && (myLex.at(i+1).compare("=") == 0) {
+    if (((myLex.at(i).compare("var") != 0 ) && (myLex.at(i+1).compare("=") == 0))) {
         string name = myLex.at(i);
         string strVal = myLex.at(i+2);
         double val = stod(strVal);
