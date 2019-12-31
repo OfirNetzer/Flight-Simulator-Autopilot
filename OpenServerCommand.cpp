@@ -5,6 +5,8 @@
 
 #include "OpenServerCommand.h"
 #include "Substring.h"
+#include "Flag.h"
+#include "symTable.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -20,6 +22,25 @@ using namespace std;
 
 OpenServerCommand::OpenServerCommand() = default;
 
+void OpenServerCommand::createLoc() {
+    this->loc[0] = "instrumentation/airspeed-indicator/indicated-speed-kt";
+    this->loc[1] = "sim/time/warp";
+    this->loc[2] = "controls/switches/magnetos";
+    this->loc[3] = "/instrumentation/heading-indicator/offset-deg";
+    this->loc[4] = "instrumentation/altimeter/indicated-altitude-ft";
+    this->loc[5] = "instrumentation/altimeter/pressure-alt-ft";
+    this->loc[6] = "instrumentation/attitude-indicator/indicated-pitch-deg";
+    this->loc[7] = "instrumentation/attitude-indicator/indicated-roll-deg";
+    this->loc[8] = "instrumentation/attitude-indicator/internal-pitch-deg";
+    this->loc[9] = "instrumentation/attitude-indicator/internal-roll-deg";
+    this->loc[10] = "instrumentation/encoder/indicated-altitude-ft";
+    this->loc[11] = "instrumentation/gps/indicated-ground-speed-kt";
+    this->loc[12] = "instrumentation/gps/indicated-vertical-speed";
+    this->loc[13] = "instrumentation/heading-indicator/indicated-heading-deg";
+    this->loc[14] = "instrumentation/magnetic-compass/indicated-heading-deg";
+    this->loc[15] = "instrumentation/slip-skid-ball/indicated-slip-skid";
+}
+
 void receiveFromSim(int client_socket) {
     auto substr = new Substring();
 
@@ -28,11 +49,21 @@ void receiveFromSim(int client_socket) {
     //This will be done in the following manner:
     //the i'th value in the buffer will update the loc[i]'th key's value in the map
     //updating the value will actually be updating the "value" member in the key's value which is a Var*
-
-    for (int i=0; i<36; i++) {
-        //todo check that sending buffer as a string (while it's a char[]) doesn't cause any bugs
-        //string str = substr->create(',', buffer, &i);
-        //symTable::getInstance()->smap.at(loc[i])->getVar(name, val).val = str;
+    while(Flag::getInstance()->threadFlag) {
+        //reading from client
+        char buffer[1024] = {0};
+        int valread = read( client_socket , buffer, 1024);
+        if (valread < 1) {
+            cerr << "Error while reading from simulator" << endl;
+        }
+        string buf(buffer);
+        int i=0, count=0;
+        while (buf[i] != '\n') {
+            string str = substr->create(',', buf, &i);
+            symTable::getInstance()->getVar(loc[count], buf);
+            count++;
+            i++;
+        }
     }
     delete substr;
     close(client_socket);
@@ -80,6 +111,7 @@ int OpenServerCommand::execute(vector<string> arr, int ind) {
 
     close(socketfd); //closing the listening socket
 
+    createLoc();
     thread thread2(receiveFromSim, client_socket); //todo maybe thread should be singleton
     //todo check if join/detach should be written here and if not then where
 

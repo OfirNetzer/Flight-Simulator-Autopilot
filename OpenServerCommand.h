@@ -13,9 +13,11 @@
 using namespace std;
 
 class OpenServerCommand : public Command {
+    string loc[36];
 public:
     OpenServerCommand();
     int execute(vector<string> arr, int ind) override;
+    void createLoc();
 };
 
 

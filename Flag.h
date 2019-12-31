@@ -9,17 +9,13 @@
 class Flag {
 private:
     static Flag* instance;
-    bool threadFlag = true;
 public:
+    bool threadFlag = true;
     static Flag* getInstance() {
         if (instance == nullptr) {
             instance = new Flag();
         }
         return instance;
-    }
-
-    bool isThreadFlag() const {
-        return threadFlag;
     }
 };
 

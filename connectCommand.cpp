@@ -24,22 +24,17 @@ connectCommand::connectCommand() = default;
 
 void sendToSim(int client_socketfd) {
     queue<string> q = Queue::getInstance()->getQueue();
-    bool flag = Flag::getInstance()->isThreadFlag();
-    while (flag) {
+    while (Flag::getInstance()->threadFlag) {
         while (!q.empty()) {
             string str = q.front();
             int is_sent = send(client_socketfd, str.c_str(), str.length(), 0);
             if (is_sent == -1) {
                 std::cout << "Error sending message" << std::endl;
-            }/* else {
-                std::cout << "Hello message sent to server" << std::endl;
-            }*/
-
+            }
+            q.pop();
         }
     }
     close(client_socketfd);
-
-    //cout << "set " + c.sim + c.value << endl;
 }
 
 int connectCommand::execute(vector<string> arr, int ind) {
