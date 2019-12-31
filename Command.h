@@ -16,7 +16,7 @@ using namespace std;
 
 class Command{
 public:
-    virtual int execute(vector<string> arr, int ind = 0);
-
+    virtual int execute(vector<string> arr, int ind);
+    virtual ~Command() {}
 };
 #endif //EX3_COMMAND_H

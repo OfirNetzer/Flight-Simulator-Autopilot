@@ -8,7 +8,11 @@
 #include "Command.h"
 
 class DefineVarCommand: public Command {
+public:
+    // run on the lexer from the relevant index and decide how to define the var
+    //returns the num of jumps for the next command in the lexer
 
+    int execute(vector<string> myLex);
 };
 
 

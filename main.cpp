@@ -219,11 +219,6 @@ void parser(vector<string> comArr) {
 }
 
 int main(int argc, char *argv[]) {
-    regex whileReg("([[:alpha:]]+\\s+[_[:alnum:]]+\\s?[<|<=|>|>=|==]?\\s*[{]+)");
-    string test = "while rpm < 7";
-    if (regex_match(test, whileReg)){
-        return 0;
-    }
     vector<string> vector = lexer("fly_with_func.txt");
     return 0;
 }
