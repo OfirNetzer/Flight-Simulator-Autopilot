@@ -7,10 +7,12 @@
 
 #include "symTable.h"
 #include <vector>
+#include <unordered_map>
+#include "Command.h"
 
 
 class Parser {
-
+    unordered_map<string, Command *> commandMap;
 public:
     void run(vector<string> lexerCommands);
 };

@@ -39,7 +39,4 @@ public:
 
 };
 
-//symTable * symTable::instance;
-
-
 #endif //EX3_SYMTABLE_H

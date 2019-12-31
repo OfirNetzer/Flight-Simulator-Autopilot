@@ -4,6 +4,6 @@
 
 #include "Parser.h"
 
-void Parser::run(vector <string> laxerCommands) {
+void Parser::run(vector <string> lexerCommands) {
 
 }
