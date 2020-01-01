@@ -3,6 +3,7 @@
 //
 
 #include "CommandDB.h"
+CommandDB* CommandDB::instance = nullptr;
 
 void CommandDB::addCommand(string varName, Command *command) {
     this->commandTable[varName] = command;

@@ -16,33 +16,36 @@
 #include <vector>
 #include <thread>
 
-#define PORT 5400
-
 using namespace std;
 
 OpenServerCommand::OpenServerCommand() = default;
 
-void OpenServerCommand::createLoc() {
-    this->loc[0] = "instrumentation/airspeed-indicator/indicated-speed-kt";
-    this->loc[1] = "sim/time/warp";
-    this->loc[2] = "controls/switches/magnetos";
-    this->loc[3] = "/instrumentation/heading-indicator/offset-deg";
-    this->loc[4] = "instrumentation/altimeter/indicated-altitude-ft";
-    this->loc[5] = "instrumentation/altimeter/pressure-alt-ft";
-    this->loc[6] = "instrumentation/attitude-indicator/indicated-pitch-deg";
-    this->loc[7] = "instrumentation/attitude-indicator/indicated-roll-deg";
-    this->loc[8] = "instrumentation/attitude-indicator/internal-pitch-deg";
-    this->loc[9] = "instrumentation/attitude-indicator/internal-roll-deg";
-    this->loc[10] = "instrumentation/encoder/indicated-altitude-ft";
-    this->loc[11] = "instrumentation/gps/indicated-ground-speed-kt";
-    this->loc[12] = "instrumentation/gps/indicated-vertical-speed";
-    this->loc[13] = "instrumentation/heading-indicator/indicated-heading-deg";
-    this->loc[14] = "instrumentation/magnetic-compass/indicated-heading-deg";
-    this->loc[15] = "instrumentation/slip-skid-ball/indicated-slip-skid";
+string* createLoc() {
+    string loc[36];
+    loc[0] = "instrumentation/airspeed-indicator/indicated-speed-kt";
+    loc[1] = "sim/time/warp";
+    loc[2] = "controls/switches/magnetos";
+    loc[3] = "/instrumentation/heading-indicator/offset-deg";
+    loc[4] = "instrumentation/altimeter/indicated-altitude-ft";
+    loc[5] = "instrumentation/altimeter/pressure-alt-ft";
+    loc[6] = "instrumentation/attitude-indicator/indicated-pitch-deg";
+    loc[7] = "instrumentation/attitude-indicator/indicated-roll-deg";
+    loc[8] = "instrumentation/attitude-indicator/internal-pitch-deg";
+    loc[9] = "instrumentation/attitude-indicator/internal-roll-deg";
+    loc[10] = "instrumentation/encoder/indicated-altitude-ft";
+    loc[11] = "instrumentation/gps/indicated-ground-speed-kt";
+    loc[12] = "instrumentation/gps/indicated-vertical-speed";
+    loc[13] = "instrumentation/heading-indicator/indicated-heading-deg";
+    loc[14] = "instrumentation/magnetic-compass/indicated-heading-deg";
+    loc[15] = "instrumentation/slip-skid-ball/indicated-slip-skid";
+    //todo complete 36
+
+    return loc;
 }
 
 void receiveFromSim(int client_socket) {
     auto substr = new Substring();
+    string* loc = createLoc();
 
     //now buffer holds the values sent from the simulator
     //I need to go over the first 36 values, delimited by ',' , and update the smap accordingly
@@ -60,7 +63,7 @@ void receiveFromSim(int client_socket) {
         int i=0, count=0;
         while (buf[i] != '\n') {
             string str = substr->create(',', buf, &i);
-            symTable::getInstance()->getVar(loc[count], buf);
+            symTable::getInstance()->siMap.at(loc[count])->setVal(stod(buf));
             count++;
             i++;
         }
@@ -77,13 +80,13 @@ int OpenServerCommand::execute(vector<string> arr, int ind) {
         cerr << "Could not create a socket"<<endl;
         return -1;
     }
-
+    int port = stoi(arr.at(ind+1));
     //bind socket to IP address
     // we first need to create the sockaddr obj.
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY; //give me any IP allocated for my machine
-    address.sin_port = htons(PORT/*stoi(arr.at(ind+1))*/);
+    address.sin_port = htons(port);
     //we need to convert our number to a number that the network understands.
 
     //the actual bind command
@@ -96,9 +99,9 @@ int OpenServerCommand::execute(vector<string> arr, int ind) {
     if (listen(socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
         cerr<<"Error during listening command"<<endl;
         return -3;
-    } /*else{
+    } else {
         cout<<"Server is now listening ..."<<endl;
-    }*/
+    }
 
     // accepting a client
     socklen_t addrlen = sizeof(sockaddr_in);

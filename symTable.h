@@ -15,10 +15,6 @@ class symTable {
 //    static symTable& instance;
     //in case 2
     static symTable* instance;
-    unordered_map<string, Var*> uiMap;
-    unordered_map<string, Var*> siMap;
-    // todo in parser
-    string location[36];
 public:
     // case 1
     /*
@@ -35,6 +31,9 @@ public:
     }
     void addVar(string n, string s, string d, double v);
     void getVar(string n, double v);
+
+    unordered_map<string, Var*> siMap;
+    unordered_map<string, Var*> uiMap;
 };
 
 #endif //EX3_SYMTABLE_H

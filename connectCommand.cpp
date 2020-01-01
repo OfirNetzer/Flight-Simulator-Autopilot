@@ -48,11 +48,10 @@ int connectCommand::execute(vector<string> arr, int ind) {
 
     //bind socket to IP address
     // we first need to create the sockaddr obj.
-    //todo handle warning in the next row, might fix the problem
-    sockaddr_in address{}; //in means IP4
+    sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr("127.0.0.1"); //give me any IP allocated for my machine //todo get whatever ip is given
-    address.sin_port = htons(PORT); //todo if port is given as an expression such as 5408-6 we should be able to intrepret it to 5402
+    address.sin_addr.s_addr = inet_addr(arr.at(ind+1).c_str()); //give me any IP allocated for my machine
+    address.sin_port = htons(atoi(arr.at(ind+2).c_str()));
     //we need to convert our number to a number that the network understands.
 
     int is_connect = connect(client_socketfd, (struct sockaddr *)&address, sizeof(address));
