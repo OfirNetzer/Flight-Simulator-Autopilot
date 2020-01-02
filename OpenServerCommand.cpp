@@ -6,6 +6,7 @@
 #include "Flag.h"
 #include "symTable.h"
 #include "Substring.h"
+//#include "Exp.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -16,6 +17,47 @@
 #include <thread>
 
 using namespace std;
+
+string* createLoc() {
+    string loc[36];
+    loc[0] = "instrumentation/airspeed-indicator/indicated-speed-kt";
+    loc[1] = "sim/time/warp";
+    loc[2] = "controls/switches/magnetos";
+    loc[3] = "/instrumentation/heading-indicator/offset-deg";
+    loc[4] = "instrumentation/altimeter/indicated-altitude-ft";
+    loc[5] = "instrumentation/altimeter/pressure-alt-ft";
+    loc[6] = "instrumentation/attitude-indicator/indicated-pitch-deg";
+    loc[7] = "instrumentation/attitude-indicator/indicated-roll-deg";
+    loc[8] = "instrumentation/attitude-indicator/internal-pitch-deg";
+    loc[9] = "instrumentation/attitude-indicator/internal-roll-deg";
+    loc[10] = "instrumentation/encoder/indicated-altitude-ft";
+    loc[11] = "instrumentation/gps/indicated-ground-speed-kt";
+    loc[12] = "instrumentation/gps/indicated-vertical-speed";
+    loc[13] = "instrumentation/heading-indicator/indicated-heading-deg";
+    loc[14] = "instrumentation/magnetic-compass/indicated-heading-deg";
+    loc[15] = "instrumentation/slip-skid-ball/indicated-slip-skid";
+    loc[16] = "instrumentation/turn-indicator/indicated-turn-rate";
+    loc[17] = "instrumentation/vertical-speed-indicator/indicated-speed-fpm";
+    loc[18] = "controls/flight/aileron";
+    loc[19] = "controls/flight/elevator";
+    loc[20] = "controls/flight/rudder";
+    loc[21] = "controls/flight/flaps";
+    loc[22] = "controls/engines/engine/throttle";
+    loc[23] = "controls/engines/current-engine/throttle";
+    loc[24] = "controls/switches/master-avionics";
+    loc[24] = "controls/switches/starter";
+    loc[25] = "engines/active-engine/auto-start";
+    loc[26] = "controls/flight/speedbrake";
+    loc[27] = "sim/model/c172p/brake-parking";
+    loc[28] = "controls/engines/engine/primer";
+    loc[29] = "controls/engines/current-engine/mixture";
+    loc[30] = "controls/switches/master-bat";
+    loc[31] = "controls/switches/master-alt";
+    loc[32] = "engines/engine/rpm";
+    //todo complete 36
+
+    return loc;
+}
 
 void receiveFromSim(int client_socket) {
     vector<string> loc = OpenServerCommand::createLoc();
@@ -33,6 +75,8 @@ void receiveFromSim(int client_socket) {
             symTable::getInstance()->siMap.at(loc.at(count))->setVal(stod(str));
             count++;
             i++;
+            ///test
+            cout << str << endl;
         }
     }
     close(client_socket);
@@ -73,7 +117,7 @@ int OpenServerCommand::execute(vector<string> arr, int ind) {
     // accepting a client
     //socklen_t addrlen = sizeof(sockaddr_in);
     int client_socket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &address);
-/*buf[i-1] != '\n'*/
+
     if (client_socket == -1) {
         cerr<<"Error accepting client"<<endl;
         return -4;
@@ -84,10 +128,8 @@ int OpenServerCommand::execute(vector<string> arr, int ind) {
     close(socketfd); //closing the listening socket
 
     thread thread1(receiveFromSim, client_socket); //todo maybe thread should be singleton
-    thread1.detach();
+    thread1.join();
     //todo check if join/detach should be written here and if not then where
-
-    return 2;
 }
 
 OpenServerCommand::OpenServerCommand() = default;

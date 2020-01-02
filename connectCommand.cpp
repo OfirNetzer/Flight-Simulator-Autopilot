@@ -23,15 +23,16 @@ using namespace std;
 connectCommand::connectCommand() = default;
 
 void sendToSim(int client_socketfd) {
-    queue<string> q = Queue::getInstance()->q;
+//    queue<string> q = Queue::getInstance()->q;
     while (Flag::getInstance()->threadFlag) {
-        while (!q.empty()) {
-            string str = q.front();
+        while (!Queue::getInstance()->q.empty()) {
+            string str = Queue::getInstance()->q.front();
             int is_sent = send(client_socketfd, str.c_str(), str.length(), 0);
             if (is_sent == -1) {
                 std::cout << "Error sending message" << std::endl;
             }
-            q.pop();
+            cout << Queue::getInstance()->q.front() << endl;
+            Queue::getInstance()->q.pop();
         }
     }
     close(client_socketfd);
@@ -44,11 +45,11 @@ int connectCommand::execute(vector<string> arr, int ind) {
         //error
         std::cerr << "Could not create a socket"<<std::endl;
         return -1;
-    }
+    }/*
 
-    //const char* ip = arr.at(ind+1).c_str();
-    //string port = atoi(arr.at(ind+2).c_str());
-
+    const char* ip = arr.at(ind+1).c_str();
+    char* port = stoi(arr.at(ind+2).c_str());
+*/
     //bind socket to IP address
     // we first need to create the sockaddr obj.
     sockaddr_in address; //in means IP4

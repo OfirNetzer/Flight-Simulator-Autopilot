@@ -1,92 +1,43 @@
 //
-// Created by ofirn93 on 19/12/2019.
+// Created by Avichai Geldzahler on 11/11/2019.
 //
 
-#ifndef EX3_EX1_H
-#define EX3_EX1_H
-//
-// Created by ofirn93 on 18/11/2019.
-//
+#ifndef EX1B_EX1_H
+#define EX1B_EX1_H
 
-#ifndef TEST1_EX1_H
-#define TEST1_EX1_H
-
-#pragma once
 #include "Expression.h"
+#include "stdio.h"
 #include <string>
-#include <stack>
-#include <queue>
 #include <map>
+#include <stack>
+#include <vector>
 
 using namespace std;
 
-class UnaryOperator:public Expression {
-protected:
-    Expression* e;
-public:
-    UnaryOperator(Expression* exp);
-    ~UnaryOperator();
+/** Part 1 */
 
-};
-
-class BinaryOperator:public Expression {
+class BinaryOperator : public Expression {
 protected:
     Expression* left;
     Expression* right;
 public:
-    BinaryOperator(Expression* left1, Expression* right1);
-    ~BinaryOperator();
-
+    BinaryOperator(Expression *left1, Expression *right1);
 };
 
-class Plus: public BinaryOperator{
+class UnaryOperator : public Expression {
+protected:
+    Expression* exp;
 public:
-    Plus(Expression* left1, Expression* right1);
-    double calculate();
-
+    UnaryOperator(Expression *exp1);
 };
 
-class Minus: public BinaryOperator{
-public:
-    Minus(Expression* left1, Expression* right1);
-    double calculate();
-
-};
-
-class Mul: public BinaryOperator{
-public:
-    Mul(Expression* left1, Expression* right1);
-    double calculate();
-
-};
-
-class Div: public BinaryOperator{
-public:
-    Div(Expression* left1, Expression* right1);
-    double calculate();
-
-};
-
-class UPlus: public UnaryOperator{
-public:
-    UPlus(Expression* exp);
-    double calculate();
-
-};
-
-class UMinus: public UnaryOperator{
-public:
-    UMinus(Expression* exp);
-    double calculate();
-
-};
-
-
-class Value: public Expression {
-private:
+class Value : public Expression {
     double val;
 public:
-    Value (double val1);
+    double getVal() const;
+
+    Value(double val1);
+
     double calculate();
 };
 
@@ -94,37 +45,96 @@ class Variable: public Expression {
 private:
     string name;
     double value;
+
 public:
-    Variable(string name1, double value1);
+    Variable(const string &name1, double value1);
+    void setValue(double valueV);
+    const string &getName() const;
     double calculate();
-    Variable& operator++();
-    Variable& operator++(int);
-    Variable& operator--();
-    Variable& operator--(int);
-    Variable& operator+=(double num);
-    Variable& operator-=(double num);
+    Variable& operator ++ ();
+    Variable& operator -- ();
+    Variable& operator -= (double);
+    Variable& operator += (double);
+    Variable& operator ++ (int);
+    Variable& operator -- (int);
 };
 
-// part II
+class Plus : public BinaryOperator {
+public:
+    Plus(Expression *left1, Expression *right1);
 
+    virtual ~Plus();
+
+    double calculate();
+};
+
+class Minus : public BinaryOperator {
+public:
+    Minus(Expression *left1, Expression *right1);
+
+    virtual ~Minus();
+
+    double calculate();
+};
+
+class Mul : public BinaryOperator {
+public:
+    Mul(Expression *left1, Expression *right1);
+
+    virtual ~Mul();
+
+    double calculate();
+};
+
+class Div : public BinaryOperator {
+public:
+    Div(Expression *left1, Expression *right1);
+
+    virtual ~Div();
+
+    double calculate();
+};
+
+class UPlus : public UnaryOperator {
+public:
+    UPlus(Expression *exp);
+
+    virtual ~UPlus();
+
+    double calculate();
+};
+
+class UMinus : public UnaryOperator {
+public:
+    UMinus(Expression *exp);
+
+    virtual ~UMinus();
+
+    double calculate();
+};
+
+/** Part 2 */
 
 class Interpreter {
-    stack<string> strStack;
-    std:: queue<string> queue;
-    stack<Expression*> expStack;
-    map<string, double> var_map;
 public:
-    Interpreter();
-    void inf2post(string s);
-    int score(string str);
-    Expression* rpn(std::queue<string> queue);
-    void setVariables(string s);
-    bool isValid(string s);
-    void send2Map(string s);
-    Expression* findInMap(string s);
-    Expression* interpret(string s);
-    void redefineValInMap(string tok, string val);
+    virtual ~Interpreter();
+
+private:
+    stack <char> opers;
+    stack <double> nums;
+    map<string, double> varMap;
+public:
+    Expression* interpret(const string infix);
+    void setVariables(string vars);
+    bool infixIsValid(string infix);
+    bool varsAreValid(string var);
+    bool isHigherPrec(char c);
+    bool isOperator(char c);
+    bool isValidSign(char c);
+    bool twoOpsInaRow(char current, char last);
+    void calc();
+    double calcBin(double numA, double numB, char opera);
+    double calcUn(double num, char opera);
 };
 
-#endif //TEST1_EX1_H
-#endif //EX3_EX1_H
+#endif //EX1B_EX1_H

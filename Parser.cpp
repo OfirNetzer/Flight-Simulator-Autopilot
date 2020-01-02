@@ -24,21 +24,6 @@ void Parser::run(vector <string> lexerCommands) {
         int i = this->ind;
         this->ind += c->execute(lexerCommands, this->ind);
 //        this->ind++;
-        /*Interpreter* inter = new Interpreter();
-        Expression* e = nullptr;
-        try {
-            e = inter();
-            delete inter;
-            delete e;
-        } catch (const char* e) {
-            cerr << "Problem with interpreting";
-            if (e != nullptr) {
-                delete e;
-            }
-            if (inter != nullptr) {
-                delete inter;
-            }
-        }*/
     }
 }
 
