@@ -3,7 +3,6 @@
 //
 using namespace std;
 #include "symTable.h"
-symTable* symTable::instance = nullptr;
 
 void symTable::addVar(string n, string s, string d, double v) {
     Var* var = new Var(n,s,d,v);
@@ -15,7 +14,7 @@ void symTable::addVar(string n, string s, string d, double v) {
     //todo maybe delete var
 }
 
-void symTable::getVar(string n, double v) {
+void symTable::setVar(string n, double v) {
     // todo - go to the var in the map, and just set its new value.
     bool inMapFlag = false;
     if (this->uiMap.at(n) != nullptr) {

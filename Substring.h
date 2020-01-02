@@ -10,9 +10,9 @@ using namespace std;
 
 class Substring {
 public:
-    string create(char delim, string line, int* i) {
+    static string create(char delim, string line, int* i) {
         string stri = "";
-        while (line[*i] != delim) {
+        while ((line[*i] != delim) && (line[*i] != '\n')) {
             stri += line[*i];
             (*i)++;
         }

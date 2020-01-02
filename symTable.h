@@ -11,6 +11,7 @@ using namespace std;
 //singleton thread safe pattern is from: https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
 // todo - change the static to fit
 class symTable {
+private:
     //in case 1
 //    static symTable& instance;
     //in case 2
@@ -23,6 +24,9 @@ public:
         return instance;
     }*/
     // case 2
+
+    unordered_map<string, Var*> siMap;
+    unordered_map<string, Var*> uiMap;
     static symTable* getInstance() {
         if (instance == nullptr) {
             instance = new symTable();
@@ -30,10 +34,8 @@ public:
         return instance;
     }
     void addVar(string n, string s, string d, double v);
-    void getVar(string n, double v);
+    void setVar(string n, double v);
 
-    unordered_map<string, Var*> siMap;
-    unordered_map<string, Var*> uiMap;
 };
 
 #endif //EX3_SYMTABLE_H

@@ -168,7 +168,7 @@ vector<string> Lexer::mainLex(char *file[]) {
 
     ifstream myfile(file[1]);
     if (!myfile) {
-        throw "Error with the file";
+        cerr << "Error occurred while opening file";
     }
 
     // create lines of input array
@@ -183,11 +183,11 @@ vector<string> Lexer::mainLex(char *file[]) {
         createLexer(lineArr.at(j), lexArr);
     }
 
-    ///test
+/*    ///test
     //todo erase when done with it
     for (string s : lexArr) {
         cout << s << endl;
-    }
+    }*/
 
     return lexArr;
 }

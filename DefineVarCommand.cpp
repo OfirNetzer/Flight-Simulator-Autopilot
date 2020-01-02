@@ -27,7 +27,7 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
         string name = myLex.at(i);
         string strVal = myLex.at(i+2);
         double val = stod(strVal);
-        symTable::getInstance()->getVar(name, val);
+        symTable::getInstance()->setVar(name, val);
         return 3;
     }
     // todo handle info that comes from the server (like the XML)
