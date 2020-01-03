@@ -14,6 +14,9 @@ using namespace std;
 class Exp {
 public:
     static double inter(string str) {
+        for (int j=0; j<str.length(); j++) {
+
+        }
         Interpreter* in = new Interpreter();
         Expression* e = nullptr;
         try {

@@ -6,6 +6,7 @@
 #include "connectCommand.h"
 #include "Queue.h"
 #include "Flag.h"
+#include "Threads.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -15,17 +16,15 @@
 #include <cstring>
 #include <vector>
 #include <thread>
-
-#define PORT 5402
+#include <pthread.h>
 
 using namespace std;
 
 connectCommand::connectCommand() = default;
 
 void sendToSim(int client_socketfd) {
-//    queue<string> q = Queue::getInstance()->q;
     while (Flag::getInstance()->threadFlag) {
-        while (!Queue::getInstance()->q.empty()) {
+        while (!(Queue::getInstance()->q.empty())) {
             string str = Queue::getInstance()->q.front();
             int is_sent = send(client_socketfd, str.c_str(), str.length(), 0);
             if (is_sent == -1) {
@@ -34,6 +33,8 @@ void sendToSim(int client_socketfd) {
             cout << Queue::getInstance()->q.front() << endl;
             Queue::getInstance()->q.pop();
         }
+        /*Flag::getInstance()->threadFlag = false;
+        cout << "client thread finished" << endl;*/
     }
     close(client_socketfd);
 }
@@ -66,9 +67,12 @@ int connectCommand::execute(vector<string> arr, int ind) {
     } else {
         std:: cout << "Client is now connected to server"<< std::endl;
     }
+/*
 
     thread thread2(sendToSim, client_socketfd);
-    thread2.detach();
+    thread2.join();
+*/
+    Threads::getInstance()->client = thread(sendToSim, client_socketfd);
 
     return 3;
 }

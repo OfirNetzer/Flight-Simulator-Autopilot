@@ -6,7 +6,8 @@
 #include "Flag.h"
 #include "symTable.h"
 #include "Substring.h"
-//#include "Exp.h"
+#include "Exp.h"
+#include "Threads.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -61,6 +62,9 @@ string* createLoc() {
 
 void receiveFromSim(int client_socket) {
     vector<string> loc = OpenServerCommand::createLoc();
+    cout << "server 1" << endl;
+    cout << "server 2" << endl;
+    cout << "server 3" << endl;
     while (Flag::getInstance()->threadFlag) {
         //reading from client
         char buffer[1024] = {0};
@@ -126,10 +130,12 @@ int OpenServerCommand::execute(vector<string> arr, int ind) {
     }
 
     close(socketfd); //closing the listening socket
-
+/*
     thread thread1(receiveFromSim, client_socket); //todo maybe thread should be singleton
     thread1.join();
-    //todo check if join/detach should be written here and if not then where
+    //todo check if join/detach should be written here and if not then where*/
+
+    Threads::getInstance()->server = thread(receiveFromSim, client_socket);
 }
 
 OpenServerCommand::OpenServerCommand() = default;
