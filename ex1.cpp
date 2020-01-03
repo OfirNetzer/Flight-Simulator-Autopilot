@@ -1,405 +1,406 @@
 //
-// Created by ofirn93 on 19/12/2019.
+// Created by Avichai Geldzahler on 11/11/2019.
 //
 
-#include "ex1.h"
-#include <iostream>
-#include <string>
+#include <stdexcept>
 #include <stack>
-#include <queue>
-#include <ctype.h>
-#include <regex>
-#include <map>
 #include <cstring>
-//#include "Expression.h"
+#include <vector>
+#include <iostream>
+#include "ex1.h"
 
 using namespace std;
 
-UnaryOperator:: UnaryOperator(Expression* exp): Expression() {
-    this->e = exp;
+/** Part 1 */
+
+BinaryOperator::BinaryOperator(Expression *left1, Expression *right1) : left(left1), right(right1) {}
+
+UnaryOperator::UnaryOperator(Expression *exp1) : exp(exp1) {}
+
+double Value::calculate() {
+    return val;
 }
 
-UnaryOperator:: ~UnaryOperator() {
-    delete e;
+double Value::getVal() const {
+    return val;
 }
 
-BinaryOperator:: BinaryOperator(Expression* left1, Expression* right1): Expression() {
-    this->left = left1;
-    this->right = right1;
-}
+Value::Value(double val1) : val(val1) {}
 
-BinaryOperator:: ~BinaryOperator() {
-    delete left;
-    delete right;
-}
-
-Plus:: Plus(Expression* left1, Expression* right1): BinaryOperator(left1, right1) {}
-double Plus:: calculate() {
-    return this->left->calculate() + this->right->calculate();
-}
-
-Minus:: Minus(Expression *left1, Expression *right1): BinaryOperator(left1, right1) {}
-double Minus:: calculate() {
-    return this->left->calculate() - this->right->calculate();
-}
-
-Mul:: Mul(Expression *left1, Expression *right1): BinaryOperator(left1, right1) {}
-double Mul::calculate() {
-    return this->left->calculate() * this->right->calculate();
-}
-
-Div::Div(Expression *left1, Expression *right1): BinaryOperator(left1, right1) {}
-double Div::calculate() {
-    if (this->right->calculate() != 0){
-        return (this->left->calculate() / this->right->calculate());
-    }
-    else{
-//       cout << "Can't Divide in 0!" << endl;
-        throw ("Division by zero");
-    }
-}
-
-UPlus::UPlus(Expression *exp) : UnaryOperator(exp){}
-double UPlus::calculate() {
-    return this->e->calculate();
-}
-
-UMinus::UMinus(Expression *exp) : UnaryOperator(exp) {}
-double UMinus::calculate() {
-    return (this->e->calculate()) * (-1);
-}
-
-Value:: Value(double val1) : val(val1) {}
-double Value:: calculate() {
-    return this->val;
-}
-
-Variable:: Variable(string name1, double value1): Expression() {
-    this->name = name1;
-    this->value = value1;
-}
-double Variable:: calculate(){
+double Variable::calculate() {
     return this->value;
 }
 
-Variable& Variable:: operator++(){
+Variable::Variable(const string &name1, double value1) : name(name1), value(value1) {}
+
+Variable &Variable::operator++() {
     this->value++;
     return *this;
 }
 
-Variable& Variable:: operator--(){
+Variable &Variable::operator--() {
     this->value--;
     return *this;
 }
 
+Variable &Variable::operator-=(double num) {
+    this->value -= num;
+    return *this;
+}
 
-Variable& Variable:: operator++(int){
+Variable &Variable::operator+=(double num) {
+    this->value += num;
+    return *this;
+}
+
+Variable &Variable::operator++(int) {
     this->value++;
     return *this;
 }
 
-Variable& Variable:: operator--(int){
+Variable &Variable::operator--(int) {
     this->value--;
     return *this;
 }
 
-Variable& Variable:: operator+=(double num) {
-    double newVal = this->value + num;
-    this->value = newVal;
-    return *this;
+const string &Variable::getName() const {
+    return name;
 }
 
-Variable& Variable:: operator-=(double num) {
-    double newVal = this->value - num;
-    this->value = newVal;
-    return *this;
+void Variable::setValue(double valueV) {
+    Variable::value = valueV;
 }
 
-//part II
-
-Interpreter::Interpreter() {
-//    this->queue;
+double Plus::calculate() {
+    return left->calculate() + right->calculate();
 }
-void Interpreter::inf2post(string s) {
-    unsigned int i = 0;
-    string tmp = "";
-    int flag = 0 ;
-    // tells me if part of the string was the create we accept. if it doesn't, we throw error.
-    bool been = false;
-    while (i < s.length()){
-        // number
-        if (isdigit(s[i])) {
-            // reset the flags and the tmp string
-            been = true;
-            flag = 0;
-            tmp = "";
-            while (isdigit(s[i]) && flag <= 1) {
-                tmp += s[i];
-                i++;
-                if (s[i] == '.') {
-                    tmp += s[i];
-                    flag++;
-                    i++;
-                }
-            }
-            if (flag > 1) {
-                throw "Invalid input";
-            }
-            // push it to the queue
-            this->queue.push(tmp);
-            tmp = "";
-        }
-        //operator
-        if (s[i] == '+' || s[i] == '-' || s[i] == '/' || s[i] == '*') {
-            been = true;
-            if (s[i+1] == '+' || s[i+1] == '-' || s[i+1] == '/' || s[i+1] == '*') {
-                throw "Invalid input";
-            }
-            // when it's an unary
-            if (i == 0 || s[i-1] == '(') {
-                if (s[i] == '-') {
-                    this->strStack.push("!");
-                }
-                if (s[i] == '+'){
-                    this->strStack.push("@");
-                }
-            }
-                // when it's binary (from score = 1 or 2)
-            else {
-                // if (s[i] == ('/' || '*' || '+' )) {
-                tmp += s[i];
-                if (this->strStack.empty() || score(this->strStack.top()) < score(tmp)){
-                    this->strStack.push(tmp);
-                }
-                else  {
-                    while (!(this->strStack.empty()) && (score(this->strStack.top()) >= score(tmp))) {
-                        this->queue.push(this->strStack.top());
-                        this->strStack.pop();
-                    }
-                    this->strStack.push(tmp);
-                }
-            }
-            tmp = "";
-        }
-        // brackets opener
-        if (s[i] == '(') {
-            been = true;
-            this->strStack.push("(");
-        }
-        // brackets closure
-        if (s[i] == ')') {
-            been = true;
-            while (this->strStack.top().compare("(")) {
-                this->queue.push(this->strStack.top());
-                this->strStack.pop();
-            }
-            if (this->strStack.empty()) {
-                throw "Invalid input";
-            }
-            if ((this->strStack.top().compare("(")) + 1 == 1) {
-                this->strStack.pop();
-            }
-        }
-        // variable
-        if (isalpha(s[i]) || s[i] == '_') {
-            been = true;
-            bool exist = false;
-            while (isalpha(s[i]) || s[i] == '_') {
-                tmp += s[i];
+
+Plus::Plus(Expression *left1, Expression *right1) : BinaryOperator(left1, right1) {}
+
+Plus::~Plus() {
+    if (this->left != nullptr)
+        delete(left);
+    if (this->right != nullptr)
+        delete(right);
+}
+
+double Minus::calculate() {
+    return left->calculate() - right->calculate();
+}
+
+Minus::Minus(Expression *left1, Expression *right1) : BinaryOperator(left1, right1) {}
+
+Minus::~Minus() {
+    if (this->left != nullptr)
+        delete(left);
+    if (this->right != nullptr)
+        delete(right);
+}
+
+double Mul::calculate() {
+    return left->calculate() * right->calculate();
+}
+
+Mul::Mul(Expression *left1, Expression *right1) : BinaryOperator(left1, right1) {}
+
+Mul::~Mul() {
+    if (this->left != nullptr)
+        delete(left);
+    if (this->right != nullptr)
+        delete(right);
+}
+
+double Div::calculate() {
+    if (right->calculate() == 0) {
+        throw ("division by 0 error");
+    } else {
+        return left->calculate() / right->calculate();
+    }
+}
+
+Div::Div(Expression *left1, Expression *right1) : BinaryOperator(left1, right1) {}
+
+Div::~Div() {
+    if (this->left != nullptr)
+        delete(left);
+    if (this->right != nullptr)
+        delete(right);
+}
+
+double UPlus::calculate() {
+    return exp->calculate();
+}
+
+UPlus::UPlus(Expression *expp) : UnaryOperator(expp) {}
+
+UPlus::~UPlus() {
+    if (this->exp != nullptr)
+        delete(exp);
+}
+
+double UMinus::calculate() {
+    return -(exp->calculate());
+}
+
+UMinus::UMinus(Expression *expp) : UnaryOperator(expp) {}
+
+UMinus::~UMinus() {
+    if (this->exp != nullptr)
+        delete(this->exp);
+}
+
+/** Part 2 */
+
+Expression *Interpreter::interpret(const string infix) {
+    string temp;
+    char lastChar = 0;
+
+    if (!infixIsValid(infix)) {
+        throw ("Input is invalid");
+    }
+
+    for (unsigned long i=0;  i < infix.length(); i++) {
+        char c = infix[i];
+        if (c == '_' || isalpha(c)) { // if current token is a variable
+            while (infix[i] == '_' || isalpha(infix[i]) || isdigit(infix[i])) {//put the var chars into temp
+                temp += infix[i];
                 i++;
             }
             i--;
-            map<string, double>::iterator itr;
-            for (itr = this->var_map.begin(); itr != this->var_map.end(); ++itr) {
-                if (!(itr->first.compare(tmp))) {
-                    exist = true;
-                    this->queue.push(itr->first);
+            for (auto& v : varMap) { //find the variable in the variable map, and push its value into the stack
+                if (v.first == temp)
+                {
+                    nums.push(v.second);
+                    break;
                 }
             }
-            if (exist == false){
-                throw "Error!";
-            }
-            tmp = "";
-        }
-        if (been == false) {
-            throw "Invalid input";
-        }
-        tmp = "";
-        i++;
-        flag = 0;
-        been = false;
-    }
-    if (!(this->strStack.empty())){
-        this->queue.push(this->strStack.top());
-        this->strStack.pop();
-    }
-}
-
-int Interpreter::score(string str) {
-    if (!(str.compare("("))){
-        return 0;
-    }
-    if ((!(str.compare("+"))) || (!(str.compare("-")))){
-        return 1;
-    }
-    if ((!(str.compare("*"))) || (!(str.compare("/")))){
-        return 2;
-    }
-    if (!(str.compare(")"))) {
-        return 3;
-    }
-    if ((!(str.compare("!"))) || (!(str.compare("@")))){
-        return 4;
-    }
-        // in case of invalid input
-    else {
-        return -1;
-    }
-}
-
-Expression* Interpreter:: rpn(std::queue<string> rpn_queue) {
-    while (!(rpn_queue.empty())) {
-        // number
-        if (isdigit(rpn_queue.front()[0])) {
-            double val = stod(rpn_queue.front());
-            this->expStack.push(new Value(val));
-            rpn_queue.pop();
-        }
-        // Binary op
-        if (rpn_queue.front()[0] == '+' || rpn_queue.front()[0] == '-' || rpn_queue.front()[0] == '*' || rpn_queue.front()[0] == '/') {
-            if (this->expStack.size() < 2) {
-                throw "Invalid input";
-            }
-            Expression* r = this->expStack.top();
-            this->expStack.pop();
-            Expression* l = this->expStack.top();
-            this->expStack.pop();
-            if (!(rpn_queue.empty()) && rpn_queue.front()[0] == '+') {
-                Expression* toPush = new Plus(l, r);
-                this->expStack.push(toPush);
-            }
-            if (!(rpn_queue.empty()) && rpn_queue.front()[0] == '-') {
-                Expression* toPush = new Minus(l, r);
-                this->expStack.push(toPush);
-            }
-            if (!(rpn_queue.empty()) && rpn_queue.front()[0] == '/') {
-                Expression* toPush = new Div(l, r);
-                this->expStack.push(toPush);
-            }
-            if (!(rpn_queue.empty()) && rpn_queue.front()[0] == '*') {
-                Expression* toPush = new Mul(l, r);
-                this->expStack.push(toPush);
-            }
-            // else - throw error
-            if (!(rpn_queue.empty())) {
-                rpn_queue.pop();
-            }
-        }
-        // Unary op
-        if (!(rpn_queue.empty()) && (rpn_queue.front()[0] == '!' || rpn_queue.front()[0] == '@')) {
-            if (this->expStack.size() < 1) {
-                throw "Invalid input";
-            }
-            Expression* insider = this->expStack.top();
-            this->expStack.pop();
-            if (rpn_queue.front()[0] == '!') {
-                this->expStack.push(new UMinus(insider));
-            }
-            else {
-                this->expStack.push(new UPlus(insider));
-            }
-            if (!(rpn_queue.empty())) {
-                rpn_queue.pop();
-            }
-        }
-        // Var
-        if (!(rpn_queue.empty()) && (rpn_queue.front()[0] == '_' || isalpha(rpn_queue.front()[0]))) {
-            Expression* e1 = findInMap(rpn_queue.front());
-            this->expStack.push(e1);
-            rpn_queue.pop();
-        }
-    }
-    Expression* result = this->expStack.top();
-    this->expStack.pop();
-    return result;
-}
-
-void Interpreter::setVariables(string s) {
-    if (this->isValid(s)){
-        // if it has no delimiter
-        if (s.find(";") == string::npos){
-            s += ';';
-            this->send2Map(s);
-        }
-        else {
-            unsigned int i = 0;
-            string subStr = "";
-            if (s[s.length() - 1] != ';'){
-                s += ';';
-            }
-            while (i < s.length()) {
-                subStr += s[i];
-                if (s[i] == ';') {
-                    this->send2Map(subStr);
-                    subStr = "";
-                }
+            temp.clear();
+        } else if (isdigit(c) || (c == '.' && isdigit(lastChar))) { //if current token is a number
+            while (isdigit(infix[i]) || infix[i] == '.') {
+                temp += infix[i];
                 i++;
             }
+            i--;
+            nums.push(stod(temp)); //push the number into the stack
+            temp.clear();
+        } else { // if current token is an operator
+            if (c == ')') { // if current token is ')', calculate everything between that and the closest '('
+                while (!opers.empty() && opers.top()!='(') {
+                    calc();
+                }
+                opers.pop(); //pop out the closest '('
+            } else if ((i == 0 || lastChar == '(' || lastChar == '/') && (c == '-' || c == '+')) {
+                //if '-' or '+' is at the beginning of the infix or after a '(' it's unary
+                if (c == '-') {
+                    opers.push('$');
+                } else { // c == '+'
+                    opers.push('#');
+                }
+            }
+            else if (isHigherPrec(c) || c == '(' || opers.empty()) { //last operator was '(' or operator of higher precedence
+                opers.push(c);
+            } else { // operator is of lesser precedence, calculate last two numbers with last operator
+                calc();
+                opers.push(c);
+            }
         }
+        lastChar = c;
+    } //end of for loop
+
+    while (!opers.empty()) { // no more chars to search, calculate rest of expression
+        calc();
     }
-    else {
-        throw "Invalid Input!";
+
+    return new Value(nums.top());
+}
+
+void Interpreter::setVariables(string var) {
+    bool isValid = true;
+    string vName;
+    string vValue;
+    int pFlag = 0;
+    int digFlag = 0;
+
+    if (!varsAreValid(var)) {
+        throw ("Invalid Input");
+    }
+
+    for (unsigned long i=0; i < var.length(); i++) {
+        //parse the string into name and value, and if all is valid, insert to map
+        while (var[i] != '=') {
+            vName += var[i];
+            i++;
+        }
+        i++;
+        if (var[i] == '=') { //meanning there's more than 1 '='
+            isValid = false;
+            break;
+        }
+        while (var[i] != ';' && i < var.length()) {
+            vValue += var[i];
+            i++;
+        }
+
+        //if var name starts with number,if value starts with point, or if it's empty - invalid
+        if (vValue.empty() || isdigit(vName[0]) || vValue[0] == '.') {
+            isValid = false;
+            break;
+        }
+        //check that the right side of the '=' is a double
+        for (char t : vValue) {
+            if (t == '.') {
+                pFlag++;
+            } else if (isdigit(t)) {
+                digFlag++;
+            }
+        }
+        if (pFlag > 1 || digFlag == 0) {
+            isValid = false;
+        }
+
+        if (!isValid) {
+            break;
+        }
+
+        for (auto& j : varMap) { //if var already exists, change its value
+            if (j.first == vName) {
+                j.second = stod(vValue);
+            }
+        }
+
+        varMap.insert({vName, stod(vValue)});
+        vName.clear();
+        vValue.clear();
+        pFlag = 0;
+        digFlag = 0;
+    }
+
+    if (!isValid) {
+        throw ("Invalid Input");
     }
 }
 
-
-bool Interpreter:: isValid(string s) {
-    // with a little help from https://stackoverflow.com/questions/12643009/regular-expression-for-floating-point-numbers
-    regex r("([_[:alnum:]]+=([0-9]+[.])?[[:digit:]]+;{0,1})+");
-    // if the input string is valid
-    if (regex_match(s, r)) {
+bool Interpreter::infixIsValid(string infix) {
+    int braces = 0;
+    char lastChar = 0;
+    bool isValid = true;
+    for (char i : infix) {
+        // if there's any char other than numbers, letters, operators and '_', it isn't valid
+        if (!isdigit(i) && !isalpha(i) && !isOperator(i) && !isValidSign(i)) {
+            isValid = false;
+        } else if (twoOpsInaRow(i, lastChar)) { //two operators can't come one after the other
+            isValid = false;
+        }
+        if (i == '(' || i == ')') {
+            braces++;
+        } else if ((!isdigit(i) && lastChar == '.') || (i == '.' && !isdigit(lastChar))) { //'.' has to be middle of num
+            isValid = false;
+        }
+        lastChar = i;
+    }
+    if (braces%2 != 0) { // an odd number of braces means there isn't a ')' for every '(' and vice versa
+        isValid = false;
+    }
+    if (!isValid) {
+        throw ("Invalid Input");
+    } else {
         return true;
     }
-    return false;
 }
 
-void Interpreter::send2Map(string s) {
-    int i = 0;
-    string token = "";
-    string tokenVal = "";
-    while (s[i] != '='){
-        token += s[i];
-        i++;
-    }
-    i++;
-    while (s[i] != ';'){
-        tokenVal += s[i];
-        i++;
-    }
-    redefineValInMap(token, tokenVal);
-    this->var_map.insert(pair<string, double>(token, stod(tokenVal)));
-}
-
-Expression* Interpreter::findInMap(string s) {
-    map<string, double>::iterator itr;
-    for (itr = this->var_map.begin(); itr != this->var_map.end(); ++itr) {
-        if (!(itr->first.compare(s))) {
-            string varName = itr->first;
-            double varVal = itr->second;
-            return new Variable(varName, varVal);
+bool Interpreter::varsAreValid(string var){
+    for (char m : var) {
+        if (!isdigit(m) && !isalpha(m) && !isOperator(m) && !isValidSign(m) && m != ';' && m != '=') {
+            return false;
         }
     }
-    throw "Not in Map!";
+    return true;
 }
 
-Expression* Interpreter:: interpret(string s) {
-    this->inf2post(s);
-    return this->rpn(this->queue);
-}
-
-void Interpreter::redefineValInMap(string tok, string val) {
-    map<string, double>::iterator itr = this->var_map.find(tok);
-    if (itr != this->var_map.end()) {
-        itr->second = stod(val);
+bool Interpreter::isHigherPrec(char c) {
+    if (opers.empty()) {
+        return true;
+    }
+    char op = opers.top();
+    if (c == '+' || c == '-') {
+        if (op == '+' || op == '-' || op == '*' || op == '/' || op == '$' || op == '#') {
+            return false;
+        } else {
+            return true;
+        }
+    } else if (c == '*' || c == '/') {
+        if (op == '*' || op == '/') {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return true;
     }
 }
+
+void Interpreter::calc() {
+    double rightLocal = 0;
+    double leftLocal = 0;
+    char opera = opers.top();
+    opers.pop();
+    if (opera == '$' || opera == '#') { // if operator is unary minus or unary plus
+        rightLocal = nums.top();
+        nums.pop();
+        nums.push(calcUn(rightLocal, opera));
+    } else { // if operator is binary
+        rightLocal = nums.top();
+        nums.pop();
+
+        leftLocal = nums.top();
+        nums.pop();
+
+        nums.push(calcBin(leftLocal, rightLocal, opera));
+    }
+}
+
+double Interpreter::calcUn(double num, char opera) {
+    if (opera == '$') {
+        return -num;
+    } else { // opera == '#'
+        return num;
+    }
+}
+
+double Interpreter::calcBin(double numA, double numB, char opera) {
+    if (opera == '+') {
+        return numA + numB;
+    } else if (opera == '-') {
+        return numA - numB;
+    } else if (opera == '*') {
+        return numA * numB;
+    } else { //opera == '/'
+        if (numB == 0) {
+            throw ("division by 0");
+        }
+        return numA / numB;
+    }
+}
+
+bool Interpreter::isOperator(char c) {
+    if (c == '-' || c == '+' || c == '/' || c == '*') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Interpreter::isValidSign(char c) {
+    if (c == '.' || c == '(' || c == ')' || c== '_') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Interpreter::twoOpsInaRow(char current, char last) {
+    return (current == '+' || current == '-' || current == '*' || current == '/') &&
+    (last == '+' || last == '-' || last == '*' || last == '/');
+}
+
+Interpreter::~Interpreter() = default;

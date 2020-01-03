@@ -13,9 +13,8 @@ using namespace std;
 class Queue {
 private:
     static Queue* instance;
-    queue<string> q;
 public:
-    const std::queue<string> &getQueue() const;
+    queue<string> q;
     static Queue* getInstance() {
         if (instance == nullptr) {
             instance = new Queue();

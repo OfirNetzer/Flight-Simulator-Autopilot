@@ -12,9 +12,10 @@
 Lexer::Lexer() = default;
 
 //todo handle a situation in which I get an expression without spaces, such as x<3
-//todo handle a situation in which I get parnthesis inside the () of print/func/sleep etc.
+//todo handle a situation in which I get parnthesis inside the () of print/func/sleep etc
 //todo handle += and -= that can come instead of =
 //todo change in ex1.cpp that -x will be valid (meanning without '(' after the '-' )
+//todo handle case in which there are parenthesis around the while or the if condition
 
 void Lexer::createLexer(string line, vector<string> &lexArr) {
     int i = 0;
@@ -168,7 +169,7 @@ vector<string> Lexer::mainLex(char *file[]) {
 
     ifstream myfile(file[1]);
     if (!myfile) {
-        throw "Error with the file";
+        cerr << "Error occurred while opening file";
     }
 
     // create lines of input array
@@ -183,11 +184,11 @@ vector<string> Lexer::mainLex(char *file[]) {
         createLexer(lineArr.at(j), lexArr);
     }
 
-    ///test
+/*    ///test
     //todo erase when done with it
     for (string s : lexArr) {
         cout << s << endl;
-    }
+    }*/
 
     return lexArr;
 }

@@ -4,7 +4,3 @@
 
 #include "Queue.h"
 Queue* Queue::instance = nullptr;
-
-const queue<string> &Queue::getQueue() const {
-    return q;
-}
