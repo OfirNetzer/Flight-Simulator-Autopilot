@@ -65,7 +65,7 @@ public:
     }
 
     OpenServerCommand();
-    int execute(vector<string> arr, int ind) override;
+    int execute(vector<string> lexer, int ind) override;
 };
 
 

@@ -11,11 +11,6 @@
 
 Lexer::Lexer() = default;
 
-//todo handle a situation in which I get parnthesis inside the () of print/func/sleep etc
-//todo handle += and -= that can come instead of =
-//todo change in ex1.cpp that -x will be valid (meanning without '(' after the '-' )
-//todo handle case in which there are parenthesis around the while or the if condition
-
 void Lexer::createLexer(string line, vector<string> &lexArr) {
     int i = 0;
     string str, sub;
@@ -24,9 +19,6 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
     regex equalRegB("(\\s*[_[:alnum:]]+\\s+[_[:alnum:]]+\\s?[-]?[+]?=\\s?([0-9]+[.])?[[:alnum:]]+\\s*)");
     regex varReg("(\\s*[[:alpha:]]+\\s+[_[:alnum:]]+\\s?[->|<-]+\\s?sim[(]+.+[)]+\\s*)");
     regex funcRegB("(\\s*[_[:alnum:]]+[(]+.+[)]+\\s?[{]{1,1}\\s*)");
-
-    //todo change the below if's of equalRegA and equalRegB so that they don't always push '=' into lexArr, but rather whatever is there, whether it's = or -= or +=
-    //todo I changed in Substring, that if stri == "+=" or "-=" then (*i)-- in the last condition
 
     if (regex_match(line, funcRegA)) { //e.g print(rpm)
         //push until '('
@@ -209,12 +201,6 @@ vector<string> Lexer::mainLex(char *file[]) {
     //check regex and then push into mainLex array
     for (int j=0; j < i; j++) {
         createLexer(lineArr.at(j), lexArr);
-    }
-
-    ///test
-    //todo erase when done with it
-    for (string s : lexArr) {
-        cout << s << endl;
     }
 
     return lexArr;

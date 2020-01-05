@@ -7,6 +7,7 @@
 #include "Queue.h"
 #include "Flag.h"
 #include "Threads.h"
+#include "Exp.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -30,7 +31,7 @@ void sendToSim(int client_socketfd) {
             if (is_sent == -1) {
                 std::cout << "Error sending message" << std::endl;
             }
-            cout << Queue::getInstance()->q.front() << endl; ///test
+            cout << Queue::getInstance()->q.front() << endl; //todo erase after done with test
             Queue::getInstance()->q.pop();
         }
         /*Flag::getInstance()->threadFlag = false;
@@ -39,25 +40,25 @@ void sendToSim(int client_socketfd) {
     close(client_socketfd);
 }
 
-int connectCommand::execute(vector<string> arr, int ind) {
+int connectCommand::execute(vector<string> lexer, int ind) {
     //create socket
     int client_socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socketfd == -1) {
         //error
         std::cerr << "Could not create a socket"<<std::endl;
         return -1;
-    }/*
+    }
 
-    const char* ip = arr.at(ind+1).c_str();
-    char* port = stoi(arr.at(ind+2).c_str());
-*/
+    const char* ip = lexer.at(ind + 1).c_str();
+    cout << ip << endl; //todo erase after done testing it
+    double port = Exp::inter(lexer.at(ind + 2));
     //bind socket to IP address
     // we first need to create the sockaddr obj.
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;
     //todo change ip and port to be read from the array, like the two lines above
-    address.sin_addr.s_addr = inet_addr("127.0.0.1"); //give me any IP allocated for my machine
-    address.sin_port = htons(5402);
+    address.sin_addr.s_addr = inet_addr(ip); //give me any IP allocated for my machine //todo find out why this doesn't work
+    address.sin_port = htons(port);
     //we need to convert our number to a number that the network understands.
 
     int is_connect = connect(client_socketfd, (struct sockaddr *)&address, sizeof(address));

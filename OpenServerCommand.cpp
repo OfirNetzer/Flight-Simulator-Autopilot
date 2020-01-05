@@ -19,52 +19,12 @@
 
 using namespace std;
 
-string* createLoc() {
-    string loc[36];
-    loc[0] = "instrumentation/airspeed-indicator/indicated-speed-kt";
-    loc[1] = "sim/time/warp";
-    loc[2] = "controls/switches/magnetos";
-    loc[3] = "/instrumentation/heading-indicator/offset-deg";
-    loc[4] = "instrumentation/altimeter/indicated-altitude-ft";
-    loc[5] = "instrumentation/altimeter/pressure-alt-ft";
-    loc[6] = "instrumentation/attitude-indicator/indicated-pitch-deg";
-    loc[7] = "instrumentation/attitude-indicator/indicated-roll-deg";
-    loc[8] = "instrumentation/attitude-indicator/internal-pitch-deg";
-    loc[9] = "instrumentation/attitude-indicator/internal-roll-deg";
-    loc[10] = "instrumentation/encoder/indicated-altitude-ft";
-    loc[11] = "instrumentation/gps/indicated-ground-speed-kt";
-    loc[12] = "instrumentation/gps/indicated-vertical-speed";
-    loc[13] = "instrumentation/heading-indicator/indicated-heading-deg";
-    loc[14] = "instrumentation/magnetic-compass/indicated-heading-deg";
-    loc[15] = "instrumentation/slip-skid-ball/indicated-slip-skid";
-    loc[16] = "instrumentation/turn-indicator/indicated-turn-rate";
-    loc[17] = "instrumentation/vertical-speed-indicator/indicated-speed-fpm";
-    loc[18] = "controls/flight/aileron";
-    loc[19] = "controls/flight/elevator";
-    loc[20] = "controls/flight/rudder";
-    loc[21] = "controls/flight/flaps";
-    loc[22] = "controls/engines/engine/throttle";
-    loc[23] = "controls/engines/current-engine/throttle";
-    loc[24] = "controls/switches/master-avionics";
-    loc[24] = "controls/switches/starter";
-    loc[25] = "engines/active-engine/auto-start";
-    loc[26] = "controls/flight/speedbrake";
-    loc[27] = "sim/model/c172p/brake-parking";
-    loc[28] = "controls/engines/engine/primer";
-    loc[29] = "controls/engines/current-engine/mixture";
-    loc[30] = "controls/switches/master-bat";
-    loc[31] = "controls/switches/master-alt";
-    loc[32] = "engines/engine/rpm";
-    //todo complete 36
-
-    return loc;
-}
-
 void receiveFromSim(int client_socket) {
     vector<string> loc = OpenServerCommand::createLoc();
     cout << "server 1" << endl;
     cout << "server 2" << endl;
     cout << "server 3" << endl;
+    //todo erase the above three lines after done testing
     while (Flag::getInstance()->threadFlag) {
         //reading from client
         char buffer[1024] = {0};
@@ -75,18 +35,24 @@ void receiveFromSim(int client_socket) {
         string buf(buffer);
         int i=0, count=0;
         while (buf[i-1] != '\n') {
-            string str = Substring::create(',', buf, &i);
-            symTable::getInstance()->siMap.at(loc.at(count))->setVal(stod(str));
+            string str;
+            while (buf[i] != ',' && buf[i] != '\n') {
+                str += buf[i];
+                i++;
+            }
+            char* end;
+            double val = strtod(str.c_str(), &end);
+            symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
             count++;
             i++;
             ///test
-            cout << str << endl;
+            cout << str << endl; //todo erase after done with test
         }
     }
     close(client_socket);
 }
 
-int OpenServerCommand::execute(vector<string> arr, int ind) {
+int OpenServerCommand::execute(vector<string> lexer, int ind) {
 
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -95,14 +61,13 @@ int OpenServerCommand::execute(vector<string> arr, int ind) {
         cerr << "Could not create a socket"<<endl;
         return -1;
     }
-//    int port = stoi(arr.at(ind+1));
+    double port = Exp::inter(lexer.at(ind + 1));
     //bind socket to IP address
     // we first need to create the sockaddr obj.
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY; //give me any IP allocated for my machine
-    address.sin_port = htons(5400);
-    //we need to convert our number to a number that the network understands.
+    address.sin_port = htons(port); //we need to convert our number to a number that the network understands
 
     //the actual bind command
     if (bind(socketfd, (struct sockaddr *) &address, sizeof(address)) == -1) {
@@ -131,9 +96,8 @@ int OpenServerCommand::execute(vector<string> arr, int ind) {
 
     close(socketfd); //closing the listening socket
 /*
-    thread thread1(receiveFromSim, client_socket); //todo maybe thread should be singleton
-    thread1.join();
-    //todo check if join/detach should be written here and if not then where*/
+    thread thread1(receiveFromSim, client_socket); //
+    thread1.join();*/
 
     Threads::getInstance()->server = thread(receiveFromSim, client_socket);
 }
