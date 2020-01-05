@@ -9,11 +9,13 @@
 using namespace std;
 
 int ConditionParser::execute(vector<string> arr, int ind) {
+    int i = ind;
     while (arr.at(ind + 1) != "{"){
         this->myCondition.push_back(arr.at(ind + 1));
         ind++;
     }
-    int jumps = arr.size() - ind;
+    ind += 2;
+    int jumps = ind - i;
     // checks if the condition is satisfied
     bool cCheck = cSatisfied(this->myCondition);
     if (cCheck) {

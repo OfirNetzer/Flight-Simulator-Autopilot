@@ -3,6 +3,7 @@
 //
 using namespace std;
 #include "symTable.h"
+#include "Queue.h"
 #include <mutex>
 
 
@@ -19,7 +20,7 @@ void symTable::addVar(string n, string s, string d, double v) {
     }
     if (d == "->") {
         string c2cStr = this->command2client(var);
-
+        Queue::getInstance()->q.push(c2cStr);
     }
     mutex_lock.unlock();
     //todo maybe delete var
@@ -41,14 +42,6 @@ void symTable::setVar(string n, double v) {
         throw runtime_error("var: " + n + "not exists");
     }
     mutex_lock.unlock();
-
-    /*
-    // if direction is "<-" then it  means the var i am looking for is in siMap, otherwise its in uiMap
-    if (!(d.compare("<-"))) {
-        // find the string n in the si map
-    } else {
-
-    }*/
 }
 
 string symTable::command2client(Var *var) {
@@ -57,9 +50,3 @@ string symTable::command2client(Var *var) {
     return c2cStr;
 }
 
-/*symTable *symTable::getInstance() {
-    if (instance == nullptr) {
-        instance = new symTable();
-    }
-    return instance;
-}*/

@@ -34,7 +34,6 @@ public:
         }
         return instance;
     }
-//    static symTable* getInstance();
     void addVar(string n, string s, string d, double v);
     void setVar(string n, double v);
     string command2client(Var* var);

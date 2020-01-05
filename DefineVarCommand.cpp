@@ -15,12 +15,17 @@ using namespace std;
  * this way i'll treat the vars i have the right way
  * */
 int DefineVarCommand::execute(vector<string> myLex, int i) {
-    // if the vector starts with var, it's var -> type
     symTable* symTable = symTable::getInstance();
+    // if the vector starts with var, it's var -> type
     if (!(myLex.at(i).compare("var"))) {
         string name = myLex.at(i+1);
         string direction = myLex.at(i+2);
         string sim = myLex.at(i+4);
+        if (direction == "=") {
+            double val = Exp::inter(sim);
+            symTable::getInstance()->addVar(name, sim, "->", val);
+            return 4;
+        }
         symTable::getInstance()->addVar(name, sim, direction, 0);
         return 5;
     }
@@ -47,35 +52,28 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
     }*/
 
     // if it's not starting with "var" it should be already exist
-    if (myLex.at(i).compare("var") != 0 ) {
+    if (myLex.at(i) != "var" ) {
         string name = myLex.at(i);
         string strRight = myLex.at(i+2);
         double right, var;
         auto itr = symTable::getInstance()->uiMap.find(name);
-//        if (symTable::getInstance()->uiMap.at(strRight)) {
-        // when it's a key it means it is already exist in our map
-        /*if (itr != symTable::getInstance()->uiMap.end()) {
-            right = symTable::getInstance()->uiMap.at(name)->getVal();
-        } else {
-            right = Exp::inter(strRight);
-        }*/
         // if it is not in the map or we want to update its value
-        if (itr == symTable->uiMap.end() || myLex.at(i+1).compare("=") == 0) {
+        if (itr == symTable->uiMap.end() || myLex.at(i+1) == "=") {
             right = Exp::inter(strRight);
         } else {
             right = symTable->uiMap.at(name)->getVal();
         }
-        if (myLex.at(i+1).compare("=") == 0) {
+        if (myLex.at(i+1) == "=") {
             symTable::getInstance()->setVar(name, right);
             return 3;
         }
-        if (myLex.at(i+1).compare("+=") == 0) {
+        if (myLex.at(i+1) == "+=") {
             var = symTable::getInstance()->uiMap.at(name)->getVal();
             var += right;
             symTable::getInstance()->setVar(name, var);
             return 3;
         }
-        if (myLex.at(i+1).compare("-=") == 0) {
+        if (myLex.at(i+1) == "-=") {
             var = symTable::getInstance()->uiMap.at(name)->getVal();
             var -= right;
             symTable::getInstance()->setVar(name, var);
