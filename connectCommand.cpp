@@ -30,7 +30,7 @@ void sendToSim(int client_socketfd) {
             if (is_sent == -1) {
                 std::cout << "Error sending message" << std::endl;
             }
-            cout << Queue::getInstance()->q.front() << endl;
+            cout << Queue::getInstance()->q.front() << endl; ///test
             Queue::getInstance()->q.pop();
         }
         /*Flag::getInstance()->threadFlag = false;

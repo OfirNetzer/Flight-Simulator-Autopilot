@@ -37,17 +37,6 @@ public:
                 }
             }
         }
-//todo change in ex1.cpp that -x will be valid (meaning without '(' after the '-' )
-/*        int k = *i;
-        char c = line[k];
-        char d = line[++k];
-        //if after the substring comes <=/>=/=</=> then move the index i one place down
-        if (((c == '=') && ((d == '<') || (d == '>'))) || // => or =<
-            (((c == '<') || (c == '>') || (c == '+') || (c == '-')) && (d == '=')) || c == '{' ||
-            (stri == "<=" || stri == "=>" || stri == "-=" || stri == "+=")) { // >= or <= or += or -=
-            //todo stri == "-=" || stri == "+=" this part is for the change of equalReg in Lexer
-            (*i)--;ז
-        }*/
         return stri;
     }
 

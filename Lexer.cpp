@@ -72,7 +72,6 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
             i++;
             str = "";
         }
-
         str = Substring::create('=', line, &i);
         //remove spaces from str
         str.erase(remove(str.begin(), str.end(), ' '), str.end());
@@ -87,32 +86,64 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
         str.erase(remove(str.begin(), str.end(), ' '), str.end());
         pushStr(str, lexArr);
     } else if (regex_match(line, varReg)) { // e.g. var alt -> sim(...)
-        //first add all of the words up to "sim", delimited by whitespace
-        size_t sim = line.find("sim(");
-        while (i < sim) {
-            str = Substring::create(' ', line, &i);
-            pushStr(str, lexArr);
-            str = "";
-            if (line[i] == ' ') {
-                i++;
-            }
+        //push "var"
+        str = Substring::create(' ', line, &i);
+        pushStr(str, lexArr);
+        i++;
+        str = "";
+        //push var name
+        while(isalnum(line[i]) || line[i] == '_' || line[i] == ' '){
+            str += line[i];
+            i++;
         }
+        pushStr(str, lexArr);
+        str = "";
+        //push sign
+        while(!(isalnum(line[i]) || line[i] == ' ')) {
+            str += line[i];
+            i++;
+        }
+        pushStr(str, lexArr);
         //then add "sim(....)"
         str = Substring::create('(', line, &i);
         pushStr(str, lexArr);
-        str = "";
         i++;
+        //push what's inside the ()
         pushStr(line.substr(i, line.length()-i-1), lexArr);
     } else if (ifOrWhile(line)) { //line is if or while
-        line = std::regex_replace(line, std::regex("^ +"), "");
-        line.erase(std::remove(line.begin(), line.end(), '\t'), line.end());
-        while (i < (line.length()-1)) {
-            //trim leading spaces and tabs if there are any
-            str = Substring::create(' ', line, &i);
-            pushStr(str, lexArr);
-            str = "";
+        //trim spaces and tabs
+        line = regex_replace(line, regex("^ +"), "");
+        line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+
+        //push first word
+        while(isalnum(line[i]) || line[i] == '_'){
+            str += line[i];
             i++;
         }
+        pushStr(str, lexArr);
+        str = "";
+        //push second word
+        while(isalnum(line[i]) || line[i] == '_' || line[i] == ' '){
+            str += line[i];
+            i++;
+        }
+        pushStr(str, lexArr);
+        str = "";
+        //i++;
+        //push sign
+        while(!(isalnum(line[i]) || line[i] == ' ')) {
+            str += line[i];
+            i++;
+        }
+        pushStr(str, lexArr);
+        str = "";
+        //push second word
+        while(isalnum(line[i]) || line[i] == '_' || line[i] == ' '){
+            str += line[i];
+            i++;
+        }
+        pushStr(str, lexArr);
+        str = "";
         str = line[i];
         lexArr.push_back(str);
     }  else { //it's '}'
@@ -123,9 +154,9 @@ void Lexer::createLexer(string line, vector<string> &lexArr) {
 bool Lexer::ifOrWhile(string str) {
     string temp;
     //trim leading spaces and tabs if there are any
-    str = std::regex_replace(str, std::regex("^ +"), "");
-    str.erase(std::remove(str.begin(), str.end(), '\t'), str.end());
-    for (int i=0; str[i] != ' '; i++) {//todo handle a situation in which I get an expression without spaces, such as x<3
+    str = regex_replace(str, regex("^ +"), "");
+    str.erase(remove(str.begin(), str.end(), '\t'), str.end());
+    for (int i=0; str[i] != ' '; i++) {
         temp += str[i];
     }
     return temp == "while" || temp == "if";
