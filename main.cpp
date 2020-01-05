@@ -5,6 +5,7 @@
 #include "CommandDB.h"
 #include "Flag.h"
 #include "Threads.h"
+#include "Exp.h" //todo erase after test
 
 symTable* symTable:: instance = nullptr;
 CommandDB* CommandDB:: instance = nullptr;
@@ -14,10 +15,16 @@ Threads* Threads:: instance = nullptr;
 using namespace std;
 
 int main(int argc, char *argv[]) {
+/* ///Exp test
+ * symTable::getInstance()->uiMap.insert({"h0", new Var("n", "s", "d", 200)});
+    symTable::getInstance()->uiMap.insert({"heading", new Var("n", "s", "d", 40)});
+    Exp::inter("(h0-heading)/80");*/
+
+    ///lexer test
     auto lexer = new Lexer();
     vector<string> lexArr = lexer->mainLex(argv);
 
-    ///test server
+ /*   ///test server
     vector<string> loc = OpenServerCommand::createLoc();
     for (int i = 0; i < 36; i++) {
         symTable::getInstance()->siMap.insert({loc[i], new Var("n", "s", "d", 5)});
@@ -41,6 +48,6 @@ int main(int argc, char *argv[]) {
 
 
     //todo join thread1 (client) and thread2 (server) at the end. Probably inside the parser
-    delete lexer;
+    delete lexer;*/
     return 0;
 }

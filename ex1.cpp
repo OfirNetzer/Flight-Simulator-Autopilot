@@ -232,7 +232,7 @@ void Interpreter::setVariables(string var) {
             i++;
         }
         i++;
-        if (var[i] == '=') { //meanning there's more than 1 '='
+        if (var[i] == '=') { //meaning there's more than 1 '='
             isValid = false;
             break;
         }
@@ -262,7 +262,8 @@ void Interpreter::setVariables(string var) {
             break;
         }
 
-        for (auto& j : varMap) { //if var already exists, change its value
+        //if var already exists, change its value
+        for (auto& j : varMap) {
             if (j.first == vName) {
                 j.second = stod(vValue);
             }
@@ -276,7 +277,7 @@ void Interpreter::setVariables(string var) {
     }
 
     if (!isValid) {
-        throw ("Invalid Input");
+        cerr << "Invalid Input" << endl;
     }
 }
 
@@ -376,26 +377,18 @@ double Interpreter::calcBin(double numA, double numB, char opera) {
         return numA * numB;
     } else { //opera == '/'
         if (numB == 0) {
-            throw ("division by 0");
+            cerr << ("division by 0") << endl;
         }
         return numA / numB;
     }
 }
 
 bool Interpreter::isOperator(char c) {
-    if (c == '-' || c == '+' || c == '/' || c == '*') {
-        return true;
-    } else {
-        return false;
-    }
+    return c == '-' || c == '+' || c == '/' || c == '*';
 }
 
 bool Interpreter::isValidSign(char c) {
-    if (c == '.' || c == '(' || c == ')' || c== '_') {
-        return true;
-    } else {
-        return false;
-    }
+    return c == '.' || c == '(' || c == ')' || c == '_';
 }
 
 bool Interpreter::twoOpsInaRow(char current, char last) {
