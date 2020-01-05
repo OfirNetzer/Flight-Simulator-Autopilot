@@ -21,8 +21,11 @@ public:
     Lexer();
     void createLexer(string line, vector<string> &lexArr);
     void pushStr(string str, vector<string> &lexArr);
-    bool ifOrWhile(string str);
+    static bool ifOrWhile(string str);
     vector<string> mainLex(char **file);
+    int countEndPars(string);
+    int findLastPar(string line, int pars);
+    void splitFuncWords(string, vector<string>);
 };
 
 
