@@ -7,18 +7,19 @@
 
 int whileCommand::runCondition(vector<string> arr, int ind) {
     int i = ind;
-    while (arr.at(ind) != "}") {
-        Command *c = CommandDB::getInstance()->getCommand(arr.at(ind));
-        ind += c->execute(arr, ind);
+    while (arr.at(i) != "}") {
+        Command *c = CommandDB::getInstance()->getCommand(arr.at(i));
+        i += c->execute(arr, i);
     }
     // extra jump to skip the "}" sign
-    ind++;
+//    ind++;
     while (cSatisfied(this->myCondition)) {
         if (arr.at(i) == "}") {
             i = ind;
         }
         Command *c = CommandDB::getInstance()->getCommand(arr.at(i));
-        i += c->execute(arr, ind);
+        i += c->execute(arr, i);
     }
-    return ((int) arr.size() - ind);
+    ind++;
+    return ind - i;
 }

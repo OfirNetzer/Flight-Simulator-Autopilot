@@ -6,11 +6,10 @@
 #define EX3_COMMAND_
 #pragma once
 
-/*#include <string>
-#include <vector>*/
-#include "ex1.h"
+#include <string>
+#include <vector>
 
-//using namespace std;
+using namespace std;
 
 class Command {
 public:

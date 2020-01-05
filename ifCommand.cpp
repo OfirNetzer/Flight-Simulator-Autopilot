@@ -6,10 +6,11 @@
 #include "CommandDB.h"
 
 int ifCommand::runCondition(vector<string> arr, int ind) {
+    int i = ind;
     while (arr.at(ind) != "}") {
         Command *c = CommandDB::getInstance()->getCommand(arr.at(ind));
         ind += c->execute(arr, ind);
     }
     ind++;
-    return ((int) arr.size() - ind);
+    return ind - i;
 }
