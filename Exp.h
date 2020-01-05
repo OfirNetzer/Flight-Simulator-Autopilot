@@ -47,6 +47,7 @@ public:
             cerr << "Problem while interpreting from Exp class" << endl;
             if (e != nullptr) {
                 delete e;
+                delete in;
             }
         }
         return 0;
