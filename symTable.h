@@ -8,6 +8,7 @@ using namespace std;
 #include <unordered_map>
 #include "Var.h"
 
+
 //singleton thread safe pattern is from: https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
 // todo - change the static to fit
 class symTable {
@@ -33,8 +34,10 @@ public:
         }
         return instance;
     }
+//    static symTable* getInstance();
     void addVar(string n, string s, string d, double v);
     void setVar(string n, double v);
+    string command2client(Var* var);
 
 };
 
