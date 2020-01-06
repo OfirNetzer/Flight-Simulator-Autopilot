@@ -3,12 +3,15 @@
 //
 
 #include <iostream>
+#include <unistd.h>
 #include "Parser.h"
 #include "ex1.h"
 #include "PrintCommand.h"
 #include "SleepCommand.h"
 #include "whileCommand.h"
 #include "ifCommand.h"
+#include "Flag.h"
+#include "Threads.h"
 
 using namespace std;
 
@@ -57,6 +60,9 @@ void Parser::run(vector <string> lexerCommands) {
 //        int i = this->ind;
         this->ind += c->execute(lexerCommands, this->ind);
     }
+    Flag::getInstance()->threadFlag = false;
+    Threads::getInstance()->server.join();
+    close(symTable::getInstance()->getClientSocketFd());
 }
 
 

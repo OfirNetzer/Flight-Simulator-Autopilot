@@ -17,6 +17,13 @@ private:
 //    static symTable& instance;
     //in case 2
     static symTable* instance;
+    int clientSocketFD;
+public:
+    int getClientSocketFd() const;
+
+public:
+    void setClientSocketFd(int clientSocketFd);
+
 public:
     // case 1
     /*
@@ -36,7 +43,7 @@ public:
     }
     void addVar(string n, string s, string d, double v);
     void setVar(string n, double v);
-    string command2client(Var* var);
+    void command2client(Var* var);
 
 };
 

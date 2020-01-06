@@ -5,6 +5,8 @@ using namespace std;
 #include "symTable.h"
 #include "Queue.h"
 #include <mutex>
+#include <sys/socket.h>
+#include <iostream>
 
 
 mutex mutex_lock;
@@ -15,12 +17,11 @@ void symTable::addVar(string n, string s, string d, double v) {
     Var* var = new Var(n,s,d,v);
     symTable->uiMap.insert({n,var});
     // if direction is not "=" then it is ->|<- , insert it to the siMap
-    if (d.compare("=") != 0) {
+    if (d != "=") {
         symTable->siMap.insert({s,var});
     }
-    if (d == "->") {
-        string c2cStr = this->command2client(var);
-        Queue::getInstance()->q.push(c2cStr);
+    if (d == "->" || d == "=") {
+        symTable::command2client(var);
     }
     mutex_lock.unlock();
     //todo maybe delete var
@@ -44,9 +45,20 @@ void symTable::setVar(string n, double v) {
     mutex_lock.unlock();
 }
 
-string symTable::command2client(Var *var) {
+void symTable::command2client(Var *var) {
     string c2cStr = "set ";
     c2cStr.append(var->getSim() + " " +  to_string(var->getVal()) + "\r\n");
-    return c2cStr;
+    int is_sent = send(this->clientSocketFD, c2cStr.c_str(), c2cStr.length(), 0);
+    if (is_sent == -1) {
+        cout << "Error while sending data to simulator from client" << endl;
+    }
+}
+
+void symTable::setClientSocketFd(int csFD) {
+    this->clientSocketFD = csFD;
+}
+
+int symTable::getClientSocketFd() const {
+    return clientSocketFD;
 }
 

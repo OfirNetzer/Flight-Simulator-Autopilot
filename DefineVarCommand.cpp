@@ -24,9 +24,11 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
         if (direction == "=") {
             double val = Exp::inter(sim);
             symTable::getInstance()->addVar(name, sim, "->", val);
+            symTable::getInstance()->command2client(symTable->uiMap.at(name));
             return 4;
         }
         symTable::getInstance()->addVar(name, sim, direction, 0);
+        symTable::getInstance()->command2client(symTable->uiMap.at(name));
         return 5;
     }
     // if it's not starting with "var" it should be already exist
@@ -65,9 +67,10 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
         }
         if (myLex.at(i+1) == "=") {
             symTable::getInstance()->setVar(name, right);
+            symTable->command2client(symTable->uiMap.at(name));
             return 3;
         }
-        if (myLex.at(i+1) == "+=") {
+        /*if (myLex.at(i+1) == "+=") {
             var = symTable::getInstance()->uiMap.at(name)->getVal();
             var += right;
             symTable::getInstance()->setVar(name, var);
@@ -78,7 +81,7 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
             var -= right;
             symTable::getInstance()->setVar(name, var);
             return 3;
-        }
+        }*/
     }
     // todo handle info that comes from the server (like the XML)
     return 0;

@@ -6,6 +6,7 @@
 #include "Flag.h"
 #include "Threads.h"
 #include "Exp.h" //todo erase after test
+#include "Parser.h"
 
 symTable* symTable:: instance = nullptr;
 CommandDB* CommandDB:: instance = nullptr;
@@ -23,6 +24,8 @@ int main(int argc, char *argv[]) {
     ///lexer test
     auto lexer = new Lexer();
     vector<string> lexArr = lexer->mainLex(argv);
+    auto parser = new Parser();
+    parser->run(lexArr);
 
  /*   ///test server
     vector<string> loc = OpenServerCommand::createLoc();
@@ -45,9 +48,12 @@ int main(int argc, char *argv[]) {
     Threads::getInstance()->server.join();
 
     cout << "in main" << endl;
-
+    */
 
     //todo join thread1 (client) and thread2 (server) at the end. Probably inside the parser
-    delete lexer;*/
+    delete lexer;
+    delete parser;
     return 0;
 }
+
+
