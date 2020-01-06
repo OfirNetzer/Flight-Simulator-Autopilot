@@ -23,6 +23,7 @@ public:
     string getDir();
     double getVal();
     void setVal(double v);
+    ~Var() = default;
 };
 
 
