@@ -15,7 +15,7 @@ using namespace std;
 class connectCommand : public Command {
 public:
     connectCommand();
-    int execute(vector<string> arr, int ind) override;};
+    int execute(vector<string> lexer, int ind) override;};
 
 
 #endif //EX3A_CONNECTCOMMAND_H

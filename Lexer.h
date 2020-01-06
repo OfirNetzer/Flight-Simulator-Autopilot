@@ -25,7 +25,6 @@ public:
     vector<string> mainLex(char **file);
     int countEndPars(string);
     int findLastPar(string line, int pars);
-    void splitFuncWords(string, vector<string>);
 };
 
 

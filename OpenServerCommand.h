@@ -11,12 +11,12 @@
 #include <mutex>
 
 using namespace std;
+//mutex mutex_lock;
 
 class OpenServerCommand : public Command {
 public:
     static vector<string> createLoc() {
-        mutex mutex_lock;
-        mutex_lock.lock();
+//        mutex_lock.lock();
         string loc[36];
         loc[0] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
         loc[1] = "/sim/time/warp";
@@ -60,12 +60,12 @@ public:
         for (const auto & i : loc){
             location.push_back(i);
         }
-        mutex_lock.unlock();
+//        mutex_lock.unlock();
         return location;
     }
 
     OpenServerCommand();
-    int execute(vector<string> arr, int ind) override;
+    int execute(vector<string> lexer, int ind) override;
 };
 
 
