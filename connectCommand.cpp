@@ -68,7 +68,8 @@ int connectCommand::execute(vector<string> lexer, int ind) {
         std:: cout << "Client is now connected to server"<< std::endl;
     }
 
-    symTable::getInstance()->setClientSocketfd(client_socketfd);
+//    symTable::getInstance()->setClientSocketFd(client_socketfd);
+    symTable::getInstance()->clientSocketFD = client_socketfd;
 
 //    Threads::getInstance()->client = thread(sendToSim, client_socketfd);
 

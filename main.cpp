@@ -5,29 +5,28 @@
 #include "CommandDB.h"
 #include "Flag.h"
 #include "Threads.h"
-#include "Exp.h" //todo erase after test
 #include "Parser.h"
+#include "Mutex.h"
 
 symTable* symTable:: instance = nullptr;
 CommandDB* CommandDB:: instance = nullptr;
 Flag* Flag:: instance = nullptr;
 Threads* Threads:: instance = nullptr;
+Mutex* Mutex:: instance = nullptr;
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-/* ///Exp test
- * symTable::getInstance()->uiMap.insert({"h0", new Var("n", "s", "d", 200)});
-    symTable::getInstance()->uiMap.insert({"heading", new Var("n", "s", "d", 40)});
-    Exp::inter("(h0-heading)/80");*/
 
     ///lexer test
     auto lexer = new Lexer();
     vector<string> lexArr = lexer->mainLex(argv);
-    auto parser = new Parser();
+/*    auto parser = new Parser();
     parser->run(lexArr);
+    delete lexer;
+    delete parser;*/
 
- /*   ///test server
+    ///test server
     vector<string> loc = OpenServerCommand::createLoc();
     for (int i = 0; i < 36; i++) {
         symTable::getInstance()->siMap.insert({loc[i], new Var("n", "s", "d", 5)});
@@ -38,21 +37,12 @@ int main(int argc, char *argv[]) {
     ///say we finished parsing with the parser --- test
 
     ///test client
-    Queue::getInstance()->q.push("queue 1");
-    Queue::getInstance()->q.push("queue 2");
-    Queue::getInstance()->q.push("queue c");
     auto co = new connectCommand();
     co->execute(lexArr, 0);
 
-    Threads::getInstance()->client.join();
     Threads::getInstance()->server.join();
 
     cout << "in main" << endl;
-    */
-
-    //todo join thread1 (client) and thread2 (server) at the end. Probably inside the parser
-    delete lexer;
-    delete parser;
     return 0;
 }
 

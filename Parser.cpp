@@ -16,7 +16,7 @@
 using namespace std;
 
 Parser::Parser() {
-    this->ind = 5;
+    this->ind = 0; //todo change to 0
     OpenServerCommand* osc =new OpenServerCommand();
     DefineVarCommand* dvc = new DefineVarCommand();
     connectCommand* cc = new connectCommand();
@@ -38,12 +38,11 @@ void Parser::run(vector <string> lexerCommands) {
 //    CommandDB::getInstance()->getCommand(lexerCommands.at(this->ind));
     while (this->ind < lexerCommands.size()) {
         Command *c;
-        /*
         // here we check what kind of command should we use.
         // the only command we can't handle by using a key is update variable so we check the next string
         // if the next string is "=" we will match it to var command that updates the variable value
         // otherwise, we will match our commands using keys.
-        if (lexerCommands.at(this->ind + 1) == "+=") {
+        /*if (lexerCommands.at(this->ind + 1) == "+=") {
             // send double right = lexerCommands.at(this->ind + 2) to Exp.h
             // left is the old val of the var
 //            double right =
@@ -52,6 +51,7 @@ void Parser::run(vector <string> lexerCommands) {
             // symTable::getInstance()->uiMap.at(lexerCommands.at(this->ind))->setVal(newVal);
             this->ind += 3;
         }*/
+
         if (lexerCommands.at(this->ind + 1).find("=") != string::npos) {
             c = CommandDB::getInstance()->getCommand("var");
         } else {
@@ -62,7 +62,7 @@ void Parser::run(vector <string> lexerCommands) {
     }
     Flag::getInstance()->threadFlag = false;
     Threads::getInstance()->server.join();
-    close(symTable::getInstance()->getClientSocketFd());
+    close(symTable::getInstance()->clientSocketFD);
 }
 
 

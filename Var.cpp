@@ -4,6 +4,7 @@
 using namespace std;
 #include <string>
 #include "Var.h"
+#include "Mutex.h"
 
 
 Var::Var(string n, string s, string d, double v) {
@@ -14,7 +15,9 @@ Var::Var(string n, string s, string d, double v) {
 }
 
 void Var::setVal(double v) {
+    Mutex::getInstance()->mutex_lock.try_lock();
     this->value = v;
+    Mutex::getInstance()->mutex_lock.unlock();
 }
 
 string Var::getName() {
