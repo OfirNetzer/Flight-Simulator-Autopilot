@@ -21,13 +21,6 @@
 using namespace std;
 void receiveFromSim(int client_socket) {
     vector<string> loc = OpenServerCommand::createLoc();
-    for (string s : loc) {
-        size_t found = s.find("rpm");
-        if (found != string::npos) {
-            cout << s << endl;
-        }
-    }
-    cout << endl; //todo erase the above three lines after done testing
     while (Flag::getInstance()->threadFlag) {
         //reading from client
         char buffer[1024] = {0};
@@ -50,11 +43,6 @@ void receiveFromSim(int client_socket) {
             }
             count++;
             i++;
-            ///test
-            string sim = loc.at(count);
-            if (sim.find("rpm") != string::npos) {
-                cout << str << " "; //todo erase after done with test
-            }
         }
     }
     close(client_socket);

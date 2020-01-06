@@ -393,7 +393,7 @@ bool Interpreter::isValidSign(char c) {
 
 bool Interpreter::twoOpsInaRow(char current, char last) {
     return (current == '+' || current == '-' || current == '*' || current == '/') &&
-    (last == '+' || last == '-' || last == '*' || last == '/');
+           (last == '+' || last == '-' || last == '*' || last == '/');
 }
 
 Interpreter::~Interpreter() = default;
