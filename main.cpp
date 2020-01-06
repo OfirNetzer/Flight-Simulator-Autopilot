@@ -21,12 +21,12 @@ int main(int argc, char *argv[]) {
     ///lexer test
     auto lexer = new Lexer();
     vector<string> lexArr = lexer->mainLex(argv);
-/*    auto parser = new Parser();
+    auto parser = new Parser();
     parser->run(lexArr);
     delete lexer;
-    delete parser;*/
+    delete parser;
 
-    ///test server
+    /*///test server
     vector<string> loc = OpenServerCommand::createLoc();
     for (int i = 0; i < 36; i++) {
         symTable::getInstance()->siMap.insert({loc[i], new Var("n", "s", "d", 5)});
@@ -43,6 +43,7 @@ int main(int argc, char *argv[]) {
     Threads::getInstance()->server.join();
 
     cout << "in main" << endl;
+    delete lexer;*/
     return 0;
 }
 

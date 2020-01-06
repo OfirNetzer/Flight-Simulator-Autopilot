@@ -21,10 +21,13 @@
 using namespace std;
 void receiveFromSim(int client_socket) {
     vector<string> loc = OpenServerCommand::createLoc();
-    cout << "server 1" << endl;
-    cout << "server 2" << endl;
-    cout << "server 3" << endl;
-    //todo erase the above three lines after done testing
+    for (string s : loc) {
+        size_t found = s.find("rpm");
+        if (found != string::npos) {
+            cout << s << endl;
+        }
+    }
+    cout << endl; //todo erase the above three lines after done testing
     while (Flag::getInstance()->threadFlag) {
         //reading from client
         char buffer[1024] = {0};
@@ -33,8 +36,8 @@ void receiveFromSim(int client_socket) {
             cerr << "Error while reading from simulator" << endl;
         }
         string buf(buffer);
-        int i = 0, count = 0, k = 0;
-        while (i < buf.size() && buf[k] != '\n') {
+        int i = 0, count = 0;
+        while (i < buf.size() && buf[i-1] != '\n') {
             string str;
             while (buf[i] != ',' && buf[i] != '\n') {
                 str += buf[i];
@@ -42,12 +45,16 @@ void receiveFromSim(int client_socket) {
             }
             char *end;
             double val = strtod(str.c_str(), &end);
-            symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
+            if (symTable::getInstance()->siMap.find(loc.at(count)) != symTable::getInstance()->siMap.cend()) {
+                symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
+            }
             count++;
             i++;
-            k = i-1;
             ///test
-            cout << str << endl; //todo erase after done with test
+            string sim = loc.at(count);
+            if (sim.find("rpm") != string::npos) {
+                cout << str << " "; //todo erase after done with test
+            }
         }
     }
     close(client_socket);

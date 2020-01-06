@@ -7,8 +7,8 @@
 using namespace std;
 #include <unordered_map>
 #include "Var.h"
-#include "Mutex.h"
-
+//#include "Mutex.h"
+#include <mutex>
 
 //singleton thread safe pattern is from: https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
 // todo - change the static to fit
@@ -18,6 +18,7 @@ private:
 //    static symTable& instance;
     //in case 2
     static symTable* instance;
+    mutex mutexx;
 public:
     int clientSocketFD;
 
