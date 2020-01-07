@@ -16,8 +16,8 @@ void symTable::addVar(string n, string s, string d, double v) {
     symTable* symTable = symTable::getInstance();
     Var* var = new Var(n,s,d,v);
     symTable->uiMap.insert({n,var});
-    mutexx.unlock();
-    mutexx.try_lock();
+//    mutexx.unlock();
+//    mutexx.try_lock();
     // if direction is not "=" then it is ->|<- , insert it to the siMap
     if (d != "=") {
         symTable->siMap.insert({s,var});
@@ -37,8 +37,8 @@ void symTable::setVar(string n, double v) {
         this->uiMap[n]->setVal(v);
         inMapFlag = true;
     }
-    mutexx.unlock();
-    mutexx.try_lock();
+//    mutexx.unlock();
+//    mutexx.try_lock();
     if (this->siMap.find(n) != this->uiMap.cend()) {
         this->siMap[n]->setVal(v);
         inMapFlag = true;

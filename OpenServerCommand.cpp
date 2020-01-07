@@ -99,7 +99,7 @@ int OpenServerCommand::execute(vector<string> lexer, int ind) {
 }
 
 vector<string> OpenServerCommand::createLoc() {
-    Mutex::getInstance()->mutex_lock.lock();
+//    Mutex::getInstance()->mutex_lock.lock();
     string loc[36];
     loc[0] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
     loc[1] = "/sim/time/warp";
@@ -143,7 +143,7 @@ vector<string> OpenServerCommand::createLoc() {
     for (const auto &i : loc) {
         location.push_back(i);
     }
-    Mutex::getInstance()->mutex_lock.unlock();
+//    Mutex::getInstance()->mutex_lock.unlock();
     return location;
 }
 
