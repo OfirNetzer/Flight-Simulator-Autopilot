@@ -22,8 +22,9 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
         string direction = myLex.at(i+2);
         string sim = myLex.at(i+4).substr(1, myLex.at(i+4).length()-2);
         if (direction == "=") {
-            double val = Exp::inter(myLex.at(i+3));
-            symTable::getInstance()->addVar(name, sim, "->", val);
+            string right = myLex.at(i+3);
+            double val = Exp::inter(right);
+            symTable::getInstance()->addVar(name, right, "->", val);
             symTable::getInstance()->command2client(symTable->uiMap.at(name));
             return 4;
         }
