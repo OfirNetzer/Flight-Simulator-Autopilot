@@ -40,7 +40,6 @@ void receiveFromSim(int client_socket) {
             double val = strtod(str.c_str(), &end);
             if (symTable::getInstance()->getSiVar(loc.at(count))->getName() != "not in map") {
                 symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
-                cout << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl; //todo erase when done testing
             }
             count++;
             i++;
