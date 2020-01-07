@@ -25,8 +25,9 @@ int ConditionParser::execute(vector<string> arr, int ind) {
             ind++;
             jumps++;
         }
-        jumps++;
     }
+    // because we want to get the next value in vector after "}"
+    jumps++;
     return jumps;
 }
 

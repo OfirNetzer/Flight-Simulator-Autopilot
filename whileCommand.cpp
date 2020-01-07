@@ -20,6 +20,7 @@ int whileCommand::runCondition(vector<string> arr, int ind) {
     }
     // extra jump to skip the "}" sign
 //    ind++;
+    int innerCmdJumps = i - ind;
     while (cSatisfied(this->myCondition)) {
         if (arr.at(i) == "}") {
             i = ind;
@@ -31,6 +32,5 @@ int whileCommand::runCondition(vector<string> arr, int ind) {
         }
         i += c->execute(arr, i);
     }
-    ind++;
-    return ind - i;
+    return innerCmdJumps;
 }
