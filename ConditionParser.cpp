@@ -25,6 +25,7 @@ int ConditionParser::execute(vector<string> arr, int ind) {
             ind++;
             jumps++;
         }
+        jumps++;
     }
     return jumps;
 }

@@ -62,7 +62,6 @@ void symTable::command2client(Var *var) {
 }
 
 Var* symTable::getSiVar(string key) {
-    cout << key << endl;
     auto it = this->siMap.find(key);
     if (it != this->siMap.cend()){
         return this->siMap.at(key);
