@@ -61,7 +61,7 @@ void Parser::run(vector <string> lexerCommands) {
         this->ind += c->execute(lexerCommands, this->ind);
     }
     Flag::getInstance()->threadFlag = false;
-    Threads::getInstance()->server.join();
+//    Threads::getInstance()->server.join();
     close(symTable::getInstance()->clientSocketFD);
 }
 

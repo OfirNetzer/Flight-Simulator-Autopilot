@@ -21,13 +21,18 @@
 using namespace std;
 void receiveFromSim(int client_socket) {
     vector<string> loc = OpenServerCommand::createLoc();
+/*    ///test
     for (string s : loc) {
         size_t found = s.find("rpm");
         if (found != string::npos) {
             cout << s << endl;
         }
     }
-    cout << endl; //todo erase the above three lines after done testing
+    for (auto s : symTable::getInstance()->siMap) {
+        cout << s.first << " " << s.second->getName() + " " << s.second->getDir() + " " << s.second->getSim() + " " <<
+        s.second->getVal() << endl;
+    } ///end test //todo erase when done testing
+    cout << endl; //todo erase the above three lines after done testing*/
     while (Flag::getInstance()->threadFlag) {
         //reading from client
         char buffer[1024] = {0};
@@ -43,18 +48,23 @@ void receiveFromSim(int client_socket) {
                 str += buf[i];
                 i++;
             }
+            if (count == 36) {
+                cout << "rpm" + str << endl;
+            }
             char *end;
             double val = strtod(str.c_str(), &end);
-            if (symTable::getInstance()->siMap.find(loc.at(count)) != symTable::getInstance()->siMap.cend()) {
+            ///test
+//            string sim = loc.at(count);
+//            cout << sim << endl; ///end test //todo erase when done testing
+            if (symTable::getInstance()->siMap.find(loc.at(count)) != symTable::getInstance()->siMap.end()) {
                 symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
+                cout << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl;
+/*                if (sim.find("rpm") != string::npos) {
+                    cout << sim + " " << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl;
+                }*/
             }
             count++;
             i++;
-            ///test
-            string sim = loc.at(count);
-            if (sim.find("rpm") != string::npos) {
-                cout << str << " "; //todo erase after done with test
-            }
         }
     }
     close(client_socket);
@@ -102,11 +112,10 @@ int OpenServerCommand::execute(vector<string> lexer, int ind) {
     }
 
     close(socketfd); //closing the listening socket
-/*
-    thread thread1(receiveFromSim, client_socket); //
-    thread1.join();*/
+    thread thread1(receiveFromSim, client_socket);
+    thread1.detach();
 
-    Threads::getInstance()->server = thread(receiveFromSim, client_socket);
+//    Threads::getInstance()->server = thread(receiveFromSim, client_socket);
 
     return 2;
 }

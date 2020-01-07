@@ -53,7 +53,7 @@ void symTable::command2client(Var *var) {
 //    Mutex::getInstance()->mutex_lock.try_lock();
     mutexx.try_lock();
     string c2cStr = "set ";
-    c2cStr.append(var->getSim() + " " +  to_string(var->getVal()) + "\r\n");
+    c2cStr.append(var->getSim().substr(1, var->getSim().size()-2) + " " +  to_string(var->getVal()) + "\r\n");
     cout << c2cStr << endl;
     int is_sent = send(this->clientSocketFD, c2cStr.c_str(), c2cStr.length(), 0);
     if (is_sent == -1) {
