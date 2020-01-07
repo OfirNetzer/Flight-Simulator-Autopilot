@@ -50,19 +50,27 @@ void receiveFromSim(int client_socket) {
                 i++;
             }
             if (count == 35) {
-                cout << "rpm" + str << endl;
+                cout << "rpm: " + str << endl;
+            }
+            for (auto s : symTable::getInstance()->siMap) {
+                cout << s.first + " " << s.second->getVal() << " " << s.second->getSim() << " " <<
+                s.second->getName() + " " << s.second->getDir() << endl;
             }
             char *end;
             double val = strtod(str.c_str(), &end);
             ///test
 //            string sim = loc.at(count);
 //            cout << sim << endl; ///end test //todo erase when done testing
-            if (symTable::getInstance()->siMap.find(loc.at(count)) != symTable::getInstance()->siMap.end()) {
+            /*if (symTable::getInstance()->siMap.find(loc.at(count)) != symTable::getInstance()->siMap.cend()) {
                 symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
                 cout << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl;
-/*                if (sim.find("rpm") != string::npos) {
+*//*                if (sim.find("rpm") != string::npos) {
                     cout << sim + " " << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl;
-                }*/
+                }*//*
+            }*/
+            if (symTable::getInstance()->getSiVar(loc.at(count))->getName() != "not in map") {
+                symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
+                cout << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl;
             }
             count++;
             i++;

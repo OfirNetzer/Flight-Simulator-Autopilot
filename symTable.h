@@ -43,7 +43,7 @@ public:
     void addVar(string n, string s, string d, double v);
     void setVar(string n, double v);
     void command2client(Var* var);
-
+    Var* getSiVar(string key);
 };
 
 #endif //EX3_SYMTABLE_H
