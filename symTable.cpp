@@ -12,7 +12,6 @@ using namespace std;
 
 
 void symTable::addVar(string n, string s, string d, double v) {
-//    Mutex::getInstance()->mutex_lock.try_lock();
     mutexx.try_lock();
     symTable* symTable = symTable::getInstance();
     Var* var = new Var(n,s,d,v);
@@ -26,13 +25,11 @@ void symTable::addVar(string n, string s, string d, double v) {
     if (d == "->" || d == "=") {
         symTable::command2client(var);
     }
-//    Mutex::getInstance()->mutex_lock.unlock();
     //todo maybe delete var
     mutexx.unlock();
 }
 
 void symTable::setVar(string n, double v) {
-//    Mutex::getInstance()->mutex_lock.try_lock();
     mutexx.try_lock();
     bool inMapFlag = false;
     if (this->uiMap.find(n) != this->uiMap.cend()) {
@@ -49,28 +46,26 @@ void symTable::setVar(string n, double v) {
     if (!inMapFlag) {
         throw runtime_error("var: " + n + "not exists");
     }
-//    Mutex::getInstance()->mutex_lock.unlock();
     mutexx.unlock();
 }
 
 void symTable::command2client(Var *var) {
-//    Mutex::getInstance()->mutex_lock.try_lock();
     mutexx.try_lock();
     string c2cStr = "set ";
-    c2cStr.append(var->getSim().substr(1, var->getSim().size()-2) + " " +  to_string(var->getVal()) + "\r\n");
+    c2cStr.append(var->getSim() + " " +  to_string(var->getVal()) + "\r\n");
     cout << c2cStr << endl;
     int is_sent = send(this->clientSocketFD, c2cStr.c_str(), c2cStr.length(), 0);
     if (is_sent == -1) {
         cout << "Error while sending data to simulator from client" << endl;
     }
-//    Mutex::getInstance()->mutex_lock.unlock();
     mutexx.unlock();
 }
 
 Var* symTable::getSiVar(string key) {
+    cout << key << endl;
     auto it = this->siMap.find(key);
-    if (it != this->siMap.end()){
-        return new Var("not in map", "not in map", "not in map", -1);
+    if (it != this->siMap.cend()){
+        return this->siMap.at(key);
     }
-    return this->siMap.at(key);
+    return new Var("not in map", "not in map", "not in map", -1);
 }

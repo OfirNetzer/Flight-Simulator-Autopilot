@@ -21,18 +21,6 @@
 using namespace std;
 void receiveFromSim(int client_socket) {
     vector<string> loc = OpenServerCommand::createLoc();
-/*    ///test
-    for (string s : loc) {
-        size_t found = s.find("rpm");
-        if (found != string::npos) {
-            cout << s << endl;
-        }
-    }
-    for (auto s : symTable::getInstance()->siMap) {
-        cout << s.first << " " << s.second->getName() + " " << s.second->getDir() + " " << s.second->getSim() + " " <<
-        s.second->getVal() << endl;
-    } ///end test //todo erase when done testing
-    cout << endl; //todo erase the above three lines after done testing*/
     while (Flag::getInstance()->threadFlag) {
         //reading from client
         char buffer[1024] = {0};
@@ -43,34 +31,16 @@ void receiveFromSim(int client_socket) {
         string buf(buffer);
         int i = 0, count = 0;
         while (i < buf.size() && buf[i-1] != '\n') {
-//            count++;
             string str;
             while (buf[i] != ',' && buf[i] != '\n') {
                 str += buf[i];
                 i++;
             }
-            if (count == 35) {
-                cout << "rpm: " + str << endl;
-            }
-            for (auto s : symTable::getInstance()->siMap) {
-                cout << s.first + " " << s.second->getVal() << " " << s.second->getSim() << " " <<
-                s.second->getName() + " " << s.second->getDir() << endl;
-            }
             char *end;
             double val = strtod(str.c_str(), &end);
-            ///test
-//            string sim = loc.at(count);
-//            cout << sim << endl; ///end test //todo erase when done testing
-            /*if (symTable::getInstance()->siMap.find(loc.at(count)) != symTable::getInstance()->siMap.cend()) {
-                symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
-                cout << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl;
-*//*                if (sim.find("rpm") != string::npos) {
-                    cout << sim + " " << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl;
-                }*//*
-            }*/
             if (symTable::getInstance()->getSiVar(loc.at(count))->getName() != "not in map") {
                 symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
-                cout << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl;
+                cout << symTable::getInstance()->siMap.at(loc.at(count))->getVal() << endl; //todo erase when done testing
             }
             count++;
             i++;

@@ -20,7 +20,7 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
     if (!(myLex.at(i).compare("var"))) {
         string name = myLex.at(i+1);
         string direction = myLex.at(i+2);
-        string sim = myLex.at(i+4);
+        string sim = myLex.at(i+4).substr(1, myLex.at(i+4).length()-2);
         if (direction == "=") {
             double val = Exp::inter(sim);
             symTable::getInstance()->addVar(name, sim, "->", val);
@@ -31,27 +31,6 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
         symTable::getInstance()->command2client(symTable->uiMap.at(name));
         return 5;
     }
-    // if it's not starting with "var" it should be already exist
-    /*if (((myLex.at(i).compare("var") != 0 ) && (myLex.at(i+1).compare("=") == 0))) {
-        string name = myLex.at(i);
-        string strVal = myLex.at(i+2);
-        // old execution
-//        double val = stod(strVal);
-        double val;
-        if (symTable::getInstance()->uiMap.at(strVal)) {
-            val = symTable::getInstance()->uiMap.at(strVal)->getVal();
-        } else {
-            val = Exp::inter(strVal);
-        }
-        symTable::getInstance()->setVar(name, val);
-        return 3;
-    }
-    if (((myLex.at(i).compare("var") != 0 ) && (myLex.at(i+1).compare("+=") == 0))) {
-
-    }
-    if (((myLex.at(i).compare("var") != 0 ) && (myLex.at(i+1).compare("-=") == 0))) {
-
-    }*/
 
     // if it's not starting with "var" it should be already exist
     if (myLex.at(i) != "var" ) {
@@ -70,18 +49,6 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
             symTable->command2client(symTable->uiMap.at(name));
             return 3;
         }
-        /*if (myLex.at(i+1) == "+=") {
-            var = symTable::getInstance()->uiMap.at(name)->getVal();
-            var += right;
-            symTable::getInstance()->setVar(name, var);
-            return 3;
-        }
-        if (myLex.at(i+1) == "-=") {
-            var = symTable::getInstance()->uiMap.at(name)->getVal();
-            var -= right;
-            symTable::getInstance()->setVar(name, var);
-            return 3;
-        }*/
     }
     // todo handle info that comes from the server (like the XML)
     return 0;

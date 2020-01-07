@@ -14,24 +14,12 @@ using namespace std;
 // todo - change the static to fit
 class symTable {
 private:
-    //in case 1
-//    static symTable& instance;
-    //in case 2
     static symTable* instance;
     mutex mutexx;
 public:
     int clientSocketFD;
 
 public:
-    // case 1
-    /*
-    static symTable& getInstance() {
-        static  symTable instance;
-        return instance;
-    }*/
-    // case 2
-
-
     unordered_map<string, Var*> siMap;
     unordered_map<string, Var*> uiMap;
     static symTable* getInstance() {
