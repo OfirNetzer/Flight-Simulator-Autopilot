@@ -43,12 +43,13 @@ void receiveFromSim(int client_socket) {
         string buf(buffer);
         int i = 0, count = 0;
         while (i < buf.size() && buf[i-1] != '\n') {
+//            count++;
             string str;
             while (buf[i] != ',' && buf[i] != '\n') {
                 str += buf[i];
                 i++;
             }
-            if (count == 36) {
+            if (count == 35) {
                 cout << "rpm" + str << endl;
             }
             char *end;
