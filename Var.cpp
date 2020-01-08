@@ -7,14 +7,14 @@ using namespace std;
 #include "Mutex.h"
 
 
-Var::Var(string n, string s, string d, double v) {
+Var::Var(string n, string s, string d, float v) {
     this->name = n;
     this->sim = s;
     this->dir = d;
     setVal(v);
 }
 
-void Var::setVal(double v) {
+void Var::setVal(float v) {
     Mutex::getInstance()->mutex_lock.try_lock();
     this->value = v;
     Mutex::getInstance()->mutex_lock.unlock();
@@ -32,7 +32,7 @@ string Var::getDir() {
     return this->dir;
 }
 
-double Var::getVal() {
+float Var::getVal() {
     return this->value;
 }
 

@@ -32,29 +32,29 @@ public:
 };
 
 class Value : public Expression {
-    double val;
+    float val;
 public:
-    double getVal() const;
+    float getVal() const;
 
-    Value(double val1);
+    Value(float val1);
 
-    double calculate();
+    float calculate();
 };
 
 class Variable: public Expression {
 private:
     string name;
-    double value;
+    float value;
 
 public:
-    Variable(const string &name1, double value1);
-    void setValue(double valueV);
+    Variable(const string &name1, float value1);
+    void setValue(float valueV);
     const string &getName() const;
-    double calculate();
+    float calculate();
     Variable& operator ++ ();
     Variable& operator -- ();
-    Variable& operator -= (double);
-    Variable& operator += (double);
+    Variable& operator -= (float);
+    Variable& operator += (float);
     Variable& operator ++ (int);
     Variable& operator -- (int);
 };
@@ -65,7 +65,7 @@ public:
 
     virtual ~Plus();
 
-    double calculate();
+    float calculate();
 };
 
 class Minus : public BinaryOperator {
@@ -74,7 +74,7 @@ public:
 
     virtual ~Minus();
 
-    double calculate();
+    float calculate();
 };
 
 class Mul : public BinaryOperator {
@@ -83,7 +83,7 @@ public:
 
     virtual ~Mul();
 
-    double calculate();
+    float calculate();
 };
 
 class Div : public BinaryOperator {
@@ -92,7 +92,7 @@ public:
 
     virtual ~Div();
 
-    double calculate();
+    float calculate();
 };
 
 class UPlus : public UnaryOperator {
@@ -101,7 +101,7 @@ public:
 
     virtual ~UPlus();
 
-    double calculate();
+    float calculate();
 };
 
 class UMinus : public UnaryOperator {
@@ -110,7 +110,7 @@ public:
 
     virtual ~UMinus();
 
-    double calculate();
+    float calculate();
 };
 
 /** Part 2 */
@@ -121,8 +121,8 @@ public:
 
 private:
     stack <char> opers;
-    stack <double> nums;
-    map<string, double> varMap;
+    stack <float> nums;
+    map<string, float> varMap;
 public:
     Expression* interpret(const string infix);
     void setVariables(string vars);
@@ -133,8 +133,8 @@ public:
     bool isValidSign(char c);
     bool twoOpsInaRow(char current, char last);
     void calc();
-    double calcBin(double numA, double numB, char opera);
-    double calcUn(double num, char opera);
+    float calcBin(float numA, float numB, char opera);
+    float calcUn(float num, char opera);
 };
 
 #endif //EX1B_EX1_H

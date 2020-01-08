@@ -49,7 +49,7 @@ int connectCommand::execute(vector<string> lexer, int ind) {
         return -1;
     }
 
-    double port = Exp::inter(lexer.at(ind + 2));
+    float port = Exp::inter(lexer.at(ind + 2));
     string ip2 = lexer.at(ind + 1);
     const char* ip = ip2.substr(1,ip2.length()-2).c_str();
     //bind socket to IP address

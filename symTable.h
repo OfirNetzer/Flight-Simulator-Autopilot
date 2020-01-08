@@ -28,8 +28,8 @@ public:
         }
         return instance;
     }
-    void addVar(string n, string s, string d, double v);
-    void setVar(string n, double v);
+    void addVar(string n, string s, string d, float v);
+    void setVar(string n, float v);
     void command2client(Var* var);
     Var* getSiVar(string key);
 

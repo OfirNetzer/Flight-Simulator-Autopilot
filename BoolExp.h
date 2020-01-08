@@ -12,7 +12,7 @@ class BoolExp: public BinaryOperator {
     string myOperator;
 public:
     BoolExp(Expression* left1, string conditionOp, Expression* right1);
-    double calculate();
+    float calculate();
 
 };
 

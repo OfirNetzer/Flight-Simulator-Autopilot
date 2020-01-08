@@ -11,8 +11,8 @@ using namespace std;
 #include <iostream>
 mutex mutexx;
 
-void symTable::addVar(string n, string s, string d, double v) {
-    mutexx.try_lock();
+void symTable::addVar(string n, string s, string d, float v) {
+//    mutexx.try_lock();
     symTable* symTable = symTable::getInstance();
     Var* var = new Var(n,s,d,v);
     symTable->uiMap.insert({n,var});
@@ -23,10 +23,10 @@ void symTable::addVar(string n, string s, string d, double v) {
     if (d == "->" || d == "=") {
         symTable::command2client(var);
     }
-    mutexx.unlock();
+//    mutexx.unlock();
 }
 
-void symTable::setVar(string n, double v) {
+void symTable::setVar(string n, float v) {
     mutexx.try_lock();
     bool inMapFlag = false;
     if (this->uiMap.find(n) != this->uiMap.cend()) {

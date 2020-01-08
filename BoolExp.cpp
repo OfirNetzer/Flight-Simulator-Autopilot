@@ -11,7 +11,7 @@ BoolExp::BoolExp(Expression* left1, string conditionOp, Expression* right1): Bin
 }
 
 
-double BoolExp::calculate() {
+float BoolExp::calculate() {
     if (this->myOperator == "==") {
         return left->calculate() == right->calculate();
     }

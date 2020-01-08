@@ -17,21 +17,21 @@ BinaryOperator::BinaryOperator(Expression *left1, Expression *right1) : left(lef
 
 UnaryOperator::UnaryOperator(Expression *exp1) : exp(exp1) {}
 
-double Value::calculate() {
+float Value::calculate() {
     return val;
 }
 
-double Value::getVal() const {
+float Value::getVal() const {
     return val;
 }
 
-Value::Value(double val1) : val(val1) {}
+Value::Value(float val1) : val(val1) {}
 
-double Variable::calculate() {
+float Variable::calculate() {
     return this->value;
 }
 
-Variable::Variable(const string &name1, double value1) : name(name1), value(value1) {}
+Variable::Variable(const string &name1, float value1) : name(name1), value(value1) {}
 
 Variable &Variable::operator++() {
     this->value++;
@@ -43,12 +43,12 @@ Variable &Variable::operator--() {
     return *this;
 }
 
-Variable &Variable::operator-=(double num) {
+Variable &Variable::operator-=(float num) {
     this->value -= num;
     return *this;
 }
 
-Variable &Variable::operator+=(double num) {
+Variable &Variable::operator+=(float num) {
     this->value += num;
     return *this;
 }
@@ -67,11 +67,11 @@ const string &Variable::getName() const {
     return name;
 }
 
-void Variable::setValue(double valueV) {
+void Variable::setValue(float valueV) {
     Variable::value = valueV;
 }
 
-double Plus::calculate() {
+float Plus::calculate() {
     return left->calculate() + right->calculate();
 }
 
@@ -84,7 +84,7 @@ Plus::~Plus() {
         delete(right);
 }
 
-double Minus::calculate() {
+float Minus::calculate() {
     return left->calculate() - right->calculate();
 }
 
@@ -97,7 +97,7 @@ Minus::~Minus() {
         delete(right);
 }
 
-double Mul::calculate() {
+float Mul::calculate() {
     return left->calculate() * right->calculate();
 }
 
@@ -110,7 +110,7 @@ Mul::~Mul() {
         delete(right);
 }
 
-double Div::calculate() {
+float Div::calculate() {
     if (right->calculate() == 0) {
         throw ("division by 0 error");
     } else {
@@ -127,7 +127,7 @@ Div::~Div() {
         delete(right);
 }
 
-double UPlus::calculate() {
+float UPlus::calculate() {
     return exp->calculate();
 }
 
@@ -138,7 +138,7 @@ UPlus::~UPlus() {
         delete(exp);
 }
 
-double UMinus::calculate() {
+float UMinus::calculate() {
     return -(exp->calculate());
 }
 
@@ -246,7 +246,7 @@ void Interpreter::setVariables(string var) {
             isValid = false;
             break;
         }
-        //check that the right side of the '=' is a double
+        //check that the right side of the '=' is a float
         for (char t : vValue) {
             if (t == '.') {
                 pFlag++;
@@ -341,8 +341,8 @@ bool Interpreter::isHigherPrec(char c) {
 }
 
 void Interpreter::calc() {
-    double rightLocal = 0;
-    double leftLocal = 0;
+    float rightLocal = 0;
+    float leftLocal = 0;
     char opera = opers.top();
     opers.pop();
     if (opera == '$' || opera == '#') { // if operator is unary minus or unary plus
@@ -360,7 +360,7 @@ void Interpreter::calc() {
     }
 }
 
-double Interpreter::calcUn(double num, char opera) {
+float Interpreter::calcUn(float num, char opera) {
     if (opera == '$') {
         return -num;
     } else { // opera == '#'
@@ -368,7 +368,7 @@ double Interpreter::calcUn(double num, char opera) {
     }
 }
 
-double Interpreter::calcBin(double numA, double numB, char opera) {
+float Interpreter::calcBin(float numA, float numB, char opera) {
     if (opera == '+') {
         return numA + numB;
     } else if (opera == '-') {

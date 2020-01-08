@@ -44,11 +44,11 @@ void Parser::run(vector <string> lexerCommands) {
         // if the next string is "=" we will match it to var command that updates the variable value
         // otherwise, we will match our commands using keys.
         if (lexerCommands.at(this->ind + 1) == "+=") {
-            // send double right = lexerCommands.at(this->ind + 2) to Exp.h
+            // send float right = lexerCommands.at(this->ind + 2) to Exp.h
             // left is the old val of the var
-//            double right =
-            double left = symTable::getInstance()->uiMap.at(lexerCommands.at(this->ind))->getVal();
-            // double newVal = left + right (the interpreted value of the expression)
+//            float right =
+            float left = symTable::getInstance()->uiMap.at(lexerCommands.at(this->ind))->getVal();
+            // float newVal = left + right (the interpreted value of the expression)
             // symTable::getInstance()->uiMap.at(lexerCommands.at(this->ind))->setVal(newVal);
             this->ind += 3;
         }*/
@@ -61,7 +61,9 @@ void Parser::run(vector <string> lexerCommands) {
         this->ind += c->execute(lexerCommands, this->ind);
     }
     Flag::getInstance()->threadFlag = false;
-//    Threads::getInstance()->server.join();
+    if (Threads::getInstance()->server.joinable()) {
+        Threads::getInstance()->server.join();
+    }
     close(symTable::getInstance()->clientSocketFD);
 }
 

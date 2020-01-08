@@ -13,7 +13,7 @@ int PrintCommand::execute(vector<string> myLex, int i) {
         if (myLex.at(i + 1)[0] == '"') {
             cout << myLex.at(i + 1) << endl;
         } else {
-            double val = Exp::inter(myLex.at(i + 1));
+            float val = Exp::inter(myLex.at(i + 1));
             cout << val << endl;
         }
     }

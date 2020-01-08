@@ -37,10 +37,17 @@ void receiveFromSim(int client_socket) {
                 i++;
             }
             char *end;
-            double val = strtod(str.c_str(), &end);
+            symTable* symTable = symTable::getInstance();
+            float val = strtod(str.c_str(), &end);
             if (symTable::getInstance()->getSiVar(loc.at(count)) != nullptr) {
                 symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
-                if (count == 3 || count == )
+//                cout << symTable->uiMap.at("alt")->getName() << " " << symTable->uiMap.at("alt")->getVal() << endl;
+//                cout << symTable->uiMap.at("h0")->getName() << " " << symTable->uiMap.at("h0")->getVal() << endl;
+//                cout << symTable->uiMap.at("heading")->getName() << " " << symTable->uiMap.at("heading")->getVal() << endl;
+//                cout << symTable->uiMap.at("aileron")->getName() << " " << symTable->uiMap.at("aileron")->getVal() << endl;
+//                cout << symTable->uiMap.at("roll")->getName() << " " << symTable->uiMap.at("roll")->getVal() << endl;
+//                cout << symTable->uiMap.at("elevator")->getName() << " " << symTable->uiMap.at("elevator")->getVal() << endl;
+//                cout << symTable->uiMap.at("pitch")->getName() << " " << symTable->uiMap.at("pitch")->getVal() << endl;
                 /*while alt < 1000 {
                     rudder = (h0 - heading)/80
                     aileron = -roll / 70
@@ -62,7 +69,7 @@ int OpenServerCommand::execute(vector<string> lexer, int ind) {
         cerr << "Could not create a socket" << endl;
         return 0;
     }
-    double port = Exp::inter(lexer.at(ind + 1));
+    float port = Exp::inter(lexer.at(ind + 1));
     //bind socket to IP address
     // we first need to create the sockaddr obj.
     sockaddr_in address; //in means IP4
@@ -109,7 +116,7 @@ vector<string> OpenServerCommand::createLoc() {
     loc[0] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
     loc[1] = "/sim/time/warp";
     loc[2] = "/controls/switches/magnetos";
-    loc[3] = "/instrumentation/heading-indicator/indicated-heading-deg";
+    loc[3] = "/instrumentation/heading-indicator/offset-deg";
     loc[4] = "/instrumentation/altimeter/indicated-altitude-ft";
     loc[5] = "/instrumentation/altimeter/pressure-alt-ft";
     loc[6] = "/instrumentation/attitude-indicator/indicated-pitch-deg";

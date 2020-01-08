@@ -23,7 +23,7 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
         string sim = myLex.at(i+4).substr(1, myLex.at(i+4).length()-2);
         if (direction == "=") {
             string right = myLex.at(i+3);
-            double val = Exp::inter(right);
+            float val = Exp::inter(right);
             symTable::getInstance()->addVar(name, right, "->", val);
             symTable::getInstance()->command2client(symTable->uiMap.at(name));
             return 4;
@@ -37,7 +37,7 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
     if (myLex.at(i) != "var" ) {
         string name = myLex.at(i);
         string strRight = myLex.at(i+2);
-        double right, var;
+        float right, var;
         auto itr = symTable::getInstance()->uiMap.find(name);
         // if it is not in the map or we want to update its value
         if (itr == symTable->uiMap.end() || myLex.at(i+1) == "=") {

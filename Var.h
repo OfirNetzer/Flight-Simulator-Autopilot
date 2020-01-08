@@ -15,14 +15,14 @@ private:
     string name;
     string sim;
     string dir;
-    double value;
+    float value;
 public:
-    Var(string n, string s, string d, double v);
+    Var(string n, string s, string d, float v);
     string getName();
     string getSim();
     string getDir();
-    double getVal();
-    void setVal(double v);
+    float getVal();
+    void setVal(float v);
     ~Var() = default;
 };
 

@@ -28,12 +28,13 @@ int ConditionParser::execute(vector<string> arr, int ind) {
     }
     // because we want to get the next value in vector after "}"
     jumps++;
+    this->myCondition.clear();
     return jumps;
 }
 
 bool ConditionParser::cSatisfied(vector<string> arr) {
     int i = 0;
-    double left, right;
+    float left, right;
     string sign, leftStr, rightStr;
     leftStr = arr.at(i);
     rightStr = arr.at(i + 2);
