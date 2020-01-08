@@ -12,7 +12,7 @@ using namespace std;
 
 
 void symTable::addVar(string n, string s, string d, double v) {
-    mutexx.try_lock();
+//    mutexx.try_lock();
     symTable* symTable = symTable::getInstance();
     Var* var = new Var(n,s,d,v);
     symTable->uiMap.insert({n,var});
@@ -26,7 +26,7 @@ void symTable::addVar(string n, string s, string d, double v) {
         symTable::command2client(var);
     }
     //todo maybe delete var
-    mutexx.unlock();
+//    mutexx.unlock();
 }
 
 void symTable::setVar(string n, double v) {
@@ -62,9 +62,12 @@ void symTable::command2client(Var *var) {
 }
 
 Var* symTable::getSiVar(string key) {
+//    mutexx.try_lock();
     auto it = this->siMap.find(key);
     if (it != this->siMap.cend()){
+        mutexx.unlock();
         return this->siMap.at(key);
     }
+//    mutexx.unlock();
     return new Var("not in map", "not in map", "not in map", -1);
 }

@@ -104,7 +104,7 @@ vector<string> OpenServerCommand::createLoc() {
     loc[0] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
     loc[1] = "/sim/time/warp";
     loc[2] = "/controls/switches/magnetos";
-    loc[3] = "/instrumentation/heading-indicator/offset-deg";
+    loc[3] = "/instrumentation/heading-indicator/indicated-heading-deg";
     loc[4] = "/instrumentation/altimeter/indicated-altitude-ft";
     loc[5] = "/instrumentation/altimeter/pressure-alt-ft";
     loc[6] = "/instrumentation/attitude-indicator/indicated-pitch-deg";
