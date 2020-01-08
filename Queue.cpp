@@ -3,4 +3,3 @@
 //
 
 #include "Queue.h"
-Queue* Queue::instance = nullptr;

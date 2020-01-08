@@ -13,6 +13,7 @@ CommandDB* CommandDB:: instance = nullptr;
 Flag* Flag:: instance = nullptr;
 Threads* Threads:: instance = nullptr;
 Mutex* Mutex:: instance = nullptr;
+Queue* Queue::instance = nullptr;
 
 using namespace std;
 

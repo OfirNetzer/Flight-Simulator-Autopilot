@@ -15,9 +15,9 @@ using namespace std;
 class symTable {
 private:
     static symTable* instance;
-    mutex mutexx;
 public:
     int clientSocketFD;
+
 
 public:
     unordered_map<string, Var*> siMap;
@@ -32,6 +32,7 @@ public:
     void setVar(string n, double v);
     void command2client(Var* var);
     Var* getSiVar(string key);
+
 };
 
 #endif //EX3_SYMTABLE_H

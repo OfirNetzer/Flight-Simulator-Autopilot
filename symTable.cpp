@@ -9,15 +9,13 @@ using namespace std;
 #include <mutex>
 #include <sys/socket.h>
 #include <iostream>
-
+mutex mutexx;
 
 void symTable::addVar(string n, string s, string d, double v) {
     mutexx.try_lock();
     symTable* symTable = symTable::getInstance();
     Var* var = new Var(n,s,d,v);
     symTable->uiMap.insert({n,var});
-//    mutexx.unlock();
-//    mutexx.try_lock();
     // if direction is not "=" then it is ->|<- , insert it to the siMap
     if (d != "=") {
         symTable->siMap.insert({s,var});
@@ -25,7 +23,6 @@ void symTable::addVar(string n, string s, string d, double v) {
     if (d == "->" || d == "=") {
         symTable::command2client(var);
     }
-    //todo maybe delete var
     mutexx.unlock();
 }
 
@@ -37,9 +34,8 @@ void symTable::setVar(string n, double v) {
         this->uiMap[n]->setVal(v);
         inMapFlag = true;
     }
-//    mutexx.unlock();
-//    mutexx.try_lock();
-    if (this->siMap.find(n) != this->uiMap.cend()) {
+    auto end = this->uiMap.cend();
+    if (this->siMap.find(n) != end) {
         this->siMap[n]->setVal(v);
         inMapFlag = true;
     }
@@ -50,15 +46,14 @@ void symTable::setVar(string n, double v) {
 }
 
 void symTable::command2client(Var *var) {
-    mutexx.try_lock();
+//    mutexx.try_lock();
     string c2cStr = "set ";
     c2cStr.append(var->getSim() + " " +  to_string(var->getVal()) + "\r\n");
-    cout << c2cStr << endl;
     int is_sent = send(this->clientSocketFD, c2cStr.c_str(), c2cStr.length(), 0);
     if (is_sent == -1) {
         cout << "Error while sending data to simulator from client" << endl;
     }
-    mutexx.unlock();
+//    mutexx.unlock();
 }
 
 Var* symTable::getSiVar(string key) {
@@ -66,5 +61,5 @@ Var* symTable::getSiVar(string key) {
     if (it != this->siMap.cend()){
         return this->siMap.at(key);
     }
-    return new Var("not in map", "not in map", "not in map", -1);
+    return nullptr;
 }

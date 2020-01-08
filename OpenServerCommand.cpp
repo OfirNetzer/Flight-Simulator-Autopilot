@@ -38,8 +38,13 @@ void receiveFromSim(int client_socket) {
             }
             char *end;
             double val = strtod(str.c_str(), &end);
-            if (symTable::getInstance()->getSiVar(loc.at(count))->getName() != "not in map") {
+            if (symTable::getInstance()->getSiVar(loc.at(count)) != nullptr) {
                 symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
+                if (count == 3 || count == )
+                /*while alt < 1000 {
+                    rudder = (h0 - heading)/80
+                    aileron = -roll / 70
+                    elevator = pitch / 50*/
             }
             count++;
             i++;
