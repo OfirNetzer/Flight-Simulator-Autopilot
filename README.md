@@ -68,10 +68,6 @@ G -->|Executing| H(whileCommand)
 G -->|Executing| I(ifCommand)
 ```
 
-
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
--->
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTE1MDQzMzM4OV19
 -->
