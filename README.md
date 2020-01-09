@@ -1,3 +1,4 @@
+
 # Flight Simulator (Autopilot)
 
 In this project we implemented client and server that work with "FlightGear" simulator. Their main purpose is to make the the flight simulator airplane fly automatically. Our program receives a file with a script to run the simulator, and it creates a Lexer out of it, meaning it splits the content of the file into tokens, which are then sent to the Parser, there they get translated into commands. Each command is a class that inherits from the Command interface, by which implementing the Command Pattern. We have a symbol table, which is basically two maps, that hold the values of the variables that the simulator uses. One map is for saving the value of each variable, and the other uses the path of each variable as its key, and the variable as its value. 
@@ -14,6 +15,8 @@ Once the variable alt is equal to 1000, the program prints "done", and the Parse
 **Parser -** Runs through the lexer, and associates each line in the original file, to a specific command.
 **Var -** Each variable is a Var object, and has the fields: name, sim (=path), direction, and value.
 **symTable** *(Symbol Table)* **-** Holds two maps: uiMap- key=name of the variable, value= its Var object. siMap- key= path, value= its var object. 
+Moreover, it creates new variables while reading the raw data (that located in the lexer) and updates the values of each variable 
+while the simulator is running. 
 **ex1** *(Interpreter)* **-** Translates a mathematical expression into a double.
 **Expression.h -** Interface for ex1.
 **Exp -** Takes an expression with variables, assigns them their value from the map, and uses ex1 to solve them.
@@ -46,4 +49,7 @@ g++ -std=c++11 *.cpp -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -o a.ou
 For the program to run well, first we compile and then run the program. Once we see "Server is now listening...", we open and run the FlightGear application, which should connect with our program, through the server we opened. Once we have a  connection between the simulator and our program, the plane should start to move, and shortly after, takeoff and fly. 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
+-->
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTM3Mzg4ODIyM119
 -->
