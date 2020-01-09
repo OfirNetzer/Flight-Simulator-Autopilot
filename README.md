@@ -60,9 +60,9 @@ You can render UML diagrams using [Mermaid](https://mermaidjs.github.io/). For e
 ```mermaid
 sequenceDiagram
 Lexer ->> Parser: Reads & splits text to vector 
-Parser ->> CommandDB: Manages CommandDB
+Parser ->> CommandDB: Manages Command DB
 
-symTable-->>John: How about you John?
+Command-->>John: How about you John?
 symTable--x Alice: I am good thanks!
 symTable-x John: I am good thanks!
 Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
@@ -85,5 +85,5 @@ C --> D
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTM4MzMwMjE2LDE2NzUwNzI2ODBdfQ==
+eyJoaXN0b3J5IjpbLTIwOTIxNjM2NzJdfQ==
 -->
