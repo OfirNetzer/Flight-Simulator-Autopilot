@@ -6,6 +6,13 @@
 #define EX3A_SUBSTRING_H
 
 #include <string>
+
+/**Create a substring with a given delimiter.
+ * case 1: each substring is a valid variable name
+ * case 2: if given string[i] is a word or number, the substring will be the whole word/number
+ * case 3: if it's in operator, the substring will be the whole
+ * case 4 (create2): 2 delimiters are being sent
+ */
 using namespace std;
 
 class Substring {
@@ -15,6 +22,7 @@ public:
         return c == '<' || c == '>' || c == '=' || c == '+' || c == '-' || c == '{';
     }
 
+    //return a substring delimited by a given delimiter
     static string create(char delim, string line, int *i) {
         string stri;
         //'v' means this is called from Exp class, and checks if string is a variable
@@ -40,6 +48,7 @@ public:
         return stri;
     }
 
+    //create a substring with 2 possible delimiters
     static string create2(char delim, char delim2, string line, int *i) {
         string stri;
         while ((line[*i] != delim) && (line[*i] != delim2) && *i < line.length()) {

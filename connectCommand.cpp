@@ -4,9 +4,7 @@
 //
 
 #include "connectCommand.h"
-#include "Queue.h"
 #include "Flag.h"
-#include "Threads.h"
 #include "Exp.h"
 #include <sys/socket.h>
 #include <string>
@@ -16,29 +14,13 @@
 #include <arpa/inet.h>
 #include <cstring>
 #include <vector>
-#include <thread>
-#include <pthread.h>
+
+/**opens socket for the client and sends its identifier to the symbol table
+*/
 
 using namespace std;
 
 connectCommand::connectCommand() = default;
-
-/*void sendToSim(int client_socketfd) {
-    while (Flag::getInstance()->threadFlag) {
-        while (!(Queue::getInstance()->q.empty())) {
-            string str = Queue::getInstance()->q.front();
-            int is_sent = send(client_socketfd, str.c_str(), str.length(), 0);
-            if (is_sent == -1) {
-                std::cout << "Error sending message" << std::endl;
-            }
-            cout << Queue::getInstance()->q.front() << endl; //todo erase after done with test
-            Queue::getInstance()->q.pop();
-        }
-        Flag::getInstance()->threadFlag = false;
-        cout << "client thread finished" << endl;
-    }
-    close(client_socketfd);
-}*/
 
 int connectCommand::execute(vector<string> lexer, int ind) {
     //create socket
@@ -68,9 +50,8 @@ int connectCommand::execute(vector<string> lexer, int ind) {
         std:: cout << "Client is now connected to server"<< std::endl;
     }
 
+    //send client socket number to symbol table
     symTable::getInstance()->clientSocketFD = client_socketfd;
-
-//    Threads::getInstance()->client = thread(sendToSim, client_socketfd);
 
     return 3;
 }

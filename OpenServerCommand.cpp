@@ -7,7 +7,6 @@
 #include "symTable.h"
 #include "Substring.h"
 #include "Exp.h"
-#include "Threads.h"
 #include "Mutex.h"
 #include <sys/socket.h>
 #include <string>
@@ -18,9 +17,20 @@
 #include <vector>
 #include <thread>
 
+/**Connects to the simulator as a server, and updates variables values
+ * according to what we get from the simulator
+ *
+ */
+
 using namespace std;
+
+//listens to the simulator as long as the file isn't fully parsed, and updates
+//the values of the variables in the map accordingly
 void receiveFromSim(int client_socket) {
+    //create vector of variables' paths
     vector<string> loc = OpenServerCommand::createLoc();
+    //listen to the simulator as long as the file isn't fully parsed, and update
+    // the values of the variables in the map accordingly
     while (Flag::getInstance()->threadFlag) {
         //reading from client
         char buffer[1024] = {0};
@@ -30,28 +40,20 @@ void receiveFromSim(int client_socket) {
         }
         string buf(buffer);
         int i = 0, count = 0;
+        //traverse the buffer until you hit a '\n', split the values into strings,
+        //and update the variables in the map accordingly
         while (i < buf.size() && buf[i-1] != '\n') {
             string str;
+            //split the values by ',' or until you meet '\n'
             while (buf[i] != ',' && buf[i] != '\n') {
                 str += buf[i];
                 i++;
             }
+            //update the map, in which the key is the variable's path
             char *end;
-            symTable* symTable = symTable::getInstance();
             float val = strtod(str.c_str(), &end);
             if (symTable::getInstance()->getSiVar(loc.at(count)) != nullptr) {
                 symTable::getInstance()->siMap.at(loc.at(count))->setVal(val);
-//                cout << symTable->uiMap.at("alt")->getName() << " " << symTable->uiMap.at("alt")->getVal() << endl;
-//                cout << symTable->uiMap.at("h0")->getName() << " " << symTable->uiMap.at("h0")->getVal() << endl;
-//                cout << symTable->uiMap.at("heading")->getName() << " " << symTable->uiMap.at("heading")->getVal() << endl;
-//                cout << symTable->uiMap.at("aileron")->getName() << " " << symTable->uiMap.at("aileron")->getVal() << endl;
-//                cout << symTable->uiMap.at("roll")->getName() << " " << symTable->uiMap.at("roll")->getVal() << endl;
-//                cout << symTable->uiMap.at("elevator")->getName() << " " << symTable->uiMap.at("elevator")->getVal() << endl;
-//                cout << symTable->uiMap.at("pitch")->getName() << " " << symTable->uiMap.at("pitch")->getVal() << endl;
-                /*while alt < 1000 {
-                    rudder = (h0 - heading)/80
-                    aileron = -roll / 70
-                    elevator = pitch / 50*/
             }
             count++;
             i++;
@@ -60,6 +62,7 @@ void receiveFromSim(int client_socket) {
     close(client_socket);
 }
 
+//open a socket to connect to the simulator
 int OpenServerCommand::execute(vector<string> lexer, int ind) {
 
     //create socket
@@ -102,16 +105,16 @@ int OpenServerCommand::execute(vector<string> lexer, int ind) {
     }
 
     close(socketfd); //closing the listening socket
+    //call the thread that listens to the simulator and updates values
     thread thread1(receiveFromSim, client_socket);
     thread1.detach();
 
-//    Threads::getInstance()->server = thread(receiveFromSim, client_socket);
 
     return 2;
 }
 
+//create a vector that holds all of the variables' paths
 vector<string> OpenServerCommand::createLoc() {
-//    Mutex::getInstance()->mutex_lock.lock();
     string loc[36];
     loc[0] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
     loc[1] = "/sim/time/warp";
@@ -150,12 +153,12 @@ vector<string> OpenServerCommand::createLoc() {
     loc[34] = "/controls/switches/master-alt";
     loc[35] = "/engines/engine/rpm";
 
+    //create a vector in which the i'th index == the above array's i'th index
     vector<string> location;
     location.reserve(36);
     for (const auto &i : loc) {
         location.push_back(i);
     }
-//    Mutex::getInstance()->mutex_lock.unlock();
     return location;
 }
 

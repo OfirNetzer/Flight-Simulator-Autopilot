@@ -11,6 +11,8 @@
 
 using namespace std;
 
+//interface for the Command Pattern
+
 class Command {
 public:
     virtual int execute(vector<string> arr, int ind) = 0;

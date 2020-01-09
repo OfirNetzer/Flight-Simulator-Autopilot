@@ -7,6 +7,10 @@
 
 #include <mutex>
 
+/**A mutex singleton
+ *
+ */
+
 class Mutex {
 
 private:

@@ -12,6 +12,10 @@
 #include "symTable.h"
 #include "Substring.h"
 
+/**this class takes an expression, assigns values to the variables from the map, and returns
+*a double which is the calculation of the expression
+*/
+
 using namespace std;
 
 class Exp {

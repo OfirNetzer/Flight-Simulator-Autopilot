@@ -8,8 +8,11 @@
 #include <mutex>
 #include "Mutex.h"
 
+/** Flag instance
+ *
+ */
+
 using namespace std;
-//mutex mutex_lock;
 
 class Flag {
 private:

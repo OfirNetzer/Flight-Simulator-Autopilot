@@ -11,7 +11,6 @@
 #include "whileCommand.h"
 #include "ifCommand.h"
 #include "Flag.h"
-#include "Threads.h"
 
 using namespace std;
 
@@ -59,10 +58,6 @@ void Parser::run(vector <string> lexerCommands) {
         }
 //        int i = this->ind;
         this->ind += c->execute(lexerCommands, this->ind);
-    }
-    Flag::getInstance()->threadFlag = false;
-    if (Threads::getInstance()->server.joinable()) {
-        Threads::getInstance()->server.join();
     }
     close(symTable::getInstance()->clientSocketFD);
 }

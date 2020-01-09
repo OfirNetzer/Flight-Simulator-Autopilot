@@ -9,6 +9,10 @@
 #include "Substring.h"
 #include "Lexer.h"
 
+/** Turns the content of the file argument into tokens
+ *
+ */
+
 Lexer::Lexer() = default;
 
 void Lexer::createLexer(string line, vector<string> &lexArr) {
@@ -202,7 +206,6 @@ vector<string> Lexer::mainLex(char *file[]) {
     for (int j=0; j < i; j++) {
         createLexer(lineArr.at(j), lexArr);
     }
-
     return lexArr;
 }
 
