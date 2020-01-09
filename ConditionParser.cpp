@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// execution of every Condition Based command (in our code while/if)
 int ConditionParser::execute(vector<string> arr, int ind) {
     int i = ind;
     while (arr.at(ind + 1) != "{"){
@@ -32,29 +33,29 @@ int ConditionParser::execute(vector<string> arr, int ind) {
     return jumps;
 }
 
+
+/* a boolean func that checks if the condition of the command is satisfied
+ * it returns true if it does, and false otherwise.
+ * for example in while loop, it checks if the while condition is satisfied */
 bool ConditionParser::cSatisfied(vector<string> arr) {
     int i = 0;
     float left, right;
     string sign, leftStr, rightStr;
     leftStr = arr.at(i);
     rightStr = arr.at(i + 2);
-//    if (symTable::getInstance()->uiMap.at(leftStr)) {
-//    if he is in the map
+//    if left expression is in the map
     if (symTable::getInstance()->uiMap.find(leftStr) != symTable::getInstance()->uiMap.cend()) {
         left = symTable::getInstance()->uiMap.at(leftStr)->getVal();
     } else {
         left = Exp::inter(leftStr);
     }
-//    this->siMap.find(n) != this->uiMap.cend()
-//    if (symTable::getInstance()->uiMap.at(rightStr)) {
+    //    if right expression is in the map
     if (symTable::getInstance()->uiMap.find(rightStr) != symTable::getInstance()->uiMap.cend()) {
         right = symTable::getInstance()->uiMap.at(rightStr)->getVal();
     } else {
         right = Exp::inter(rightStr);
     }
-//    left = Exp::inter(arr.at(i));
     sign = arr.at(i + 1);
-//    right = Exp::inter(arr.at(i + 2));
     Value* l = new Value(left);
     Value* r = new Value(right);
     BoolExp* e = new BoolExp(l, sign, r);

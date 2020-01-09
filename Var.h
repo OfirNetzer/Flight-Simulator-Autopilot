@@ -17,6 +17,7 @@ private:
     string dir;
     float value;
 public:
+    // see explanation in cpp
     Var(string n, string s, string d, float v);
     string getName();
     string getSim();

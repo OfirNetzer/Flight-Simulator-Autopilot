@@ -10,7 +10,10 @@ BoolExp::BoolExp(Expression* left1, string conditionOp, Expression* right1): Bin
     this->myOperator = conditionOp;
 }
 
-
+/*
+ * this function calculates two sides of a boolean expression and returns an iterpreted boolean expression
+ * otherwise it raises an error
+ * */
 float BoolExp::calculate() {
     if (this->myOperator == "==") {
         return left->calculate() == right->calculate();

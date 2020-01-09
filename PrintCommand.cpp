@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// commands that prints the string/value from map that comes right after it.
 int PrintCommand::execute(vector<string> myLex, int i) {
     if (myLex.at(i) == "Print") {
         if (myLex.at(i + 1)[0] == '"') {

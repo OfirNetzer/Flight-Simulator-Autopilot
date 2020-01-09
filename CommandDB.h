@@ -14,7 +14,8 @@ using namespace std;
 
 
 /*
- * class created in order to store var and their current values.
+ * a singleton class, created in order to connect between string that represent
+ * a command to an actual command instance.
  */
 class CommandDB {
     // db of the commands and their names.

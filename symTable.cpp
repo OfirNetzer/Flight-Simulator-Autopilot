@@ -10,8 +10,11 @@ using namespace std;
 #include <iostream>
 mutex mutexx;
 
+/*
+ * a function that creates a new variable and stores it in the two maps
+ * by name and by sim (which is the location of each variable in the server.
+ * */
 void symTable::addVar(string n, string s, string d, float v) {
-//    mutexx.try_lock();
     symTable* symTable = symTable::getInstance();
     Var* var = new Var(n,s,d,v);
     symTable->uiMap.insert({n,var});
@@ -22,9 +25,13 @@ void symTable::addVar(string n, string s, string d, float v) {
     if (d == "->" || d == "=") {
         symTable::command2client(var);
     }
-//    mutexx.unlock();
+
 }
 
+/*
+ * a function that updates an existing variable value with a new value.
+ * we are using mutex so only one thread will be able to reach it at a time.
+ * */
 void symTable::setVar(string n, float v) {
     mutexx.try_lock();
     bool inMapFlag = false;
@@ -44,17 +51,17 @@ void symTable::setVar(string n, float v) {
     mutexx.unlock();
 }
 
+// a function that send the command to update a variable value in the server
 void symTable::command2client(Var *var) {
-//    mutexx.try_lock();
     string c2cStr = "set ";
     c2cStr.append(var->getSim() + " " +  to_string(var->getVal()) + "\r\n");
     int is_sent = send(this->clientSocketFD, c2cStr.c_str(), c2cStr.length(), 0);
     if (is_sent == -1) {
         cout << "Error while sending data to simulator from client" << endl;
     }
-//    mutexx.unlock();
 }
 
+// a function that returns a var from siMap using given a relevant key
 Var* symTable::getSiVar(string key) {
     auto it = this->siMap.find(key);
     if (it != this->siMap.cend()){

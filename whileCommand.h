@@ -10,7 +10,7 @@
 
 class whileCommand: public ConditionParser {
 public:
-//    int execute(vector<string> arr, int ind);
+    // runs the while command as long as its condition is satisfied
     int runCondition(vector<string> arr, int ind) override;
 };
 

@@ -5,6 +5,7 @@
 #include "ifCommand.h"
 #include "CommandDB.h"
 
+// runs all the inner commands
 int ifCommand::runCondition(vector<string> arr, int ind) {
     int i = ind;
     while (arr.at(ind) != "}") {

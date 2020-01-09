@@ -16,11 +16,10 @@ using namespace std;
 #include "connectCommand.h"
 
 class Parser {
-//    unordered_map<string, Command*> key2Command;
+    // we keep the index of our iterations over the lexer vector as a member of our parser
     int ind;
 public:
-    // func that matches keys (that should come from the lexer) to a command (that we wrote)
-    // it is basically initializes the map once the parser is being created
+    // see explanation in the cpp file
     Parser();
     void run(vector<string> lexerCommands);
 };

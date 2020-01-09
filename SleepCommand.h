@@ -10,6 +10,7 @@
 
 class SleepCommand: public Command {
 public:
+    // see explanation in cpp file
     int execute(vector<string> myLex, int i) override;
 };
 

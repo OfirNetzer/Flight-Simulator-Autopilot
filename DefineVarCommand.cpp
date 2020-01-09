@@ -6,13 +6,9 @@ using namespace std;
 #include "symTable.h"
 #include "Exp.h"
 
-/* before this in the parser:
- * i'll iterate over the lexer vector.
- * i'll generate a new vector that starts (vector[0]) from the current var
- * https://stackoverflow.com/questions/421573/best-way-to-extract-a-subvector-from-a-vector
- * and send it to this func
- * in this func i'll decide what kind of var is it (var -> || var = )
- * this way i'll treat the vars i have the right way
+/* a command that define what kind of var we are facing.
+ * if it's starts with the word "var", then it's a new variable
+ * if it doesn't, it's probably an update for an existing variable
  * */
 int DefineVarCommand::execute(vector<string> myLex, int i) {
     symTable* symTable = symTable::getInstance();
@@ -21,6 +17,7 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
         string name = myLex.at(i+1);
         string direction = myLex.at(i+2);
         string sim = myLex.at(i+4).substr(1, myLex.at(i+4).length()-2);
+        // if the value of the new var is based on values of variables that already exist in our map
         if (direction == "=") {
             string right = myLex.at(i+3);
             float val = Exp::inter(right);
@@ -33,7 +30,7 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
         return 5;
     }
 
-    // if it's not starting with "var" it should be already exist
+    // if it's not starting with "var", it should be already exist
     if (myLex.at(i) != "var" ) {
         string name = myLex.at(i);
         string strRight = myLex.at(i+2);
@@ -51,7 +48,6 @@ int DefineVarCommand::execute(vector<string> myLex, int i) {
             return 3;
         }
     }
-    // todo handle info that comes from the server (like the XML)
     return 0;
 }
 
