@@ -16,6 +16,7 @@ Opens a socket to connect as a client to the simulator, and sends the socket ide
 **DefineVarCommand** **-** (inherit from "Command" Class) a Class that determines what kind of variable we are facing (new Var/existing var, and its direction). it is also puts the variable in the right map/update the var's value.
 **ConditionParser** *(Virtual Class)* **-** (inherit from "Command" Class) Executes a command that depends on a Boolean condition.
 **whileCommand** **-** (inherit from "ConditionParser" Class) Runs a while loop 
+**ifCommand** **-** (inherit from "ConditionParser" Class) Runs an if condition 
 **Lexer -** Splits the content of the file into tokens.
 **Parser -** Runs through the lexer, and associates each line in the original file, to a specific command.
 **Var -** Each variable is a Var object, and has the fields: name, sim (=path), direction, and value.
@@ -54,9 +55,6 @@ g++ -std=c++11 *.cpp -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -o a.ou
 For the program to run well, first we compile and then run the program. Once we see "Server is now listening...", we open and run the FlightGear application, which should connect with our program, through the server we opened. Once we have a  connection between the simulator and our program, the plane should start to move, and shortly after, takeoff and fly. 
 
 ## Main Thread Flow - Reading to Executing
-|  |  |
-|--|--|
-|  |  |
 
 
 
@@ -64,5 +62,5 @@ For the program to run well, first we compile and then run the program. Once we 
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk0ODgzMzU1NSwxMDk2NjM4MjU5XX0=
+eyJoaXN0b3J5IjpbLTYxMjMzNDM2N119
 -->
