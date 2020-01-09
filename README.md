@@ -56,9 +56,9 @@ For the program to run well, first we compile and then run the program. Once we 
 
 ## Main Thread Flow - Reading to Executing
 
-![Graph][http://imgsafe.org/image/7382d35d6e](http://imgsafe.org/image/7382d35d6e)
+![Graph][http://imgsafe.org/image/7382d35d6e]
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQ0NDM3ODg4NF19
+eyJoaXN0b3J5IjpbMTMxNTA3NDY1XX0=
 -->
