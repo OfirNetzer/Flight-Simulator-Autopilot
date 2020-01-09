@@ -30,7 +30,7 @@ while the simulator is running.
 **Substring -** Creates a substring, with a given delimiter.
 **Mutex -** Holds a singleton mutex object.
 **CommandDB -** a singleton class that holds a map that matches between a String to a Command. 
-**BoolExp -** Class that reads a Boolean expression and return true if the expression is satisfied, and false otherwise (used for 
+**BoolExp -** Class that reads a Boolean expression and returns and interpreted expression.  true if the expression is satisfied, and false otherwise (used for the condition in the conditionParser 
 
 
 ## Design patterns used in code
@@ -63,5 +63,5 @@ See the Graph in the next link:
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2NTAxNDQ1NTIsMTEyNzIzNjA5N119
+eyJoaXN0b3J5IjpbOTE1OTkxNjY4LDExMjcyMzYwOTddfQ==
 -->
