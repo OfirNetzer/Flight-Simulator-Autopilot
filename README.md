@@ -9,7 +9,7 @@ Once the variable alt is equal to 1000, the program prints "done", and the Parse
 
 # Code Files
 
-**Command** *(Virtual Class)* **-**  In our code we translated every line in 
+**Command** *(Virtual Class)* **-**  In our code we translated every line of the text file (fly.txt) 
 **connectCommand** *(client)* **-**  (inherit from "Command" Class)
 Opens a socket to connect as a client to the simulator, and sends the socket identifier to the Symbol Table class.
 **openServerCommand** *(server)* **-** (inherit from "Command" Class) Opens a socket to connect to the simulator as a server. Opens a thread that runs a function that listens constantly to the simulator, updating values it receives from it.
@@ -53,5 +53,5 @@ For the program to run well, first we compile and then run the program. Once we 
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MTE5MjA3MTcsMjI0ODQxOTk1XX0=
+eyJoaXN0b3J5IjpbLTI1NTI0NDYwNywyMjQ4NDE5OTVdfQ==
 -->
