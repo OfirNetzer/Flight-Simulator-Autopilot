@@ -17,8 +17,9 @@ Once the variable alt is equal to 1000, the program prints "done", and the Parse
 **ex1** *(Interpreter)* **-** Translates a mathematical expression into a double.
 **Expression.h -** Interface for ex1.
 **Exp -** Takes an expression with variables, assigns them their value from the map, and uses ex1 to solve them.
-**Flag.h -** Singelton that holds a flag, which is used to determine whether the file is fully parsed or not (used in the server while loop).
+**Flag.h -** Singleton that holds a flag, which is used to determine whether the file is fully parsed or not (used in the server while loop).
 **Substring -** Creates a substring, with a given delimiter.
+**Mutex -** Holds a singleton mutex object.
 
 
 ## Design patterns used in code
@@ -44,5 +45,5 @@ g++ -std=c++11 *.cpp -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -o a.ou
  
 For the program to run well, first we compile and then run the program. Once we see "Server is now listening...", we open and run the FlightGear application, which should connect with our program, through the server we opened. Once we have a  connection between the simulator and our program, the plane should start to move, and shortly after, takeoff and fly. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTgxNTUzMDU4M119
+eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
