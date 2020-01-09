@@ -15,8 +15,8 @@ Opens a socket to connect as a client to the simulator, and sends the socket ide
 **openServerCommand** *(server)* **-** (inherit from "Command" Class) Opens a socket to connect to the simulator as a server. Opens a thread that runs a function that listens constantly to the simulator, updating values it receives from it.
 **DefineVarCommand** **-** (inherit from "Command" Class) a Class that determines what kind of variable we are facing (new Var/existing var, and its direction). it is also puts the variable in the right map/update the var's value.
 **ConditionParser** *(Virtual Class)* **-** (inherit from "Command" Class) Executes a command that depends on a Boolean condition.
-**whileCommand** **-** (inherit from "ConditionParser" Class) Runs a while loop 
-**ifCommand** **-** (inherit from "ConditionParser" Class) Runs an if condition 
+**whileCommand** **-** (inherit from "ConditionParser" Class) Runs a while loop .
+**ifCommand** **-** (inherit from "ConditionParser" Class) Runs an if condition. 
 **Lexer -** Splits the content of the file into tokens.
 **Parser -** Runs through the lexer, and associates each line in the original file, to a specific command.
 **Var -** Each variable is a Var object, and has the fields: name, sim (=path), direction, and value.
@@ -29,6 +29,7 @@ while the simulator is running.
 **Flag.h -** Singleton that holds a flag, which is used to determine whether the file is fully parsed or not (used in the server while loop).
 **Substring -** Creates a substring, with a given delimiter.
 **Mutex -** Holds a singleton mutex object.
+**CommandDB -** a singleton class that holds a map that matches between a String to a Command. 
 
 
 ## Design patterns used in code
@@ -61,5 +62,5 @@ See the Graph in the next link:
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTEyNzIzNjA5N119
+eyJoaXN0b3J5IjpbLTY3NDY5OTE3MiwxMTI3MjM2MDk3XX0=
 -->
