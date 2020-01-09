@@ -52,9 +52,37 @@ g++ -std=c++11 *.cpp -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -o a.ou
 # Running the Program
  
 For the program to run well, first we compile and then run the program. Once we see "Server is now listening...", we open and run the FlightGear application, which should connect with our program, through the server we opened. Once we have a  connection between the simulator and our program, the plane should start to move, and shortly after, takeoff and fly. 
+
+## Code Flow - Reading to Executing
+
+You can render UML diagrams using [Mermaid](https://mermaidjs.github.io/). For example, this will produce a sequence diagram:
+
+```mermaid
+sequenceDiagram
+Lexer ->> Parser: Reads & splits text to vector 
+Parser ->> symTable: Hello Bob, how are you?
+symTable-->>John: How about you John?
+symTable--x Alice: I am good thanks!
+symTable-x John: I am good thanks!
+Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+symTable-->Alice: Checking with John...
+Alice->John: Yes... John, how are you?
+```
+
+And this will produce a flow chart:
+
+```mermaid
+graph LR
+A[Square Rect] -- Link text --> B((Circle))
+A --> C(Round Rect)
+B --> D{Rhombus}
+C --> D
+```
+
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA0MzA0Mjc5OCwtODc4OTkyNDEzXX0=
+eyJoaXN0b3J5IjpbMTY3NTA3MjY4MF19
 -->
