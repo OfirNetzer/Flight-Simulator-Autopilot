@@ -56,10 +56,9 @@ For the program to run well, first we compile and then run the program. Once we 
 
 ## Main Thread Flow - Reading to Executing
 
-![Imgur](https://imgur.com/Zo7rauL)
-<blockquote class="imgur-embed-pub" lang="en" data-id="Zo7rauL"><a href="https://imgur.com/Zo7rauL">View post on imgur.com</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+![Graph][http://imgsafe.org/image/7382d35d6e](http://imgsafe.org/image/7382d35d6e)
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMwMDU2MDQ5NiwyOTc4MzcwNDddfQ==
+eyJoaXN0b3J5IjpbMTQ0NDM3ODg4NCwyOTc4MzcwNDddfQ==
 -->
