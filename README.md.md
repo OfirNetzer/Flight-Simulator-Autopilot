@@ -8,12 +8,12 @@ Once the variable alt is equal to 1000, the program prints "done", and the Parse
 
 # Code Files
 
-**Client -**
-**Server -**
-**Lexer -**
-**Parser -**
-**Symbol Table** *(symTable.cpp)* **-**
-StackEdit stores your files in your browser, which means all your files are automatically saved locally and are accessible **offline!**
+**connectCommand** *(client)* **-** Opens a socket to connect as a client to the simulator, and sends the socket identifier to the Symbol Table class.
+**openServerCommand** *(server)* **-** Opens a socket to connect to the simulator as a server. Opens a thread that runs a function that listens constantly to the simulator, updating values it receives from it.
+**Lexer -** Splits the content of the file into tokens.
+**Parser -** Runs through the lexer, and associates each line in the original file, to a specific command.
+**symTable** *(Symbol Table)* **-**
+
 
 ## Design patterns used in code
 
@@ -38,5 +38,5 @@ g++ -std=c++11 *.cpp -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -o a.ou
  
 For the program to run well, first we compile and then run the program. Once we see "Server is now listening...", we open and run the FlightGear application, which should connect with our program, through the server we opened. Once we have a  connection between the simulator and our program, the plane should start to move, and shortly after, takeoff and fly. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQwODk5NjcxNl19
+eyJoaXN0b3J5IjpbMTgxMjU4MDk1Ml19
 -->
