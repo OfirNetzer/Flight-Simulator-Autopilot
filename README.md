@@ -67,6 +67,9 @@ C -->|Executing| G(ConditionParser)
 G -->|Executing| H(whileCommand)
 G -->|Executing| I(ifCommand)
 ```
+if graph is not shown correctly - see this link:
+https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbkEoTGV4ZXIpIC0tPnxSZWFkcyB0ZXh0ICYgc3BsaXRzIHRvIGEgdmVjdG9yfCBCKFBhcnNlcilcbkIgLS0-fEhvbGQgQ29tbWFuZHMgVGFibGUgdXNpbmcgQ29tbWFuZERCfCBDe0NvbW1hbmR9XG5DIC0tPiB8RXhlY3V0aW5nfCBEKGNvbm5lY3RDb21tYW5kKVxuQyAtLT58RXhlY3V0aW5nfCBFKG9wZW5TZXJ2ZXJDb21tYW5kKVxuQyAtLT58RXhlY3V0aW5nfCBGKERlZmluZVZhckNvbW1hbmQpXG5DIC0tPnxFeGVjdXRpbmd8IEcoQ29uZGl0aW9uUGFyc2VyKVxuRyAtLT58RXhlY3V0aW5nfCBIKHdoaWxlQ29tbWFuZClcbkcgLS0-fEV4ZWN1dGluZ3wgSShpZkNvbW1hbmQpXG4iLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ
+
 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTE1ODQxMDE2NzQsMTE1MDQzMzM4OV19
