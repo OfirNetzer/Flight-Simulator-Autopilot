@@ -1,6 +1,6 @@
 # Flight Simulator (Autopilot)
 
-In this project we implemented client and server that work with "FlightGear" simulator. Their main purpose is to make the the flight simulator airplane fly automatically. Our program receives a file with a script to run the simulator, and it creates a Lexer out of it, meaning 
+In this project we implemented client and server that work with "FlightGear" simulator. Their main purpose is to make the the flight simulator airplane fly automatically. Our program receives a file with a script to run the simulator, and it creates a Lexer out of it, meaning avichai geldzahler hello world this is a readme file.
 
 
 # Code Files
@@ -147,5 +147,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU1NDc0NzkzMV19
+eyJoaXN0b3J5IjpbMjA0MTAzNTk0NV19
 -->
