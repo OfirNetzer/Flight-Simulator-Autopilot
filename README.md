@@ -16,7 +16,7 @@ Opens a socket to connect as a client to the simulator, and sends the socket ide
 **DefineVarCommand** **-** (inherit from "Command" Class) a Class that determines what kind of variable we are facing (new Var/existing var, and its direction). it is also puts the variable in the right map/update the var's value.
 **ConditionParser** *(Virtual Class)* **-** (inherit from "Command" Class) Executes a command that depends on a Boolean condition.
 **whileCommand** **-** (inherit from "ConditionParser" Class) Runs a while loop 
-**ifCommand** **-** (inherit from "ConditionParser" Class) Runs an if condition 
+**ifCommand** **-** (inherit from "ConditionParser" Class) Runs an if condition![enter image description here](file:///home/ofirn93/Pictures/Screenshot%20from%202020-01-09%2015-59-26.png) 
 **Lexer -** Splits the content of the file into tokens.
 **Parser -** Runs through the lexer, and associates each line in the original file, to a specific command.
 **Var -** Each variable is a Var object, and has the fields: name, sim (=path), direction, and value.
@@ -62,5 +62,5 @@ For the program to run well, first we compile and then run the program. Once we 
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYxMjMzNDM2N119
+eyJoaXN0b3J5IjpbLTk2MTMwODE2MCwtNjEyMzM0MzY3XX0=
 -->
