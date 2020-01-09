@@ -13,7 +13,8 @@ Once the variable alt is equal to 1000, the program prints "done", and the Parse
 **connectCommand** *(client)* **-**  (inherit from "Command" Class)
 Opens a socket to connect as a client to the simulator, and sends the socket identifier to the Symbol Table class.
 **openServerCommand** *(server)* **-** (inherit from "Command" Class) Opens a socket to connect to the simulator as a server. Opens a thread that runs a function that listens constantly to the simulator, updating values it receives from it.
-**DefineVarCommand** **-** (inherit from "Command" Class) a Class that determines what kind of variable we are facing (new Var/existing var, and its direction) .and puts it in the right map/update the var's value.
+**DefineVarCommand** **-** (inherit from "Command" Class) a Class that determines what kind of variable we are facing (new Var/existing var, and its direction). it is also puts the variable in the right map/update the var's value.
+**Command** *(Virtual Class)* **-**
 **Lexer -** Splits the content of the file into tokens.
 **Parser -** Runs through the lexer, and associates each line in the original file, to a specific command.
 **Var -** Each variable is a Var object, and has the fields: name, sim (=path), direction, and value.
@@ -54,5 +55,5 @@ For the program to run well, first we compile and then run the program. Once we 
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MjgyMTY0NzcsLTg3ODk5MjQxM119
+eyJoaXN0b3J5IjpbMTI4MjE2MDkzMCwtODc4OTkyNDEzXX0=
 -->
