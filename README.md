@@ -56,11 +56,23 @@ For the program to run well, first we compile and then run the program. Once we 
 
 ## Main Thread Flow - Reading to Executing
 
+```mermaid
+sequenceDiagram
+Lexer ->> Parser: Reads & splits text to vector 
+Parser ->> symTable: Hello Bob, how are you?
+symTable-->>John: How about you John?
+symTable--x Alice: I am good thanks!
+symTable-x John: I am good thanks!
+Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+symTable-->Alice: Checking with John...
+Alice->John: Yes... John, how are you?
+```
 
 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYxMjMzNDM2N119
+eyJoaXN0b3J5IjpbMTEyMTI4OTUzNiwtNjEyMzM0MzY3XX0=
 -->
