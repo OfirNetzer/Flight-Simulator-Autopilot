@@ -53,7 +53,10 @@ g++ -std=c++11 *.cpp -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -o a.ou
  
 For the program to run well, first we compile and then run the program. Once we see "Server is now listening...", we open and run the FlightGear application, which should connect with our program, through the server we opened. Once we have a  connection between the simulator and our program, the plane should start to move, and shortly after, takeoff and fly. 
 
-## Code Flow - Reading to Executing
+## Main Thread Flow - Reading to Executing
+|  |  |
+|--|--|
+|  |  |
 
 
 
@@ -61,5 +64,5 @@ For the program to run well, first we compile and then run the program. Once we 
 eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA5NjYzODI1OV19
+eyJoaXN0b3J5IjpbMTk0ODgzMzU1NSwxMDk2NjM4MjU5XX0=
 -->
