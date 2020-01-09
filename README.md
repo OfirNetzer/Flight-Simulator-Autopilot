@@ -1,151 +1,49 @@
 # Flight Simulator (Autopilot)
 
-In this project we implemented client and server that work with "FlightGear" simulator. Their main purpose is to make the the flight simulator airplane fly automatically. Our program receives a file with a script to run the simulator, and it creates a Lexer out of it, meaning avichai geldzahler hello world this is a readme file.
+In this project we implemented client and server that work with "FlightGear" simulator. Their main purpose is to make the the flight simulator airplane fly automatically. Our program receives a file with a script to run the simulator, and it creates a Lexer out of it, meaning it splits the content of the file into tokens, which are then sent to the Parser, there they get translated into commands. Each command is a class that inherits from the Command interface, by which implementing the Command Pattern. We have a symbol table, which is basically two maps, that hold the values of the variables that the simulator uses. One map is for saving the value of each variable, and the other uses the path of each variable as its key, and the variable as its value. 
 
+Client and server: We open sockets for a client and for a server. The number that is received for the client socket is passed to the Symbol Table class, which in its turn, whenever it sees a '=' or '->', updates (sends) the relevant value in the simulator. For the server, we send the socket number to a function that runs in a thread. There there is a loop that runs as long as the parser has not finished parsing all of the file, and it listens to the simulator, waiting to receive updates in the values of the variables. Whenever it gets such an update (basically happens all the time), it goes to the variable's path in the map, and there updates the variable's value.
+
+Once the variable alt is equal to 1000, the program prints "done", and the Parser stops parsing. The plane will continue flying.
 
 # Code Files
 
-**Client -**
-**Server -**
-**Lexer -**
-**Parser -**
-**Symbol Table** *(symTable.cpp)* **-**
-StackEdit stores your files in your browser, which means all your files are automatically saved locally and are accessible **offline!**
+**connectCommand** *(client)* **-** Opens a socket to connect as a client to the simulator, and sends the socket identifier to the Symbol Table class.
+**openServerCommand** *(server)* **-** Opens a socket to connect to the simulator as a server. Opens a thread that runs a function that listens constantly to the simulator, updating values it receives from it.
+**Lexer -** Splits the content of the file into tokens.
+**Parser -** Runs through the lexer, and associates each line in the original file, to a specific command.
+**Var -** Each variable is a Var object, and has the fields: name, sim (=path), direction, and value.
+**symTable** *(Symbol Table)* **-** Holds two maps: uiMap- key=name of the variable, value= its Var object. siMap- key= path, value= its var object. 
+**ex1** *(Interpreter)* **-** Translates a mathematical expression into a double.
+**Expression.h -** Interface for ex1.
+**Exp -** Takes an expression with variables, assigns them their value from the map, and uses ex1 to solve them.
+**Flag.h -** Singleton that holds a flag, which is used to determine whether the file is fully parsed or not (used in the server while loop).
+**Substring -** Creates a substring, with a given delimiter.
+**Mutex -** Holds a singleton mutex object.
+
 
 ## Design patterns used in code
 
-The file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the **New file** button in the file explorer. You can also create folders by clicking the **New folder** button.
+Command Pattern - Having one Command.h interface, that holds an "execute" method, and multiple different command classes that inherit it, each implementing "execute" in their unique way.
 
-## Switch to another file
+# Downloads
 
-All your files and folders are presented as a tree in the file explorer. You can switch from one to another by clicking a file in the tree.
+We need to download and install the application "FlightGear". In addition, we need a text file with the code, which will be one of the arguments, and a xml file with all the variable names in the simulator, which we will put in the usr/share/games/flightfear/Protocol folder.
 
-## Rename a file
+## Installing FlightGear
 
-You can rename the current file by clicking the file name in the navigation bar or by clicking the **Rename** button in the file explorer.
+Instructions for downloading can be found on the website  https://www.flightgear.org/download/main-program/
 
-## Delete a file
+# Compiling the Code
+ 
+To compile, we need to provide a text file that lists all of the commands for the plane to be able to fly. It will be provided as a program argument.
 
-You can delete the current file by clicking the **Remove** button in the file explorer. The file will be moved into the **Trash** folder and automatically deleted after 7 days of inactivity.
+To compile from the command line:
+g++ -std=c++11 *.cpp -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -o a.out -pthread
 
-## Export a file
-
-You can export the current file by clicking **Export to disk** in the menu. You can choose to export the file as plain Markdown, as HTML using a Handlebars template or as a PDF.
-
-
-# Synchronization
-
-Synchronization is one of the biggest features of StackEdit. It enables you to synchronize any file in your workspace with other files stored in your **Google Drive**, your **Dropbox** and your **GitHub** accounts. This allows you to keep writing on other devices, collaborate with people you share the file with, integrate easily into your workflow... The synchronization mechanism takes place every minute in the background, downloading, merging, and uploading file modifications.
-
-There are two types of synchronization and they can complement each other:
-
-- The workspace synchronization will sync all your files, folders and settings automatically. This will allow you to fetch your workspace on any other device.
-	> To start syncing your workspace, just sign in with Google in the menu.
-
-- The file synchronization will keep one file of the workspace synced with one or multiple files in **Google Drive**, **Dropbox** or **GitHub**.
-	> Before starting to sync files, you must link an account in the **Synchronize** sub-menu.
-
-## Open a file
-
-You can open a file from **Google Drive**, **Dropbox** or **GitHub** by opening the **Synchronize** sub-menu and clicking **Open from**. Once opened in the workspace, any modification in the file will be automatically synced.
-
-## Save a file
-
-You can save any file of the workspace to **Google Drive**, **Dropbox** or **GitHub** by opening the **Synchronize** sub-menu and clicking **Save on**. Even if a file in the workspace is already synced, you can save it to another location. StackEdit can sync one file with multiple locations and accounts.
-
-## Synchronize a file
-
-Once your file is linked to a synchronized location, StackEdit will periodically synchronize it by downloading/uploading any modification. A merge will be performed if necessary and conflicts will be resolved.
-
-If you just have modified your file and you want to force syncing, click the **Synchronize now** button in the navigation bar.
-
-> **Note:** The **Synchronize now** button is disabled if you have no file to synchronize.
-
-## Manage file synchronization
-
-Since one file can be synced with multiple locations, you can list and manage synchronized locations by clicking **File synchronization** in the **Synchronize** sub-menu. This allows you to list and remove synchronized locations that are linked to your file.
-
-
-# Publication
-
-Publishing in StackEdit makes it simple for you to publish online your files. Once you're happy with a file, you can publish it to different hosting platforms like **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **WordPress** and **Zendesk**. With [Handlebars templates](http://handlebarsjs.com/), you have full control over what you export.
-
-> Before starting to publish, you must link an account in the **Publish** sub-menu.
-
-## Publish a File
-
-You can publish your file by opening the **Publish** sub-menu and by clicking **Publish to**. For some locations, you can choose between the following formats:
-
-- Markdown: publish the Markdown text on a website that can interpret it (**GitHub** for instance),
-- HTML: publish the file converted to HTML via a Handlebars template (on a blog for example).
-
-## Update a publication
-
-After publishing, StackEdit keeps your file linked to that publication which makes it easy for you to re-publish it. Once you have modified your file and you want to update your publication, click on the **Publish now** button in the navigation bar.
-
-> **Note:** The **Publish now** button is disabled if your file has not been published yet.
-
-## Manage file publication
-
-Since one file can be published to multiple locations, you can list and manage publish locations by clicking **File publication** in the **Publish** sub-menu. This allows you to list and remove publication locations that are linked to your file.
-
-
-# Markdown extensions
-
-StackEdit extends the standard Markdown syntax by adding extra **Markdown extensions**, providing you with some nice features.
-
-> **ProTip:** You can disable any **Markdown extension** in the **File properties** dialog.
-
-
-## SmartyPants
-
-SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
-
-|                |ASCII                          |HTML                         |
-|----------------|-------------------------------|-----------------------------|
-|Single backticks|`'Isn't this fun?'`            |'Isn't this fun?'            |
-|Quotes          |`"Isn't this fun?"`            |"Isn't this fun?"            |
-|Dashes          |`-- is en-dash, --- is em-dash`|-- is en-dash, --- is em-dash|
-
-
-## KaTeX
-
-You can render LaTeX mathematical expressions using [KaTeX](https://khan.github.io/KaTeX/):
-
-The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$ is via the Euler integral
-
-$$
-\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
-$$
-
-> You can find more information about **LaTeX** mathematical expressions [here](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference).
-
-
-## UML diagrams
-
-You can render UML diagrams using [Mermaid](https://mermaidjs.github.io/). For example, this will produce a sequence diagram:
-
-```mermaid
-sequenceDiagram
-Alice ->> Bob: Hello Bob, how are you?
-Bob-->>John: How about you John?
-Bob--x Alice: I am good thanks!
-Bob-x John: I am good thanks!
-Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
-
-Bob-->Alice: Checking with John...
-Alice->John: Yes... John, how are you?
-```
-
-And this will produce a flow chart:
-
-```mermaid
-graph LR
-A[Square Rect] -- stam --> B((Circle))
-A --> C(Round Rect)
-B --> D{Rhombus}
-C --> D
-```
+# Running the Program
+ 
+For the program to run well, first we compile and then run the program. Once we see "Server is now listening...", we open and run the FlightGear application, which should connect with our program, through the server we opened. Once we have a  connection between the simulator and our program, the plane should start to move, and shortly after, takeoff and fly. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA0MTAzNTk0NV19
+eyJoaXN0b3J5IjpbMjExMDc4NjY0N119
 -->
