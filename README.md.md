@@ -1,6 +1,7 @@
 # Flight Simulator (Autopilot)
 
-In this project we implemented client and server that work with "FlightGear" simulator. Their main purpose is to make the the flight simulator airplane fly automatically. Our program receives a file with a script to run the simulator, and it creates a Lexer out of it, meaning it splits the content of the file into tokens, which are then sent to the Parser, there they get translated into commands. Each command is a class that inherits from the Command interface, by which implementing the Command Pattern.
+In this project we implemented client and server that work with "FlightGear" simulator. Their main purpose is to make the the flight simulator airplane fly automatically. Our program receives a file with a script to run the simulator, and it creates a Lexer out of it, meaning it splits the content of the file into tokens, which are then sent to the Parser, there they get translated into commands. Each command is a class that inherits from the Command interface, by which implementing the Command Pattern. We have two maps, that hold the values of the variables that the simulator runs. One map is for saving the value of each variable, and the other uses the path of each variable as its key, and the variable as its value. In addition we hold Symbol Table, which  Client and server: We open sockets for a client and for a server. The number that is received for the client socket is passed to another class (symTable), which in its turn, whenever it sees a '=' or '->' it sends 
+we created one thread (other than the main thread), that runs 
 
 
 # Code Files
@@ -147,5 +148,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU1NzgzNzI0MF19
+eyJoaXN0b3J5IjpbLTEyOTg2Nzc0MzhdfQ==
 -->
