@@ -66,5 +66,5 @@ https://i.imgsafe.org/74/74bb885cd7.png
 [https://github.com/OfirNetzer/Flight-Simulator-Autopilot](https://github.com/OfirNetzer/Flight-Simulator-Autopilot)
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg1NjkyNjI0NiwtNzk3NTUzMDU0XX0=
+eyJoaXN0b3J5IjpbMTg1NjkyNjI0Nl19
 -->
